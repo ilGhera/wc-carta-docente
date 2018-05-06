@@ -2,7 +2,8 @@
 
 class wccd_soap_client {
 
-	public function __construct($codiceVoucher, $import) {
+	
+    public function __construct($codiceVoucher, $import) {
 		$this->wsdl = WCCD_PRIVATE . 'VerificaVoucher.wsdl';
         $this->local_cert = WCCD_PRIVATE . 'defCert.pem';
         $this->location = 'https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
@@ -10,7 +11,11 @@ class wccd_soap_client {
 		$this->import = $import;
 	}
 
-	public function soap_client() {
+
+	/**
+     * Istanzia il SoapClient
+     */
+    public function soap_client() {
         $soapClient = new SoapClient(
             $this->wsdl, 
             array(
@@ -23,6 +28,13 @@ class wccd_soap_client {
         return $soapClient;
 	}
 
+
+    /**
+     * Chiamata Check di tipo 1 e 2
+     * @param  integer $value il tipo di operazione da eseguire
+     * 1 per solo controllo
+     * 2 per scalare direttamente il valore del buono
+     */
 	public function check($value = 1) {
         $check = $this->soap_client()->Check(array(
         	'checkReq' => array(
@@ -34,6 +46,10 @@ class wccd_soap_client {
         return $check;
 	}
 
+
+    /**
+     * Chiamata Confirm utile ad utilizzare solo parte del valore del buono
+     */
 	public function confirm() {
         $confirm = $this->soap_client()->Confirm(array(
         	'checkReq' => array(
@@ -44,16 +60,6 @@ class wccd_soap_client {
         ));
 
         return $confirm;
-	}
-
-	public function call($type, $value = 1) {
-        try {
-            $response = $type == 'check' ? $this->check($value) : $this->confirm();
-        } catch(Exception $e) {
-            $response = $e->detail->FaultVoucher->exceptionMessage;
-        }     
-
-        return $response;    
 	}
 
 }
