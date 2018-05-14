@@ -5,14 +5,16 @@
  */
 class WC_Teacher_Gateway extends WC_Payment_Gateway {
 
-
 	public function __construct() {
 		$this->plugin_id = 'woocommerce_carta_docente';
 		$this->id = 'docente';
 		$this->has_fields = true;
 		$this->method_title = 'Buono docente';
 		$this->method_description = 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.';
-		$this->icon = WCCD_URI . 'images/carta-docente.png';
+		
+		if(get_option('wccd-image')) {
+			$this->icon = WCCD_URI . 'images/carta-docente.png';			
+		}
 
 		$this->init_form_fields();
 		$this->init_settings();
@@ -20,8 +22,11 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->title = $this->get_option('title');
 		$this->description = $this->get_option('description');
 
-
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+
+		add_action('woocommerce_order_details_after_order_table', array($this, 'display_teacher_code'), 10, 1);
+		add_action('woocommerce_email_after_order_table', array($this, 'display_teacher_code'), 10, 1);
+		add_action('woocommerce_admin_order_data_after_billing_address', array($this, 'display_teacher_code'), 10, 1);
 	}
 
 
@@ -48,7 +53,6 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 		        'title' => __( 'Messaggio utente', 'woocommerce' ),
 		        'type' => 'textarea',
 		        'default' => 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.',
-		        // 'desc_tip'      => true,
 		    )
 		));
 
@@ -132,6 +136,21 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 
 
 	/**
+	 * Mostra il buono docente nella thankyou page, nelle mail e nella pagina dell'ordine.
+	 * @param  object $order
+	 * @return mixed        testo formattato con il buono utilizzato per l'acquisto
+	 */
+	public function display_teacher_code($order) {
+		
+		$data = $order->get_data();
+
+		if($data['payment_method'] === 'docente') {
+		    echo '<p><strong>'.__('Buono docente').': </strong>' . get_post_meta($order->get_id(), 'wc-codice-docente', true) . '</p>';
+		}
+	}
+
+
+	/**
 	 * Gestisce il processo di pagamento, verificando la validità del buono inserito dall'utente
 	 * @param  int $order_id l'id dell'ordine
 	 */
@@ -139,7 +158,7 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 
 		global $woocommerce;
 	    $order = new WC_Order($order_id);
-		$import = $order->get_total(); //il totale dell'ordine
+		$import = floatval($order->get_total()); //il totale dell'ordine
 
 		$notice = null;
 		$output = array(
@@ -160,7 +179,7 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 	            $response = $soapClient->check();
 
 				$bene    = $response->checkResp->bene; //il bnee acquistabile con il buono inserito
-			    $importo = $response->checkResp->importo; //l'importo del buono inserito
+			    $importo_buono = floatval($response->checkResp->importo); //l'importo del buono inserito
 			    
 			    /*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
 			    $purchasable = $this->is_purchasable($order, $bene);
@@ -172,11 +191,11 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 				} else {
 
 					$type = null;
-					if($response->checkResp->importo <= $import) {
+					if($importo_buono === $import) {
 
 						$type = 'check';
 
-					} elseif($response->checkResp->importo > $import) {
+					} else {
 
 						$type = 'confirm';
 
@@ -198,6 +217,9 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 
 						    /*Svuota carrello*/ 
 						    $woocommerce->cart->empty_cart();	
+
+						    /*Aggiungo il buono docente all'ordine*/
+							update_post_meta($order_id, 'wc-codice-docente', $teacher_code);
 
 						    $output = array(
 						        'result' => 'success',
@@ -241,4 +263,4 @@ function add_teacher_gateway_class($methods) {
     $methods[] = 'WC_Teacher_Gateway'; 
     return $methods;
 }
-add_filter('woocommerce_payment_gateways', 'add_teacher_gateway_class');	
+add_filter('woocommerce_payment_gateways', 'add_teacher_gateway_class');
