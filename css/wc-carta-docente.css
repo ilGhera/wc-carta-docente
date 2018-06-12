@@ -1,0 +1,14 @@
+/**
+ * WC Carta Docente - CSS
+ */
+
+input#wc-codice-docente {
+	display: block;
+	margin-top: 0.5rem;
+	width: 100%;
+}
+
+label[for="wc-codice-docente"] {
+	text-transform: uppercase;
+	display: block;
+}

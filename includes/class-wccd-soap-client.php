@@ -23,7 +23,7 @@ class wccd_soap_client {
               'passphrase'  => 'fullgas'
             )
         );
-
+  
         return $soapClient;
 	}
 

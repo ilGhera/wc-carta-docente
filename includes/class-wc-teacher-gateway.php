@@ -39,14 +39,14 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 			'enabled' => array(
 		        'title' => __( 'Enable/Disable', 'woocommerce' ),
 		        'type' => 'checkbox',
-		        'label' => __( 'Abilita', 'woocommerce' ),
+		        'label' => __( 'Abilita pagamento con buono docente', 'wccd' ),
 		        'default' => 'yes'
 		    ),
 		    'title' => array(
 		        'title' => __( 'Title', 'woocommerce' ),
 		        'type' => 'text',
-		        'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce' ),
-		        'default' => __( 'Buono docente', 'woocommerce' ),
+		        'description' => __( 'This controls the title which the user sees during checkout.', 'wccd' ),
+		        'default' => __( 'Buono docente', 'wccd' ),
 		        'desc_tip'      => true,
 		    ),
 		    'description' => array(
@@ -67,7 +67,7 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 		<p>
 			<?php echo $this->description; ?>
 			<label for="wc-codice-docente">
-				<?php echo __('Inserisci qui il tuo codice', 'woocommerce');?>
+				<?php echo __('Inserisci qui il tuo codice', 'wccd');?>
 				<span class="required">*</span>
 			</label>
 			<input type="text" class="wc-codice-docente" id="wc-codice-docente" name="wc-codice-docente" />
@@ -82,26 +82,16 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 	 * @return int                 l'id di categoria acquistabile
 	 */
 	public function get_purchasable_cat($purchasable) {
-		$cat = null;
-		switch (strtolower($purchasable)) {
-			case 'libri':
-				$cat = 57;
-				break;
-			case 'testi':
-				$cat = 57;
-				break;			
-			case 'software':
-				$cat = 56;
-				break;			
-			case 'hardware':
-				$cat = 56;
-				break;
-			case '-':
-				$cat = 56; //temp
-				break;			
+
+		$wccd_categories = get_option('wccd-categories');
+		$bene = strtolower($purchasable);
+		
+		for($i=0; $i < count($wccd_categories); $i++) { 
+			if(array_key_exists($bene, $wccd_categories[$i])) {
+				return $wccd_categories[$i][$bene];
+			}
 		}
 
-		return $cat;
 	}
 
 
@@ -113,6 +103,7 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 	 */
 	public function is_purchasable($order, $bene) {
 		$cat = $this->get_purchasable_cat($bene);
+
 		$items = $order->get_items();
 
 		$output = true;
@@ -145,7 +136,7 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 		$data = $order->get_data();
 
 		if($data['payment_method'] === 'docente') {
-		    echo '<p><strong>'.__('Buono docente').': </strong>' . get_post_meta($order->get_id(), 'wc-codice-docente', true) . '</p>';
+		    echo '<p><strong>' . __('Buono docente', 'wccd') . ': </strong>' . get_post_meta($order->get_id(), 'wc-codice-docente', true) . '</p>';
 		}
 	}
 
@@ -186,7 +177,7 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 
 			    if(!$purchasable) {
 
-					$notice = __('Uno o più prodotti nel carrello non sono acquistabili con il buono inserito.', 'woothemes');
+					$notice = __('Uno o più prodotti nel carrello non sono acquistabili con il buono inserito.', 'wccd');
 
 				} else {
 
@@ -245,7 +236,7 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 	    }	
 		
 		if($notice) {
-			wc_add_notice( __('<b>Buono docente</b> - ' . $notice, 'woothemes'), 'error' );
+			wc_add_notice( __('<b>Buono docente</b> - ' . $notice, 'wccd'), 'error' );
 		}
 
 		return $output;
@@ -256,11 +247,14 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 
 
 /**
- * Aggiunge il nuovo gateway a quelli disponibili in WooCommerce
+ * Se presente un certificato, aggiunge il nuovo gateway a quelli disponibili in WooCommerce
  * @param array $methods gateways disponibili 
  */
 function add_teacher_gateway_class($methods) {
-    $methods[] = 'WC_Teacher_Gateway'; 
+	if(get_option('wccd-certificate-set')) {
+	    $methods[] = 'WC_Teacher_Gateway'; 
+	}
+
     return $methods;
 }
 add_filter('woocommerce_payment_gateways', 'add_teacher_gateway_class');
