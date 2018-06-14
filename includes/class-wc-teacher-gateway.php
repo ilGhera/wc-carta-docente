@@ -251,7 +251,7 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
  * @param array $methods gateways disponibili 
  */
 function add_teacher_gateway_class($methods) {
-	if(get_option('wccd-certificate-set')) {
+	if(wccd_admin::get_the_file('.pem')) {
 	    $methods[] = 'WC_Teacher_Gateway'; 
 	}
 

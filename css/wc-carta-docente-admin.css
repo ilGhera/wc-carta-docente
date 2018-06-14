@@ -63,3 +63,7 @@ ul.categories-container {
 	padding-bottom: 3rem;
 	border-bottom: 1px solid #ccc;
 }
+
+.wccd-button {
+	margin-top: 1rem !important;
+}

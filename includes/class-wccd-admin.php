@@ -4,10 +4,10 @@ class wccd_admin {
 
 	public function __construct() {
 		add_action('admin_init', array($this, 'wccd_save_settings'));
+		add_action('admin_init', array($this, 'generate_cert_request'));
 		add_action('admin_menu', array($this, 'register_options_page'));
 		add_action('wp_ajax_delete-certificate', array($this, 'delete_certificate_callback'));
 		add_action('wp_ajax_add-cat', array($this, 'add_cat_callback'));
-		add_action('admin_init', array($this, 'generate_cert_request'));
 	}
 
 
@@ -20,12 +20,13 @@ class wccd_admin {
 
 
 	/**
-	 * Verifica la presenza del certificato
-	 * @return string il certificato
+	 * Verifica la presenza di un file per estenzione
+	 * @param string $ext l,estensione del file da cercare
+	 * @return string l'url file
 	 */
-	public function is_certificate_uploaded() {
+	public static function get_the_file($ext) {
 		$files = [];
-		foreach (glob(WCCD_PRIVATE . '*.pem') as $file) {
+		foreach (glob(WCCD_PRIVATE . '*' . $ext) as $file) {
 			$files[] = $file; 
 		}
 		$output = empty($files) ? false : $files[0];
@@ -42,7 +43,6 @@ class wccd_admin {
 			$cert = isset($_POST['cert']) ? $_POST['cert'] : '';
 			if($cert) {
 				unlink(WCCD_PRIVATE . $cert);	
-				delete_option('wccd-certificate-set');		
 			}
 		}
 
@@ -126,7 +126,7 @@ class wccd_admin {
 	public function generate_cert_request() {
 		if(isset($_POST['generate-der'])) {
 
-			$cert_req_url = WCCD_PRIVATE . 'certificate-request.der';
+			$cert_req_url = WCCD_PRIVATE . 'files/certificate-request.der';
 
 			/*Crea il file .der se non presente*/
 			if(!file_exists($cert_req_url)) {
@@ -165,18 +165,44 @@ class wccd_admin {
 	    	echo '<div class="wrap-left">';
 			    echo '<h1>WooCommerce Carta Docente - ' . esc_html(__('Impostazioni', 'wccd')) . '</h1>';
 
-	    		/*Genera richiesta certificato .der*/
-				echo '<table class="form-table wccd-table">';
-		    		echo '<tr>';
-		    			echo '<th scope="row">' . esc_html(__('Richiesta certificato', 'wccd')) . '</th>';
-		    			echo '<td>';
-		    				echo '<form method="post" action="">';
-			    				echo '<input type="submit" name="generate-der" class="generate-der button" value="' . __('Scarica file .der', 'wccd') . '">';
-		    				echo '</form>';
-			    			echo '<p class="description">' . esc_html(__('Genera il file .der necessario per richiedere il certificato su Carta del docente', 'wccd')) . '</p>';
-		    			echo '</td>';
-		    		echo '</tr>';
-	    		echo '</table>';
+			    /*Se il certificato non è presente vengono mostrati gli strumentui per generarlo*/
+	    		if(!self::get_the_file('.pem')) {
+			
+		    		/*Genera richiesta certificato .der*/
+					echo '<table class="form-table wccd-table">';
+			    		echo '<tr>';
+			    			echo '<th scope="row">' . esc_html(__('Genera file .der', 'wccd')) . '</th>';
+			    			echo '<td>';
+			    				echo '<form method="post" action="">';
+				    				echo '<input type="submit" name="generate-der" class="generate-der button" value="' . __('Scarica file .der', 'wccd') . '">';
+			    				echo '</form>';
+				    			echo '<p class="description">' . esc_html(__('Genera il file .der necessario per richiedere il certificato su Carta del docente', 'wccd')) . '</p>';
+			    			echo '</td>';
+			    		echo '</tr>';
+		    		echo '</table>';
+
+					echo '<form name="wccd-generate-certificate" class="wccd-generate-certificate one-of" method="post" enctype="multipart/form-data" action="">';
+				    	echo '<table class="form-table">';
+
+				    		/*Carica certificato*/
+				    		echo '<tr>';
+				    			echo '<th scope="row">' . esc_html(__('Genera certificato', 'wccd')) . '</th>';
+				    			echo '<td>';
+				    				
+					    			echo '<input type="file" accept=".cer" name="wccd-cert" class="wccd-cert">';
+					    			echo '<p class="description">' . esc_html(__('Carica il file .cer ottenuto da Carta del docente per procedere', 'wccd')) . '</p>';
+							    	
+							    	wp_nonce_field('wccd-generate-certificate', 'wccd-gen-certificate-nonce');
+							    	echo '<input type="hidden" name="wccd-gen-certificate-hidden" value="1">';
+							    	echo '<input type="submit" class="button-primary wccd-button" value="' . esc_html('Genera certificato', 'wccd') . '">';
+
+				    			echo '</td>';
+				    		echo '</tr>';
+
+			    		echo '</table>';
+			    	echo '</form>';			
+
+				}
 
 			    echo '<form name="wccd-upload-certificate" class="wccd-upload-certificate one-of" method="post" enctype="multipart/form-data" action="">';
 			    	echo '<table class="form-table">';
@@ -185,21 +211,22 @@ class wccd_admin {
 			    		echo '<tr>';
 			    			echo '<th scope="row">' . esc_html(__('Carica certificato', 'wccd')) . '</th>';
 			    			echo '<td>';
-			    				if($file = $this->is_certificate_uploaded()) {
+			    				if($file = self::get_the_file('.pem')) {
 			    					echo '<span class="cert-loaded">' . esc_html(basename($file)) . '</span>';
 			    					echo '<a class="button delete delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
 			    					echo '<p class="description">' . esc_html(__('File caricato correttamente.', 'wccd')) . '</p>';
 			    				} else {
 					    			echo '<input type="file" accept=".pem" name="wccd-certificate" class="wccd-certificate">';
 					    			echo '<p class="description">' . esc_html(__('Carica il certificato (.pem) necessario alla connessione con Carta del docente', 'wccd')) . '</p>';
+		
+							    	wp_nonce_field('wccd-upload-certificate', 'wccd-certificate-nonce');
+							    	echo '<input type="hidden" name="wccd-certificate-hidden" value="1">';
+							    	echo '<input type="submit" class="button-primary wccd-button" value="' . esc_html('Salva certificato', 'wccd') . '">';
 			    				}
 			    			echo '</td>';
 			    		echo '</tr>';
 
 		    		echo '</table>';
-			    	wp_nonce_field('wccd-upload-certificate', 'wccd-certificate-nonce');
-			    	echo '<input type="hidden" name="wccd-certificate-hidden" value="1">';
-			    	echo '<input type="submit" class="button-primary" value="' . esc_html('Salva certificato', 'wccd') . '">';
 		    	echo '</form>';
 
 			    echo '<form name="wccd-options" class="wccd-form wccd-options" method="post" enctype="multipart/form-data" action="">';
@@ -268,9 +295,31 @@ class wccd_admin {
 
 
 	/**
-	 * Salvatagiio delle impostazioni dell'utente
+	 * Salvataggio delle impostazioni dell'utente
 	 */
 	public function wccd_save_settings() {
+
+
+		if(isset($_POST['wccd-gen-certificate-hidden']) && wp_verify_nonce($_POST['wccd-gen-certificate-nonce'], 'wccd-generate-certificate')) {
+
+			/*Salvataggio file .cer*/
+			if(isset($_FILES['wccd-cert'])) {
+				$info = pathinfo($_FILES['wccd-cert']['name']);
+				$name = sanitize_file_name($info['basename']);
+				if($info) {
+					if($info['extension'] === 'cer') {
+						move_uploaded_file($_FILES['wccd-cert']['tmp_name'], WCCD_PRIVATE . $name);	
+			
+						/*Genera certificato*/
+						exec(WCCD_PRIVATE . 'wccd-generate-certificate.sh 2>&1', $out);
+						// var_dump($out);
+
+					} else {
+						add_action('admin_notices', array($this, 'not_valid_certificate'));
+					}					
+				}
+			}
+		}
 
 		if(isset($_POST['wccd-certificate-hidden']) && wp_verify_nonce($_POST['wccd-certificate-nonce'], 'wccd-upload-certificate')) {
 			
@@ -281,7 +330,6 @@ class wccd_admin {
 				if($info) {
 					if($info['extension'] === 'pem') {
 						move_uploaded_file($_FILES['wccd-certificate']['tmp_name'], WCCD_PRIVATE . $name);	
-						update_option('wccd-certificate-set', 1);				
 					} else {
 						add_action('admin_notices', array($this, 'not_valid_certificate'));
 					}					

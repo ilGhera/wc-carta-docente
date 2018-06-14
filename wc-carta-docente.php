@@ -50,5 +50,3 @@ function init_WC_Teacher_Gateway() {
 	add_action('admin_enqueue_scripts', 'wccd_load_admin_scripts');
 } 
 add_action('plugins_loaded', 'init_WC_Teacher_Gateway');
-
-
