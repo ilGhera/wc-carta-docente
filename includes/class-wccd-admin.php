@@ -130,7 +130,34 @@ class wccd_admin {
 
 			/*Crea il file .der se non presente*/
 			if(!file_exists($cert_req_url)) {
-				exec(WCCD_PRIVATE . 'wccd-generate-der.sh 2>&1', $out);				
+				// exec(WCCD_PRIVATE . 'wccd-generate-der.sh 2>&1', $out);				
+				
+				$dn = array(
+                    "countryName" => "GB",
+                    "stateOrProvinceName" => "Somerset",
+                    "localityName" => "Glastonbury",
+                    "organizationName" => "The Brain Room Limited",
+                    "organizationalUnitName" => "PHP Documentation Team",
+                    "commonName" => "Wez Furlong",
+                    "emailAddress" => "wez@example.com"
+                );
+
+
+                // Generate a new private (and public) key pair
+                $privkey = openssl_pkey_new(array(
+                    "private_key_bits" => 2048,
+                    "private_key_type" => OPENSSL_KEYTYPE_RSA,
+                ));
+
+
+                // Generate a certificate signing request
+                $csr = openssl_csr_new($dn, $privkey, array('digest_alg' => 'sha256'));
+
+
+                // Save your private key, CSR and self-signed cert for later use
+                openssl_csr_export_to_file($csr, WCCD_PRIVATE . 'files/certificate-request.der');
+                openssl_pkey_export_to_file($privkey, WCCD_PRIVATE . 'files/key.der', 'fullgas');
+
 			}
 
 			/*Download file .der*/
@@ -311,8 +338,31 @@ class wccd_admin {
 						move_uploaded_file($_FILES['wccd-cert']['tmp_name'], WCCD_PRIVATE . $name);	
 			
 						/*Genera certificato*/
-						exec(WCCD_PRIVATE . 'wccd-generate-certificate.sh 2>&1', $out);
+						// exec(WCCD_PRIVATE . 'wccd-generate-certificate.sh 2>&1', $out);
 						// var_dump($out);
+						
+						/*Converting .cer to .pem*/
+	                    $certificateCAcer = WCCD_PRIVATE . $name;
+	                    $certificateCAcerContent = file_get_contents($certificateCAcer);
+	                    /* Convert .cer to .pem, cURL uses .pem */
+	                    $certificateCApemContent =  '-----BEGIN CERTIFICATE-----'.PHP_EOL
+	                        .chunk_split(base64_encode($certificateCAcerContent), 64, PHP_EOL)
+	                        .'-----END CERTIFICATE-----'.PHP_EOL;
+	                    $certificateCApem = WCCD_PRIVATE . 'files/wccd-cert.pem';
+	                    file_put_contents($certificateCApem, $certificateCApemContent); 
+	                    
+	                    /*Preparo i file necessari*/
+	                    $pem = openssl_x509_read(file_get_contents(WCCD_PRIVATE . 'files/wccd-cert.pem'));
+	                    $key = file_get_contents(WCCD_PRIVATE . 'files/key.der');
+
+	                    openssl_pkcs12_export_to_file($pem, WCCD_PRIVATE . 'files/wccd-cert.p12', array($key, 'fullgas'), 'fullgas');
+
+	                    /*Preparo i file necessari*/	                    
+	                    openssl_pkcs12_read(file_get_contents(WCCD_PRIVATE . 'files/wccd-cert.p12'), $p12, 'fullgas');
+
+	                    // openssl_x509_export_to_file($p12['cert'], WCCD_PRIVATE . 'wccd-certificate.pem');
+						// openssl_pkcs12_export_to_file($p12['cert'], WCCD_PRIVATE . 'wccd-certificate.pem', array($key, 'fullgas'), 'fullgas');
+	                    file_put_contents(WCCD_PRIVATE . 'wccd-certificate.pem', $p12['cert'] . $key);
 
 					} else {
 						add_action('admin_notices', array($this, 'not_valid_certificate'));
