@@ -87,19 +87,43 @@ remove_cat();
 
 
 /**
- * Genera e fa scaricare all'utente il file .der
+ * Menu di navigazione della pagina opzioni
  */
-var generate_der = function() {
+var menu_navigation = function() {
 	jQuery(function($){
-		// $('.generate-der').on('click', function(){
-		// 	var data = {
-		// 		'action': 'generate-der',
-		// 		'generate-der': 1
-		// 	}
-		// 	$.post(ajaxurl, data, function(response){
-		// 		console.log(response);
-		// 	})
-		// })
+		var $contents = $('.wccd-admin')
+		var url = window.location.href.split("#")[0];
+		var hash = window.location.href.split("#")[1];
+
+		if(hash) {
+	        $contents.hide();		    
+		    $('#' + hash).fadeIn(200);		
+	        $('h2#wccd-admin-menu a.nav-tab-active').removeClass("nav-tab-active");
+	        $('h2#wccd-admin-menu a').each(function(){
+	        	if($(this).data('link') == hash) {
+	        		$(this).addClass('nav-tab-active');
+	        	}
+	        })
+	        
+	        $('html, body').animate({
+	        	scrollTop: 0
+	        }, 'slow');
+		}
+
+		$("h2#wccd-admin-menu a").click(function () {
+	        var $this = $(this);
+	        
+	        $contents.hide();
+	        $("#" + $this.data("link")).fadeIn(200);
+	        $('h2#wccd-admin-menu a.nav-tab-active').removeClass("nav-tab-active");
+	        $this.addClass('nav-tab-active');
+
+	        window.location = url + '#' + $this.data('link');
+
+	        $('html, body').scrollTop(0);
+
+	    })
+
 	})
 }
-generate_der();
+menu_navigation();

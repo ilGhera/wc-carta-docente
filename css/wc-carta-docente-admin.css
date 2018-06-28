@@ -67,3 +67,7 @@ ul.categories-container {
 .wccd-button {
 	margin-top: 1rem !important;
 }
+
+.wccd-admin {
+	display: none;
+}
