@@ -169,7 +169,7 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
 		    	/*Prima verifica del buono*/
 	            $response = $soapClient->check();
 
-				$bene    = $response->checkResp->bene; //il bnee acquistabile con il buono inserito
+				$bene    = $response->checkResp->bene; //il bene acquistabile con il buono inserito
 			    $importo_buono = floatval($response->checkResp->importo); //l'importo del buono inserito
 			    
 			    /*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/

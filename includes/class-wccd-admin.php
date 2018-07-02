@@ -309,12 +309,6 @@ class wccd_admin {
 				    		echo '</table>';
 	    				echo '</form>';
 
-    					// echo '<p class="description">' . esc_html(__('xxxx', 'wccd')) . '</div>';
-
-
-		    			// echo '<p class="description">' . esc_html(__('Genera il file .der necessario per richiedere il certificato su Carta del docente', 'wccd')) . '</p>';
-
-
 						echo '<form name="wccd-generate-certificate" class="wccd-generate-certificate" method="post" enctype="multipart/form-data" action="">';
 					    	echo '<table class="form-table">';
 
@@ -367,14 +361,6 @@ class wccd_admin {
 				    			echo '</td>';
 				    		echo '</tr>';
 
-							// echo '<tr>';
-				    		// 	echo '<th scope="row">' . esc_html(__('xxxx', 'wccd')) . '</th>';
-				    		// 	echo '<td>';
-					    	// 		echo '<input type="xxxx" name="xxxx" class="xxxx">';
-					    	// 		echo '<p class="description">' . esc_html(__('xxxx', 'wccd')) . '</p>';
-				    		// 	echo '</td>';
-				    		// echo '</tr>';
-
 				    		echo '<tr>';
 				    			echo '<th scope="row">' . esc_html(__('Utilizzo immagine ', 'wccd')) . '</th>';
 			    				echo '<td>';
@@ -425,15 +411,10 @@ class wccd_admin {
 				if($info) {
 					if($info['extension'] === 'cer') {
 						move_uploaded_file($_FILES['wccd-cert']['tmp_name'], WCCD_PRIVATE . $name);	
-			
-						/*Genera certificato*/
-						// exec(WCCD_PRIVATE . 'wccd-generate-certificate.sh 2>&1', $out);
-						// var_dump($out);
-						
-						/*Converting .cer to .pem*/
+									
+						/*Conversione da .cer a .pem*/
 	                    $certificateCAcer = WCCD_PRIVATE . $name;
 	                    $certificateCAcerContent = file_get_contents($certificateCAcer);
-	                    /* Convert .cer to .pem, cURL uses .pem */
 	                    $certificateCApemContent =  '-----BEGIN CERTIFICATE-----'.PHP_EOL
 	                        .chunk_split(base64_encode($certificateCAcerContent), 64, PHP_EOL)
 	                        .'-----END CERTIFICATE-----'.PHP_EOL;
