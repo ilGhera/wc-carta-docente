@@ -4,7 +4,6 @@ class wccd_admin {
 
 	public function __construct() {
 		add_action('admin_init', array($this, 'wccd_save_settings'));
-		add_action('admin_init', array($this, 'generate_cert_request'));
 		add_action('admin_menu', array($this, 'register_options_page'));
 		add_action('wp_ajax_delete-certificate', array($this, 'delete_certificate_callback'));
 		add_action('wp_ajax_add-cat', array($this, 'add_cat_callback'));
@@ -117,81 +116,7 @@ class wccd_admin {
 
 		exit;
 	}
-
-
-	/**
-	 * Download della richiesta di certificato da utilizzare sul portale Carta del Docente
-	 * Se non presenti, genera la chiave e la richiesta di certificato .der, 
-	 */
-	public function generate_cert_request() {
-
-		if(isset($_POST['generate-der-hidden'])) {
-
-			$cert_req_url = WCCD_PRIVATE . 'files/certificate-request.der';
-
-			/*Crea il file .der se non presente*/
-			if(!file_exists($cert_req_url)) {
-				// exec(WCCD_PRIVATE . 'wccd-generate-der.sh 2>&1', $out);				
-
-	            $countryName = isset($_POST['countryName']) ? sanitize_text_field($_POST['countryName']) : '';
-	            $stateOrProvinceName = isset($_POST['stateOrProvinceName']) ? sanitize_text_field($_POST['stateOrProvinceName']) : '';
-	            $localityName = isset($_POST['localityName']) ? sanitize_text_field($_POST['localityName']) : '';
-	            $organizationName = isset($_POST['organizationName']) ? sanitize_text_field($_POST['organizationName']) : '';
-	            $organizationalUnitName = isset($_POST['organizationalUnitName']) ? sanitize_text_field($_POST['organizationalUnitName']) : '';
-	            $commonName = isset($_POST['commonName']) ? sanitize_text_field($_POST['commonName']) : '';
-	            $emailAddress = isset($_POST['emailAddress']) ? sanitize_text_field($_POST['emailAddress']) : '';
-	            $wccd_password = isset($_POST['wccd-password']) ? sanitize_text_field($_POST['wccd-password']) : '';
-
-	            /*Salvo passw nel db*/
-	            if($wccd_password) {
-	            	update_option('wccd-password', base64_encode($wccd_password));
-	            }
-
-				$dn = array(
-                    "countryName" => $countryName,
-                    "stateOrProvinceName" => $stateOrProvinceName,
-                    "localityName" => $localityName,
-                    "organizationName" => $organizationName,
-                    "organizationalUnitName" => $organizationalUnitName,
-                    "commonName" => $commonName,
-                    "emailAddress" => $emailAddress
-                );
-
-
-                // Generate a new private (and public) key pair
-                $privkey = openssl_pkey_new(array(
-                    "private_key_bits" => 2048,
-                    "private_key_type" => OPENSSL_KEYTYPE_RSA,
-                ));
-
-
-                // Generate a certificate signing request
-                $csr = openssl_csr_new($dn, $privkey, array('digest_alg' => 'sha256'));
-
-
-                // Save your private key, CSR and self-signed cert for later use
-                openssl_csr_export_to_file($csr, WCCD_PRIVATE . 'files/certificate-request.der');
-                openssl_pkey_export_to_file($privkey, WCCD_PRIVATE . 'files/key.der');
-
-			}
-
-			/*Download file .der*/
-			if($cert_req_url) {
-		    	header('Content-Description: File Transfer');
-			    header('Content-Type: application/octet-stream');
-			    header("Content-Transfer-Encoding: binary");			    
-	    		header("Content-disposition: attachment; filename=\"" . basename($cert_req_url) . "\""); 
-				header('Expires: 0');
-				header('Cache-Control: must-revalidate');
-				header('Pragma: public');
-
-				readfile($cert_req_url); 
-
-				exit;
-			}
-		}
-	}
-
+	
 
 	/**
 	 * Pagina opzioni plugin
@@ -253,56 +178,56 @@ class wccd_admin {
 					    		echo '<tr>';
 					    			echo '<th scope="row">' . esc_html(__('Stato', 'wccd')) . '</th>';
 					    			echo '<td>';
-				    					echo '<input type="text" name="countryName" placeholder="IT" required>';
+				    					echo '<input type="text" name="countryName" placeholder="IT" disabled>';
 					    			echo '</td>';
 					    		echo '</tr>';
 
 				    			echo '<th scope="row">' . esc_html(__('Provincia', 'wccd')) . '</th>';
 					    			echo '<td>';
-				    					echo '<input type="text" name="stateOrProvinceName" placeholder="Es. Milano" required>';
+				    					echo '<input type="text" name="stateOrProvinceName" placeholder="Es. Milano" disabled>';
 					    			echo '</td>';
 					    		echo '</tr>';
 
 				    			echo '<th scope="row">' . esc_html(__('Località', 'wccd')) . '</th>';
 					    			echo '<td>';
-				    					echo '<input type="text" name="localityName" placeholder="Es. Legnano" required>';
+				    					echo '<input type="text" name="localityName" placeholder="Es. Legnano" disabled>';
 					    			echo '</td>';
 					    		echo '</tr>';
 
 				    			echo '<th scope="row">' . esc_html(__('Nome azienda', 'wccd')) . '</th>';
 					    			echo '<td>';
-				    					echo '<input type="text" name="organizationName" placeholder="Es. Taldeitali srl" required>';
+				    					echo '<input type="text" name="organizationName" placeholder="Es. Taldeitali srl" disabled>';
 					    			echo '</td>';
 					    		echo '</tr>';
 
 				    			echo '<th scope="row">' . esc_html(__('Reparto azienda', 'wccd')) . '</th>';
 					    			echo '<td>';
-				    					echo '<input type="text" name="organizationalUnitName" placeholder="Es. Vendite" required>';
+				    					echo '<input type="text" name="organizationalUnitName" placeholder="Es. Vendite" disabled>';
 					    			echo '</td>';
 					    		echo '</tr>';
 
 				    			echo '<th scope="row">' . esc_html(__('Nome', 'wccd')) . '</th>';
 					    			echo '<td>';
-				    					echo '<input type="text" name="commonName" placeholder="Es. Franco Bianchi" required>';
+				    					echo '<input type="text" name="commonName" placeholder="Es. Franco Bianchi" disabled>';
 					    			echo '</td>';
 					    		echo '</tr>';
 
 				    			echo '<th scope="row">' . esc_html(__('Email', 'wccd')) . '</th>';
 					    			echo '<td>';
-				    					echo '<input type="email" name="emailAddress" placeholder="Es. franco.bianchi@taldeitali.it" required>';
+				    					echo '<input type="email" name="emailAddress" placeholder="Es. franco.bianchi@taldeitali.it" disabled>';
 					    			echo '</td>';
 					    		echo '</tr>';
 
 				    			echo '<th scope="row">' . esc_html(__('Password', 'wccd')) . '</th>';
 					    			echo '<td>';
-				    					echo '<input type="password" name="wccd-password" placeholder="**********" required>';
+				    					echo '<input type="password" name="wccd-password" placeholder="**********" disabled>';
 					    			echo '</td>';
 					    		echo '</tr>';
 
 				    			echo '<th scope="row"></th>';
 					    			echo '<td>';
 					    			echo '<input type="hidden" name="generate-der-hidden" value="1">';
-				    				echo '<input type="submit" name="generate-der" class="button-primary wccd-button generate-der" value="' . __('Scarica file .der', 'wccd') . '">';
+				    				echo '<input type="submit" name="generate-der" class="button-primary wccd-button generate-der" value="' . __('Scarica file .der', 'wccd') . '" disabled>';
 					    			echo '</td>';
 					    		echo '</tr>';
 
@@ -323,12 +248,12 @@ class wccd_admin {
 					    			echo '<th scope="row">' . esc_html(__('Genera certificato', 'wccd')) . '</th>';
 					    			echo '<td>';
 					    				
-						    			echo '<input type="file" accept=".cer" name="wccd-cert" class="wccd-cert">';
+						    			echo '<input type="file" accept=".cer" name="wccd-cert" class="wccd-cert" disabled>';
 						    			echo '<p class="description">' . esc_html(__('Carica il file .cer ottenuto da Carta del docente per procedere', 'wccd')) . '</p>';
 								    	
 								    	wp_nonce_field('wccd-generate-certificate', 'wccd-gen-certificate-nonce');
 								    	echo '<input type="hidden" name="wccd-gen-certificate-hidden" value="1">';
-								    	echo '<input type="submit" class="button-primary wccd-button" value="' . esc_html('Genera certificato', 'wccd') . '">';
+								    	echo '<input type="submit" class="button-primary wccd-button" value="' . esc_html('Genera certificato', 'wccd') . '" disabled>';
 
 					    			echo '</td>';
 					    		echo '</tr>';
@@ -415,51 +340,6 @@ class wccd_admin {
 	 * Salvataggio delle impostazioni dell'utente
 	 */
 	public function wccd_save_settings() {
-
-		if(isset($_POST['wccd-gen-certificate-hidden']) && wp_verify_nonce($_POST['wccd-gen-certificate-nonce'], 'wccd-generate-certificate')) {
-
-			/*Salvataggio file .cer*/
-			if(isset($_FILES['wccd-cert'])) {
-				$info = pathinfo($_FILES['wccd-cert']['name']);
-				$name = sanitize_file_name($info['basename']);
-				if($info) {
-					if($info['extension'] === 'cer') {
-						move_uploaded_file($_FILES['wccd-cert']['tmp_name'], WCCD_PRIVATE . $name);	
-			
-						/*Genera certificato*/
-						// exec(WCCD_PRIVATE . 'wccd-generate-certificate.sh 2>&1', $out);
-						// var_dump($out);
-						
-						/*Converting .cer to .pem*/
-	                    $certificateCAcer = WCCD_PRIVATE . $name;
-	                    $certificateCAcerContent = file_get_contents($certificateCAcer);
-	                    /* Convert .cer to .pem, cURL uses .pem */
-	                    $certificateCApemContent =  '-----BEGIN CERTIFICATE-----'.PHP_EOL
-	                        .chunk_split(base64_encode($certificateCAcerContent), 64, PHP_EOL)
-	                        .'-----END CERTIFICATE-----'.PHP_EOL;
-	                    $certificateCApem = WCCD_PRIVATE . 'files/wccd-cert.pem';
-	                    file_put_contents($certificateCApem, $certificateCApemContent); 
-	                    
-	                    /*Preparo i file necessari*/
-	                    $pem = openssl_x509_read(file_get_contents(WCCD_PRIVATE . 'files/wccd-cert.pem'));
-	                    $key = file_get_contents(WCCD_PRIVATE . 'files/key.der');
-
-	                    /*Richiamo la passphrase dal db*/
-	                    $wccd_password = base64_decode(get_option('wccd-password'));
-	                    openssl_pkcs12_export_to_file($pem, WCCD_PRIVATE . 'files/wccd-cert.p12', $key, $wccd_password);
-
-	                    /*Preparo i file necessari*/	                    
-	                    openssl_pkcs12_read(file_get_contents(WCCD_PRIVATE . 'files/wccd-cert.p12'), $p12, $wccd_password);
-
-	                    /*Creo il certificato*/
-	                    file_put_contents(WCCD_PRIVATE . 'wccd-certificate.pem', $p12['cert'] . $key);
-
-					} else {
-						add_action('admin_notices', array($this, 'not_valid_certificate'));
-					}					
-				}
-			}
-		}
 
 		if(isset($_POST['wccd-certificate-hidden']) && wp_verify_nonce($_POST['wccd-certificate-nonce'], 'wccd-upload-certificate')) {
 			
