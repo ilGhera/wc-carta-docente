@@ -4,11 +4,23 @@ class wccd_soap_client {
 
     public function __construct($codiceVoucher, $import) {
 		$this->wsdl = WCCD_PRIVATE . 'VerificaVoucher.wsdl';
-        $this->local_cert = WCCD_PRIVATE . 'wccd-certificate.pem';
+        $this->local_cert = $this->get_local_cert();
         $this->location = 'https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
         $this->codiceVoucher = $codiceVoucher;
 		$this->import = $import;
 	}
+
+
+    /**
+     * Restituisce il nome del certificato presente nella cartella "Private"
+     * @return string
+     */
+    public function get_local_cert() {
+        $cert = wccd_admin::get_the_file('.pem');
+        if($cert) {
+            return esc_html(basename($cert));
+        }
+    }
 
 
 	/**
