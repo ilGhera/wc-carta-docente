@@ -9,7 +9,7 @@ Abilita in WooCommerce il pagamento con Carta del Docente.
 
 == Description ==
 Il plugin consente di abilitare sul proprio store il pagamento con Carta del Docente.
-In fase di checkout, il buono inserito dall'utente verrà verificato per validità, credo disponibile e pertinenza in termini di tipologia di prodotto.
+In fase di checkout, il buono inserito dall'utente verrà verificato per validità, credito disponibile e pertinenza in termini di tipologia di prodotto.
 
 
 **Funzionalità**
@@ -25,14 +25,14 @@ In fase di checkout, il buono inserito dall'utente verrà verificato per validit
 * Vai in  Plugin > Aggiungi nuovo.
 * Cerca WooCommerce Carta Docente e scaricalo.
 * Attiva Woocommerce Carta Docente dalla pagina dei Plugin.
-* Una volta attivato, vai in <strong>WooCommerce/WC Carta Docente</strong> e imposta le tue preferenze.
+* Una volta attivato, vai in <strong>WooCommerce/ WC Carta Docente</strong> e imposta le tue preferenze.
 
 **Da WordPress.org**
 
 * Scarica WooCommerce Carta Docente
 * Carica la cartella wc-carta-docente su /wp-content/plugins/ utilizzando il tuo metodo preferito (ftp, sftp, scp, ecc...)
-* Attiva WooCommerce Carta Docente dalla pagina dei Plugins.
-* Una volta attivato, vai in <strong>WooCommerce/WC Carta Docente</strong> e imposta le tue preferenze.
+* Attiva WooCommerce Carta Docente dalla pagina dei Plugin.
+* Una volta attivato, vai in <strong>WooCommerce/ WC Carta Docente</strong> e imposta le tue preferenze.
 
 
 == Screenshots ==
