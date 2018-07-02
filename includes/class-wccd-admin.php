@@ -119,6 +119,18 @@ class wccd_admin {
 
 
 	/**
+	 * Pulsante call to action Premium
+	 */
+	public function get_go_premium() {
+		$output = '<span class="label label-warning premium">';
+			$output .= '<a href="https://www.ilghera.com/woocommerce-carta-docente-premium" target="_blank">Premium</a>';
+		$output .= '</span>';
+
+		return $output;
+	}
+
+
+	/**
 	 * Pagina opzioni plugin
 	 */
 	public function wccd_settings() {
@@ -170,7 +182,8 @@ class wccd_admin {
 		    		if(!self::get_the_file('.pem')) {
 				
 			    		/*Genera richiesta certificato .der*/
-			    		echo '<h3>' . esc_html(__('Genera richiesta certificato', 'wccd')) . '</h3>';
+			    		echo '<h3>' . esc_html(__('Genera richiesta certificato', 'wccd')) . $this->get_go_premium() . '</h3>';
+		    			
 		    			echo '<p class="description">' . esc_html(__('Con questo strumento puoi generare un file .der necessario per richiedere il tuo certificato su Carta del docente.', 'wccd')) . '</p>';
 
 	    				echo '<form id="generate-certificate-request" method="post" class="one-of" enctype="multipart/form-data" action="">';
