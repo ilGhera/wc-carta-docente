@@ -215,6 +215,10 @@ class wccd_admin {
 			    /*Certificate*/
 			    echo '<div id="wccd-certificate" class="wccd-admin" style="display: block;">';
 
+		    		/*Carica certificato .pem*/
+		    		echo '<h3>' . esc_html(__('Carica il tuo certificato', 'wccd')) . '</h3>';
+	    			echo '<p class="description">' . esc_html(__('Se sei già in posseso di un certificato non devi fare altro che caricarlo, nient\'altro.', 'wccd')) . '</p>';
+
 				    echo '<form name="wccd-upload-certificate" class="wccd-upload-certificate one-of" method="post" enctype="multipart/form-data" action="">';
 				    	echo '<table class="form-table wccd-table">';
 
@@ -244,7 +248,7 @@ class wccd_admin {
 		    		if(!self::get_the_file('.pem')) {
 				
 			    		/*Genera richiesta certificato .der*/
-			    		echo '<h3>' . esc_html(__('Genera richiesta certificato', 'wccd')) . '</h3>';
+			    		echo '<h3>' . esc_html(__('Richiedi un certificato', 'wccd')) . '</h3>';
 		    			echo '<p class="description">' . esc_html(__('Con questo strumento puoi generare un file .der necessario per richiedere il tuo certificato su Carta del docente.', 'wccd')) . '</p>';
 
 	    				echo '<form id="generate-certificate-request" method="post" class="one-of" enctype="multipart/form-data" action="">';
@@ -308,8 +312,13 @@ class wccd_admin {
 				    		echo '</table>';
 	    				echo '</form>';
 
+
+			    		/*Genera certificato .pem*/
+			    		echo '<h3>' . esc_html(__('Crea il tuo certificato', 'wccd')) . '</h3>';
+		    			echo '<p class="description">' . esc_html(__('Con questo ultimo passaggio, potrai iniziare a ricevere pagamenti attraverso buoni del docente.', 'wccd')) . '</p>';
+
 						echo '<form name="wccd-generate-certificate" class="wccd-generate-certificate" method="post" enctype="multipart/form-data" action="">';
-					    	echo '<table class="form-table">';
+					    	echo '<table class="form-table wccd-table">';
 
 					    		/*Carica certificato*/
 					    		echo '<tr>';
