@@ -2,6 +2,10 @@
  * WC Carta Docente - Admin CSS
  */
 
+#wccd-admin-menu {
+	margin: 1rem 0 2rem;
+}
+
 .cert-loaded {
 	padding: 0.3rem 4rem;
 	display: inline-block;
