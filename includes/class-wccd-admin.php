@@ -252,7 +252,7 @@ class wccd_admin {
 
 
 			    		/*Genera certificato .pem*/
-			    		echo '<h3>' . esc_html(__('Crea il tuo certificato', 'wccd')) . '</h3>';
+			    		echo '<h3>' . esc_html(__('Crea il tuo certificato', 'wccd')) . $this->get_go_premium() . '</h3>';
 		    			echo '<p class="description">' . esc_html(__('Con questo ultimo passaggio, potrai iniziare a ricevere pagamenti attraverso buoni del docente.', 'wccd')) . '</p>';
 
 						echo '<form name="wccd-generate-certificate" class="wccd-generate-certificate" method="post" enctype="multipart/form-data" action="">';
