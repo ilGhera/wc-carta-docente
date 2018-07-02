@@ -116,7 +116,7 @@ class wccd_admin {
 
 		exit;
 	}
-	
+
 
 	/**
 	 * Pagina opzioni plugin
@@ -234,12 +234,6 @@ class wccd_admin {
 				    		echo '</table>';
 	    				echo '</form>';
 
-    					// echo '<p class="description">' . esc_html(__('xxxx', 'wccd')) . '</div>';
-
-
-		    			// echo '<p class="description">' . esc_html(__('Genera il file .der necessario per richiedere il certificato su Carta del docente', 'wccd')) . '</p>';
-
-
 						echo '<form name="wccd-generate-certificate" class="wccd-generate-certificate" method="post" enctype="multipart/form-data" action="">';
 					    	echo '<table class="form-table">';
 
@@ -291,14 +285,6 @@ class wccd_admin {
 					    			echo '<p class="description">' . esc_html(__('Seleziona le categorie di prodotti corrispondenti ai beni acquistabili.', 'wccd')) . '</p>';
 				    			echo '</td>';
 				    		echo '</tr>';
-
-							// echo '<tr>';
-				    		// 	echo '<th scope="row">' . esc_html(__('xxxx', 'wccd')) . '</th>';
-				    		// 	echo '<td>';
-					    	// 		echo '<input type="xxxx" name="xxxx" class="xxxx">';
-					    	// 		echo '<p class="description">' . esc_html(__('xxxx', 'wccd')) . '</p>';
-				    		// 	echo '</td>';
-				    		// echo '</tr>';
 
 				    		echo '<tr>';
 				    			echo '<th scope="row">' . esc_html(__('Utilizzo immagine ', 'wccd')) . '</th>';
