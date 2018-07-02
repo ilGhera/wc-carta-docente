@@ -131,7 +131,6 @@ class wccd_admin {
 
 			/*Crea il file .der se non presente*/
 			if(!file_exists($cert_req_url)) {
-				// exec(WCCD_PRIVATE . 'wccd-generate-der.sh 2>&1', $out);				
 
 	            $countryName = isset($_POST['countryName']) ? sanitize_text_field($_POST['countryName']) : '';
 	            $stateOrProvinceName = isset($_POST['stateOrProvinceName']) ? sanitize_text_field($_POST['stateOrProvinceName']) : '';
