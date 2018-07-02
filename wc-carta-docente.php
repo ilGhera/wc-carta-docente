@@ -2,7 +2,7 @@
 /**
  * Plugin name: WooCommerce Carta Docente
  * Plugin URI: https://www.ilghera.com/product/wc-carta-docente/
- * Description: Abilita in WooCommerce il pagamento con la Carta del Docente prevista dallo stato Italiano. 
+ * Description: Abilita in WooCommerce il pagamento con Carta del Docente prevista dallo stato Italiano. 
  * Author: ilGhera
  * Version: 0.9.0
  * Author URI: https://ilghera.com 
