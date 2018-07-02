@@ -1,4 +1,4 @@
-=== WooCommerce Carta Docente ===
+=== WooCommerce Carta Docente - Premium ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
 Version: 0.9.0
@@ -16,8 +16,8 @@ In fase di checkout, il buono inserito dall'utente verrà verificato per validit
 
 * Caricamento certificato (.pem)
 * Impostazione categorie prodotti WooCommerce acquistabili
-* Generazione richiesta certificato (.der) (Premium)
-* Generazione certificato (.pem) (Premium)
+* Generazione richiesta certificato (.der)
+* Generazione certificato (.pem)
 
 == Installation ==
 **Dalla Bacheca di Wordpress**
@@ -41,6 +41,6 @@ In fase di checkout, il buono inserito dall'utente verrà verificato per validit
 == Changelog ==
 
 = 0.9.0 =
-Release Date: 2 April, 2018
+Data di rilascio: 2 Luglio, 2018
 
-* First release.
+* Prima release.
