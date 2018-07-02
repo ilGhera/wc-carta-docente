@@ -41,6 +41,6 @@ In fase di checkout, il buono inserito dall'utente verrà verificato per validit
 == Changelog ==
 
 = 0.9.0 =
-Release Date: 2 April, 2018
+Data di rilascio: 2 Luglio, 2018
 
-* First release.
+* Prima release.
