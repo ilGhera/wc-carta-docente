@@ -39,7 +39,7 @@ class wccd_admin {
 	 */
 	public function delete_certificate_callback() {
 		if(isset($_POST['delete'])) {
-			$cert = isset($_POST['cert']) ? $_POST['cert'] : '';
+			$cert = isset($_POST['cert']) ? sanitize_text_field($_POST['cert']) : '';
 			if($cert) {
 				unlink(WCCD_PRIVATE . $cert);	
 			}
@@ -373,8 +373,8 @@ class wccd_admin {
 				$wccd_categories = array();
 
 				for ($i=1; $i <= $tot ; $i++) { 
-					$bene = isset($_POST['wccd-beni-' . $i]) ? $_POST['wccd-beni-' . $i] : '';
-					$cat = isset($_POST['wccd-categories-' . $i]) ? $_POST['wccd-categories-' . $i] : '';
+					$bene = isset($_POST['wccd-beni-' . $i]) ? sanitize_text_field($_POST['wccd-beni-' . $i]) : '';
+					$cat = isset($_POST['wccd-categories-' . $i]) ? sanitize_text_field($_POST['wccd-categories-' . $i]) : '';
 
 					if($bene && $cat) {
 						$wccd_categories[] = array($bene => $cat);
