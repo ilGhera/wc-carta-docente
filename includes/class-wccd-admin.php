@@ -325,6 +325,12 @@ class wccd_admin {
 			    echo '</div>';
 
 		    echo '</div>';
+
+	    	echo '<div class="wrap-right">';
+				echo '<iframe width="300" height="900" scrolling="no" src="http://www.ilghera.com/images/wccd-iframe.html"></iframe>';
+			echo '</div>';
+			echo '<div class="clear"></div>';
+
 	    echo '</div>';
 
 	}
