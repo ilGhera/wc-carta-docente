@@ -64,9 +64,6 @@ https://cartadeldocente.istruzione.it/static/cartadeldocente_infoprivacy.pdf
 * Una volta attivato, vai in <strong>WooCommerce/ WC Carta Docente</strong> e imposta le tue preferenze.
 
 
-== Screenshots ==
-
-
 == Changelog ==
 
 = 0.9.0 =
