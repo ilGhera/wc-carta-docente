@@ -38,7 +38,7 @@ function wccd_premium_activation() {
 	define('WCCD_PRIVATE', WCCD_DIR . 'private/');
 	
 	/*Requires*/
-	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';1
+	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';
 	require WCCD_INCLUDES . 'class-wccd-soap-client.php';
 	require WCCD_INCLUDES . 'class-wccd-admin.php';
 
