@@ -17,8 +17,12 @@
 /*Attivazione*/
 function wccd_premium_activation() {
 
+	if ( !function_exists( 'is_plugin_active' ) ) {
+    	require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+ 	}
+
 	/*Se presente, disattiva la versione free del plugin*/
-	if(function_exists('wccd_activation')) {
+	if(is_plugin_active('wc-carta-docente/wc-carta-docente.php') || function_exists('wccd_activation')) {
 		deactivate_plugins('wc-carta-docente/wc-carta-docente.php');
 	    remove_action( 'plugins_loaded', 'wccd_activation' );
 	    wp_redirect(admin_url('plugins.php?plugin_status=all&paged=1&s'));
@@ -34,7 +38,7 @@ function wccd_premium_activation() {
 	define('WCCD_PRIVATE', WCCD_DIR . 'private/');
 	
 	/*Requires*/
-	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';
+	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';1
 	require WCCD_INCLUDES . 'class-wccd-soap-client.php';
 	require WCCD_INCLUDES . 'class-wccd-admin.php';
 
