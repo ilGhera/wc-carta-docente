@@ -15,7 +15,7 @@ class wccd_admin {
 	 * Registra la pagina opzioni del plugin
 	 */
 	public function register_options_page() {
-		add_submenu_page( 'woocommerce', __('WooCommerce Carta docente - Impostazioni', 'wccd'), __('WC Carta Docente', 'wccd'), 'manage_options', 'settings', array($this, 'wccd_settings'));
+		add_submenu_page( 'woocommerce', __('WooCommerce Carta docente - Impostazioni', 'wccd'), __('WC Carta Docente', 'wccd'), 'manage_options', 'wccd-settings', array($this, 'wccd_settings'));
 	}
 
 
