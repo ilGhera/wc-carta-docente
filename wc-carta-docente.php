@@ -56,7 +56,7 @@ function wccd_premium_activation() {
 	add_action('wp_enqueue_scripts', 'wccd_load_scripts');
 	add_action('admin_enqueue_scripts', 'wccd_load_admin_scripts');
 } 
-add_action('plugins_loaded', 'wccd_activation', 1);
+add_action('plugins_loaded', 'wccd_premium_activation', 1);
 
 
 /*Update checker*/
