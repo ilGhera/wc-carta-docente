@@ -8,52 +8,55 @@ Tested up to: 4.9
 Abilita in WooCommerce il pagamento con Carta del Docente.
 
 == Description ==
+
 Il plugin consente di abilitare sul proprio store il pagamento con Carta del Docente.
 In fase di checkout, il buono inserito dall'utente verrà verificato per validità, credito disponibile e pertinenza in termini di tipologia di prodotto.
 
 
-**Note importanti**
+= NOTE IMPORTANTI =
 Il plugin prevede l'invio di contenuti ad un servizio esterno, in particolare i dati relativi ai prodotti acquistati dall'utente come categoria d'appartenenza e prezzo.
 
-Indirizzo di destinazione:
+= Indirizzo di destinazione =
 https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher
 
-Maggiori informazioni sul servizio Carta del docente:
+= Maggiori informazioni sul servizio Carta del docente: =
 https://cartadeldocente.istruzione.it/
 
-Informativa privacy del servizio:
+= Informativa privacy del servizio: =
 https://cartadeldocente.istruzione.it/static/cartadeldocente_infoprivacy.pdf
 
 
-**Important notes**
+= IMPORTANT NOTES =
 This plugin sends data to an external service, like the categories and the prices of the products bought by the user.
 
-Service endpoint:
+= Service endpoint: =
 https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher
 
-Service informations:
+= Service informations: =
 https://cartadeldocente.istruzione.it/
 
-Service privacy policy:
+= Service privacy policy: =
 https://cartadeldocente.istruzione.it/static/cartadeldocente_infoprivacy.pdf
 
 
-**Funzionalità**
+= Funzionalità =
 
 * Caricamento certificato (.pem)
 * Impostazione categorie prodotti WooCommerce acquistabili
 * Generazione richiesta certificato (.der) (Premium)
 * Generazione certificato (.pem) (Premium)
 
+
 == Installation ==
-**Dalla Bacheca di Wordpress**
+
+= Dalla Bacheca di Wordpress =
 
 * Vai in  Plugin > Aggiungi nuovo.
 * Cerca WooCommerce Carta Docente e scaricalo.
 * Attiva Woocommerce Carta Docente dalla pagina dei Plugin.
 * Una volta attivato, vai in <strong>WooCommerce/ WC Carta Docente</strong> e imposta le tue preferenze.
 
-**Da WordPress.org**
+= Da WordPress.org =
 
 * Scarica WooCommerce Carta Docente
 * Carica la cartella wc-carta-docente su /wp-content/plugins/ utilizzando il tuo metodo preferito (ftp, sftp, scp, ecc...)
