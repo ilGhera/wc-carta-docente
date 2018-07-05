@@ -65,7 +65,10 @@ https://cartadeldocente.istruzione.it/static/cartadeldocente_infoprivacy.pdf
 
 
 == Screenshots ==
-
+1. Carica il tuo certificato
+2. Genera il file .der per richiedere il tuo certificato (Premium)
+3. Crea il tuo certificato (Premium)
+4. Imposta le categorie dei prodotti acquistabili
 
 == Changelog ==
 
