@@ -213,7 +213,7 @@ class wccd_admin {
 						echo '<th scope="row">' . __('Premium Key', 'wccd') . '</th>';
 						echo '<td>';
 							echo '<input type="text" class="regular-text" name="wccd-premium-key" id="wccd-premium-key" placeholder="' . __('Inserisci la tua Premium Key', 'wccd' ) . '" value="' . $premium_key . '" />';
-							echo '<p class="description">' . __('Aggiungi la tua Premium Key e mantieni aggiornato <strong>Woocommerce Support System - Premium</strong>.', 'wccd') . '</p>';
+							echo '<p class="description">' . __('Aggiungi la tua Premium Key e mantieni aggiornato <strong>Woocommerce Carta Docente - Premium</strong>.', 'wccd') . '</p>';
 					    	wp_nonce_field('wccd-premium-key', 'wccd-premium-key-nonce');
 							echo '<input type="hidden" name="premium-key-sent" value="1" />';
 							echo '<input type="submit" class="button button-primary wccd-button"" value="' . __('Salva ', 'wccd') . '" />';
@@ -426,13 +426,15 @@ class wccd_admin {
 	 */
 	public function wccd_save_settings() {
 
-		if(isset($_POST['wccd-gen-certificate-hidden']) && wp_verify_nonce($_POST['wccd-gen-certificate-nonce'], 'wccd-generate-certificate')) {
+		if(isset($_POST['premium-key-sent']) && wp_verify_nonce($_POST['wccd-premium-key-nonce'], 'wccd-premium-key')) {
 
 			/*Salvataggio Premium Key*/
-			if(isset($_POST['premium-key-sent']) && wp_verify_nonce($_POST['wccd-premium-key-nonce'], 'wccd-premium-key')) {
-				$premium_key = isset($_POST['wccd-premium-key']) ? sanitize_text_field($_POST['wccd-premium-key']) : '';
-				update_option('wccd-premium-key', $premium_key);
-			}
+			$premium_key = isset($_POST['wccd-premium-key']) ? sanitize_text_field($_POST['wccd-premium-key']) : '';
+			update_option('wccd-premium-key', $premium_key);
+		
+		}
+
+		if(isset($_POST['wccd-gen-certificate-hidden']) && wp_verify_nonce($_POST['wccd-gen-certificate-nonce'], 'wccd-generate-certificate')) {
 
 			/*Salvataggio file .cer*/
 			if(isset($_FILES['wccd-cert'])) {
