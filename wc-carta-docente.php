@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin name: WooCommerce Carta Docente
+ * Plugin name: WooCommerce Carta Docente - Premium
  * Plugin URI: https://www.ilghera.com/product/wc-carta-docente/
  * Description: Abilita in WooCommerce il pagamento con Carta del Docente prevista dallo stato Italiano. 
  * Author: ilGhera
@@ -43,7 +43,6 @@ function wccd_premium_activation() {
 		wp_enqueue_style('wccd-style', WCCD_URI . 'css/wc-carta-docente.css');
 	}
 
-
 	/*Script e folgi di stile back-end*/
 	function wccd_load_admin_scripts() {
 		wp_enqueue_style('wccd-admin-style', WCCD_URI . 'css/wc-carta-docente-admin.css');
@@ -53,6 +52,7 @@ function wccd_premium_activation() {
 	/*Script e folgi di stile*/
 	add_action('wp_enqueue_scripts', 'wccd_load_scripts');
 	add_action('admin_enqueue_scripts', 'wccd_load_admin_scripts');
+
 } 
 add_action('plugins_loaded', 'wccd_premium_activation', 1);
 
