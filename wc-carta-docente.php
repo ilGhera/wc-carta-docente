@@ -35,13 +35,13 @@ function wccd_load_admin_scripts() {
 
 
 /*Init*/
-function init_WC_Teacher_Gateway() {
+function init_WCCD_Teacher_Gateway() {
 
 	/*Is WooCommerce activated?*/
 	if(!class_exists('WC_Payment_Gateway')) return;
 	
 	/*Requires*/
-	require WCCD_INCLUDES . 'class-wc-teacher-gateway.php';
+	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';
 	require WCCD_INCLUDES . 'class-wccd-soap-client.php';
 	require WCCD_INCLUDES . 'class-wccd-admin.php';
 
@@ -49,4 +49,4 @@ function init_WC_Teacher_Gateway() {
 	add_action('wp_enqueue_scripts', 'wccd_load_scripts');
 	add_action('admin_enqueue_scripts', 'wccd_load_admin_scripts');
 } 
-add_action('plugins_loaded', 'init_WC_Teacher_Gateway');
+add_action('plugins_loaded', 'init_WCCD_Teacher_Gateway');

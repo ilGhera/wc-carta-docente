@@ -3,7 +3,7 @@
  * Estende la classe WC_Payment_Gateway di WooCommerce 
  * aggiungendo il nuovo gateway "buono docente".
  */
-class WC_Teacher_Gateway extends WC_Payment_Gateway {
+class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 	public function __construct() {
 		$this->plugin_id = 'woocommerce_carta_docente';
@@ -250,11 +250,11 @@ class WC_Teacher_Gateway extends WC_Payment_Gateway {
  * Se presente un certificato, aggiunge il nuovo gateway a quelli disponibili in WooCommerce
  * @param array $methods gateways disponibili 
  */
-function add_teacher_gateway_class($methods) {
+function wccd_add_teacher_gateway_class($methods) {
 	if(wccd_admin::get_the_file('.pem')) {
-	    $methods[] = 'WC_Teacher_Gateway'; 
+	    $methods[] = 'WCCD_Teacher_Gateway'; 
 	}
 
     return $methods;
 }
-add_filter('woocommerce_payment_gateways', 'add_teacher_gateway_class');
+add_filter('woocommerce_payment_gateways', 'wccd_add_teacher_gateway_class');
