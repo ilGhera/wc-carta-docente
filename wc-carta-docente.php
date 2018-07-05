@@ -34,8 +34,8 @@ function wccd_load_admin_scripts() {
 }
 
 
-/*Init*/
-function init_WCCD_Teacher_Gateway() {
+/*Attivazione*/
+function wccd_activation() {
 
 	/*Is WooCommerce activated?*/
 	if(!class_exists('WC_Payment_Gateway')) return;
@@ -49,4 +49,4 @@ function init_WCCD_Teacher_Gateway() {
 	add_action('wp_enqueue_scripts', 'wccd_load_scripts');
 	add_action('admin_enqueue_scripts', 'wccd_load_admin_scripts');
 } 
-add_action('plugins_loaded', 'init_WCCD_Teacher_Gateway');
+add_action('plugins_loaded', 'wccd_activation', 100);
