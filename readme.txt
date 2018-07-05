@@ -12,42 +12,35 @@ Il plugin consente di abilitare sul proprio store il pagamento con Carta del Doc
 In fase di checkout, il buono inserito dall'utente verrà verificato per validità, credito disponibile e pertinenza in termini di tipologia di prodotto.
 
 
-**Note importanti**
-
+= **Note importanti** =
 Il plugin prevede l'invio di contenuti ad un servizio esterno, in particolare i dati relativi ai prodotti acquistati dall'utente come categoria d'appartenenza e prezzo.
 
-Indirizzo di destinazione:
-
+= Indirizzo di destinazione =
 https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher
 
-Maggiori informazioni sul servizio Carta del docente:
+= Maggiori informazioni sul servizio Carta del docente: =
 
 https://cartadeldocente.istruzione.it/
 
-Informativa privacy del servizio:
+= Informativa privacy del servizio: =
 
 https://cartadeldocente.istruzione.it/static/cartadeldocente_infoprivacy.pdf
 
 
-**Important notes**
-
+= **Important notes** =
 This plugin sends data to an external service, like the categories and the prices of the products bought by the user.
 
-Service endpoint:
-
+= Service endpoint: =
 https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher
 
-Service informations:
-
+= Service informations: =
 https://cartadeldocente.istruzione.it/
 
-Service privacy policy:
-
+= Service privacy policy: =
 https://cartadeldocente.istruzione.it/static/cartadeldocente_infoprivacy.pdf
 
 
-**Funzionalità**
-
+= **Funzionalità** =
 * Caricamento certificato (.pem)
 * Impostazione categorie prodotti WooCommerce acquistabili
 * Generazione richiesta certificato (.der) (Premium)
