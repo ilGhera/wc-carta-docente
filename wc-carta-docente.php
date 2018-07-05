@@ -50,3 +50,22 @@ function init_WCCD_Teacher_Gateway() {
 	add_action('admin_enqueue_scripts', 'wccd_load_admin_scripts');
 } 
 add_action('plugins_loaded', 'init_WCCD_Teacher_Gateway');
+
+
+/*Update checker*/
+require( plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php');
+$wccd_update_checker = Puc_v4_Factory::buildUpdateChecker(
+    'https://www.ilghera.com/wp-update-server-2/?action=get_metadata&slug=wc-carta-docente-premium',
+    __FILE__,
+    'wc-carta-docente-premium'
+);
+
+$wccd_update_checker->addQueryArgFilter('wccd_secure_update_check');
+function wccd_secure_update_check($queryArgs) {
+    $key = base64_encode( get_option('wccd-premium-key') );
+
+    if($key) {
+        $queryArgs['premium-key'] = $key;
+    }
+    return $queryArgs;
+}

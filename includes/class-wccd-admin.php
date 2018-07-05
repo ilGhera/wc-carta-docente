@@ -198,6 +198,7 @@ class wccd_admin {
 	public function wccd_settings() {
 
 		/*Recupero le opzioni salvate nel db*/
+		$premium_key = get_option('wccd-premium-key');
 		$categories = get_option('wccd-categories');
 		$tot_cats = count($categories);
 		$wccd_image = get_option('wccd-image');
@@ -206,6 +207,21 @@ class wccd_admin {
 	    	echo '<div class="wrap-left">';
 			    echo '<h1>WooCommerce Carta Docente - ' . esc_html(__('Impostazioni', 'wccd')) . '</h1>';
 
+			     /*Premium key form*/
+			    echo '<form method="post" action="">';
+			    	echo '<table class="form-table wccd-table">';
+						echo '<th scope="row">' . __('Premium Key', 'wccd') . '</th>';
+						echo '<td>';
+							echo '<input type="text" class="regular-text" name="wccd-premium-key" id="wccd-premium-key" placeholder="' . __('Inserisci la tua Premium Key', 'wccd' ) . '" value="' . $premium_key . '" />';
+							echo '<p class="description">' . __('Aggiungi la tua Premium Key e mantieni aggiornato <strong>Woocommerce Support System - Premium</strong>.', 'wccd') . '</p>';
+					    	wp_nonce_field('wccd-premium-key', 'wccd-premium-key-nonce');
+							echo '<input type="hidden" name="premium-key-sent" value="1" />';
+							echo '<input type="submit" class="button button-primary wccd-button"" value="' . __('Salva ', 'wccd') . '" />';
+						echo '</td>';
+					echo '</table>';
+				echo '</form>';
+
+				/*Tabs*/
 				echo '<div class="icon32 icon32-woocommerce-settings" id="icon-woocommerce"></div>';
 				echo '<h2 id="wccd-admin-menu" class="nav-tab-wrapper woo-nav-tab-wrapper">';
 					echo '<a href="#" data-link="wccd-certificate" class="nav-tab nav-tab-active" onclick="return false;">' . esc_html(__('Certificato', 'wccd')) . '</a>';
@@ -411,6 +427,12 @@ class wccd_admin {
 	public function wccd_save_settings() {
 
 		if(isset($_POST['wccd-gen-certificate-hidden']) && wp_verify_nonce($_POST['wccd-gen-certificate-nonce'], 'wccd-generate-certificate')) {
+
+			/*Salvataggio Premium Key*/
+			if(isset($_POST['premium-key-sent']) && wp_verify_nonce($_POST['wccd-premium-key-nonce'], 'wccd-premium-key')) {
+				$premium_key = isset($_POST['wccd-premium-key']) ? sanitize_text_field($_POST['wccd-premium-key']) : '';
+				update_option('wccd-premium-key', $premium_key);
+			}
 
 			/*Salvataggio file .cer*/
 			if(isset($_FILES['wccd-cert'])) {
