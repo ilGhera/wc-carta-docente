@@ -69,6 +69,7 @@ https://cartadeldocente.istruzione.it/static/cartadeldocente_infoprivacy.pdf
 2. Genera il file .der per richiedere il tuo certificato (Premium)
 3. Crea il tuo certificato (Premium)
 4. Imposta le categorie dei prodotti acquistabili
+5. Metodo di pagamento in pagina di checkout
 
 == Changelog ==
 
