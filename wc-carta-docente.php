@@ -14,18 +14,17 @@
  */
 
 
-/*Definizione costanti*/
-define('WCCD_DIR', plugin_dir_path(__FILE__));
-define('WCCD_URI', plugin_dir_url(__FILE__));
-define('WCCD_INCLUDES', WCCD_DIR . 'includes/');
-define('WCCD_PRIVATE', WCCD_DIR . 'private/');
-
-
 /*Attivazione*/
 function wccd_activation() {
 
 	/*Is WooCommerce activated?*/
 	if(!class_exists('WC_Payment_Gateway')) return;
+
+	/*Definizione costanti*/
+	define('WCCD_DIR', plugin_dir_path(__FILE__));
+	define('WCCD_URI', plugin_dir_url(__FILE__));
+	define('WCCD_INCLUDES', WCCD_DIR . 'includes/');
+	define('WCCD_PRIVATE', WCCD_DIR . 'private/');
 	
 	/*Requires*/
 	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';
