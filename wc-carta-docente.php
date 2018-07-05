@@ -34,10 +34,17 @@ function wccd_load_admin_scripts() {
 }
 
 
-/*Init*/
-function init_WCCD_Teacher_Gateway() {
+/*Attivazione*/
+function wccd_premium_activation() {
 
-	/*Is WooCommerce activated?*/
+	/*Se presente, disattiva la versione free del plugin*/
+	if(function_exists('wccd_activation')) {
+		deactivate_plugins('wc-carta-docente/wc-carta-docente.php');
+	    remove_action( 'plugins_loaded', 'wccd_activation' );
+	    wp_redirect(admin_url('plugins.php?plugin_status=all&paged=1&s'));
+	}
+
+	/*WooCommerce è presente e attivo?*/
 	if(!class_exists('WC_Payment_Gateway')) return;
 	
 	/*Requires*/
@@ -49,7 +56,7 @@ function init_WCCD_Teacher_Gateway() {
 	add_action('wp_enqueue_scripts', 'wccd_load_scripts');
 	add_action('admin_enqueue_scripts', 'wccd_load_admin_scripts');
 } 
-add_action('plugins_loaded', 'init_WCCD_Teacher_Gateway');
+add_action('plugins_loaded', 'wccd_activation', 1);
 
 
 /*Update checker*/
