@@ -120,6 +120,21 @@ class wccd_admin {
 
 
 	/**
+	 * Trasforma il contenuto di un certificato .pem in .der
+	 * @param  string $pem_data il certificato .pem
+	 * @return string           
+	 */
+	public function pem2der($pem_data) {
+	   $begin = "-----BEGIN CERTIFICATE REQUEST-----";
+	   $end   = "-----END CERTIFICATE REQUEST-----";
+	   $pem_data = substr($pem_data, strpos($pem_data, $begin)+strlen($begin));   
+	   $pem_data = substr($pem_data, 0, strpos($pem_data, $end));
+	   $der = base64_decode($pem_data);
+	   return $der;
+	}
+
+
+	/**
 	 * Download della richiesta di certificato da utilizzare sul portale Carta del Docente
 	 * Se non presenti, genera la chiave e la richiesta di certificato .der, 
 	 */
@@ -157,19 +172,24 @@ class wccd_admin {
                 );
 
 
-                // Generate a new private (and public) key pair
+                /*Genera la private key*/
                 $privkey = openssl_pkey_new(array(
                     "private_key_bits" => 2048,
                     "private_key_type" => OPENSSL_KEYTYPE_RSA,
                 ));
 
 
-                // Generate a certificate signing request
+                /*Genera ed esporta la richiesta di certificato .pem*/
                 $csr = openssl_csr_new($dn, $privkey, array('digest_alg' => 'sha256'));
+                openssl_csr_export_to_file($csr, WCCD_PRIVATE . 'files/certificate-request.pem');
 
 
-                // Save your private key, CSR and self-signed cert for later use
-                openssl_csr_export_to_file($csr, WCCD_PRIVATE . 'files/certificate-request.der');
+                /*Trasforma la richiesta di certificato in .der e la esporta*/
+                $csr_der = $this->pem2der(file_get_contents(WCCD_PRIVATE . 'files/certificate-request.pem'));
+                file_put_contents(WCCD_PRIVATE . 'files/certificate-request.der', $csr_der);
+                
+                /*Esporta la private key*/
+                // openssl_csr_export_to_file($csr_der, WCCD_PRIVATE . 'files/certificate-request.der');
                 openssl_pkey_export_to_file($privkey, WCCD_PRIVATE . 'files/key.der');
 
 			}
@@ -189,6 +209,27 @@ class wccd_admin {
 				exit;
 			}
 		}
+	}
+
+
+	/**
+	 * Attivazione certificato
+	 */
+	public function wccd_cert_activation() {
+	    $soapClient = new wccd_soap_client('11aa22bb', '');
+
+	    try {
+
+		    $operation = $soapClient->check(1);
+		    return 'ok';
+
+		} catch(Exception $e) {
+
+            $notice = $e->detail->FaultVoucher->exceptionMessage;
+		    error_log('Error: ' . $notice);
+		    return $notice;
+
+        } 
 	}
 
 
@@ -227,9 +268,27 @@ class wccd_admin {
 				    			echo '<th scope="row">' . esc_html(__('Carica certificato', 'wccd')) . '</th>';
 				    			echo '<td>';
 				    				if($file = self::get_the_file('.pem')) {
-				    					echo '<span class="cert-loaded">' . esc_html(basename($file)) . '</span>';
-				    					echo '<a class="button delete delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
-				    					echo '<p class="description">' . esc_html(__('File caricato correttamente.', 'wccd')) . '</p>';
+
+				    					$activation = $this->wccd_cert_activation();
+
+				    					if($activation === 'ok') {
+
+					    					echo '<span class="cert-loaded">' . esc_html(basename($file)) . '</span>';
+					    					echo '<a class="button delete delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
+					    					echo '<p class="description">' . esc_html(__('File caricato e attivato correttamente.', 'wccd')) . '</p>';
+
+					    					update_option('wccd-cert-activation', 1);
+
+				    					} else {
+
+					    					echo '<span class="cert-loaded error">' . esc_html(basename($file)) . '</span>';
+					    					echo '<a class="button delete delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
+					    					echo '<p class="description">' . sprintf(esc_html(__('L\'attivazione del certificato ha restituito il seguente errore: %s', 'wccd')), $activation) . '</p>';
+
+					    					delete_option('wccd-cert-activation');
+
+				    					}
+
 				    				} else {
 						    			echo '<input type="file" accept=".pem" name="wccd-certificate" class="wccd-certificate">';
 						    			echo '<p class="description">' . esc_html(__('Carica il certificato (.pem) necessario alla connessione con Carta del docente', 'wccd')) . '</p>';
