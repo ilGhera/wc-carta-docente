@@ -120,6 +120,21 @@ class wccd_admin {
 
 
 	/**
+	 * Trasforma il contenuto di un certificato .pem in .der
+	 * @param  string $pem_data il certificato .pem
+	 * @return string           
+	 */
+	public function pem2der($pem_data) {
+	   $begin = "-----BEGIN CERTIFICATE REQUEST-----";
+	   $end   = "-----END CERTIFICATE REQUEST-----";
+	   $pem_data = substr($pem_data, strpos($pem_data, $begin)+strlen($begin));   
+	   $pem_data = substr($pem_data, 0, strpos($pem_data, $end));
+	   $der = base64_decode($pem_data);
+	   return $der;
+	}
+
+
+	/**
 	 * Download della richiesta di certificato da utilizzare sul portale Carta del Docente
 	 * Se non presenti, genera la chiave e la richiesta di certificato .der, 
 	 */
@@ -157,19 +172,24 @@ class wccd_admin {
                 );
 
 
-                // Generate a new private (and public) key pair
+                /*Genera la private key*/
                 $privkey = openssl_pkey_new(array(
                     "private_key_bits" => 2048,
                     "private_key_type" => OPENSSL_KEYTYPE_RSA,
                 ));
 
 
-                // Generate a certificate signing request
+                /*Genera ed esporta la richiesta di certificato .pem*/
                 $csr = openssl_csr_new($dn, $privkey, array('digest_alg' => 'sha256'));
+                openssl_csr_export_to_file($csr, WCCD_PRIVATE . 'files/certificate-request.pem');
 
 
-                // Save your private key, CSR and self-signed cert for later use
-                openssl_csr_export_to_file($csr, WCCD_PRIVATE . 'files/certificate-request.der');
+                /*Trasforma la richiesta di certificato in .der e la esporta*/
+                $csr_der = $this->pem2der(file_get_contents(WCCD_PRIVATE . 'files/certificate-request.pem'));
+                file_put_contents(WCCD_PRIVATE . 'files/certificate-request.der', $csr_der);
+                
+                /*Esporta la private key*/
+                // openssl_csr_export_to_file($csr_der, WCCD_PRIVATE . 'files/certificate-request.der');
                 openssl_pkey_export_to_file($privkey, WCCD_PRIVATE . 'files/key.der');
 
 			}
