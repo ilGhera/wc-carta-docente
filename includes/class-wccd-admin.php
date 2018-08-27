@@ -131,6 +131,27 @@ class wccd_admin {
 
 
 	/**
+	 * Attivazione certificato
+	 */
+	public function wccd_cert_activation() {
+	    $soapClient = new wccd_soap_client('11aa22bb', '');
+
+	    try {
+
+		    $operation = $soapClient->check(1);
+		    return 'ok';
+
+		} catch(Exception $e) {
+
+            $notice = $e->detail->FaultVoucher->exceptionMessage;
+		    error_log('Error: ' . $notice);
+		    return $notice;
+
+        } 
+	}
+
+
+	/**
 	 * Pagina opzioni plugin
 	 */
 	public function wccd_settings() {
@@ -165,9 +186,27 @@ class wccd_admin {
 				    			echo '<th scope="row">' . esc_html(__('Carica certificato', 'wccd')) . '</th>';
 				    			echo '<td>';
 				    				if($file = self::get_the_file('.pem')) {
-				    					echo '<span class="cert-loaded">' . esc_html(basename($file)) . '</span>';
-				    					echo '<a class="button delete delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
-				    					echo '<p class="description">' . esc_html(__('File caricato correttamente.', 'wccd')) . '</p>';
+
+				    					$activation = $this->wccd_cert_activation();
+
+				    					if($activation === 'ok') {
+
+					    					echo '<span class="cert-loaded">' . esc_html(basename($file)) . '</span>';
+					    					echo '<a class="button delete delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
+					    					echo '<p class="description">' . esc_html(__('File caricato e attivato correttamente.', 'wccd')) . '</p>';
+
+					    					update_option('wccd-cert-activation', 1);
+
+				    					} else {
+
+					    					echo '<span class="cert-loaded error">' . esc_html(basename($file)) . '</span>';
+					    					echo '<a class="button delete delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
+					    					echo '<p class="description">' . sprintf(esc_html(__('L\'attivazione del certificato ha restituito il seguente errore: %s', 'wccd')), $activation) . '</p>';
+
+					    					delete_option('wccd-cert-activation');
+
+				    					}
+
 				    				} else {
 						    			echo '<input type="file" accept=".pem" name="wccd-certificate" class="wccd-certificate">';
 						    			echo '<p class="description">' . esc_html(__('Carica il certificato (.pem) necessario alla connessione con Carta del docente', 'wccd')) . '</p>';

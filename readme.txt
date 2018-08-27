@@ -1,7 +1,7 @@
 === WooCommerce Carta Docente ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Version: 0.9.0
+Version: 0.9.1
 Requires at least: 4.0
 Tested up to: 4.9
 
@@ -72,6 +72,13 @@ This plugin sends data to an external service, like the categories and the price
 5. Metodo di pagamento in pagina di checkout
 
 == Changelog ==
+
+= 0.9.1 =
+Data di rilascio: 27 Agosto, 2018
+
+* Implementazione: Attivazione certificato come richiesto dalla piattaforma Carta del Docente.
+* Implementazione: Attivazione del sistema di pagamento solo ad attivazione certificato completata.
+* Correzione bug: Errato path certificato in istanza classe wccd_soap_client.
 
 = 0.9.0 =
 Data di rilascio: 2 Luglio, 2018
