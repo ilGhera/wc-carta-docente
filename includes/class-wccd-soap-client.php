@@ -8,6 +8,7 @@ class wccd_soap_client {
         $this->location = 'https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
         $this->codiceVoucher = $codiceVoucher;
 		$this->import = $import;
+        $this->passphrase = $this->get_user_passphrase(); 
 	}
 
 
@@ -23,6 +24,15 @@ class wccd_soap_client {
     }
 
 
+    /**
+     * Restituisce la password memorizzata dall'utente nella compilazione del form
+     * @return string
+     */
+    public function get_user_passphrase() {
+        return base64_decode(get_option('wccd-password'));
+    }
+
+
 	/**
      * Istanzia il SoapClient
      */
@@ -32,7 +42,7 @@ class wccd_soap_client {
             array(
               'local_cert'  => $this->local_cert,
               'location'    => $this->location,
-              'passphrase'  => 'fullgas'
+              'passphrase'  => $this->get_user_passphrase()
             )
         );
   
