@@ -514,17 +514,20 @@ class wccd_admin {
 	                    
 	                    /*Preparo i file necessari*/
 	                    $pem = openssl_x509_read(file_get_contents(WCCD_PRIVATE . 'files/wccd-cert.pem'));
-	                    $key = file_get_contents(WCCD_PRIVATE . 'files/key.der');
+	                    $get_key = file_get_contents(WCCD_PRIVATE . 'files/key.der');
 
 	                    /*Richiamo la passphrase dal db*/
 	                    $wccd_password = base64_decode(get_option('wccd-password'));
+
+	                    $key = array($get_key, $wccd_password);
+
 	                    openssl_pkcs12_export_to_file($pem, WCCD_PRIVATE . 'files/wccd-cert.p12', $key, $wccd_password);
 
 	                    /*Preparo i file necessari*/	                    
 	                    openssl_pkcs12_read(file_get_contents(WCCD_PRIVATE . 'files/wccd-cert.p12'), $p12, $wccd_password);
 
 	                    /*Creo il certificato*/
-	                    file_put_contents(WCCD_PRIVATE . 'wccd-certificate.pem', $p12['cert'] . $key);
+	                    file_put_contents(WCCD_PRIVATE . 'wccd-certificate.pem', $p12['cert'] . $key[0]);
 
 					} else {
 						add_action('admin_notices', array($this, 'not_valid_certificate'));
