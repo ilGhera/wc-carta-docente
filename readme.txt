@@ -1,7 +1,7 @@
 === WooCommerce Carta Docente - Premium ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Version: 0.9.1
+Version: 0.9.2
 Requires at least: 4.0
 Tested up to: 4.9
 
@@ -65,6 +65,11 @@ This plugin sends data to an external service, like the categories and the price
 
 
 == Changelog ==
+
+= 0.9.2 =
+Data di rilascio: 14 Settembre, 2018
+
+* Correzione bug: Errore nella generazione del file wccd-cert.p12
 
 = 0.9.1 =
 Data di rilascio: 27 Agosto, 2018
