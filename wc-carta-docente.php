@@ -13,7 +13,7 @@
  * Domain Path: /languages
  */
 
-// test 5
+
 /**
  * Attivazione
  */
