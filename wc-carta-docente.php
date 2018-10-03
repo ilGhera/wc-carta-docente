@@ -11,7 +11,6 @@
  * WC tested up to: 3
  * Text Domain: wccd
  * Domain Path: /languages
- * test
  */
 
 
