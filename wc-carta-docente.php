@@ -61,7 +61,6 @@ add_action('plugins_loaded', 'wccd_premium_activation', 1);
 
 /**
  * Update checker
- * test
  */
 require( plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php');
 $wccd_update_checker = Puc_v4_Factory::buildUpdateChecker(
