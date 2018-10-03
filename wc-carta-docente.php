@@ -16,6 +16,7 @@
 
 /**
  * Attivazione
+ * test
  */
 function wccd_premium_activation() {
 
