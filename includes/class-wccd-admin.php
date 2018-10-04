@@ -225,8 +225,8 @@ class wccd_admin {
 
 		} catch(Exception $e) {
 
-            $notice = $e->detail->FaultVoucher->exceptionMessage;
-		    error_log('Error: ' . $notice);
+            $notice = isset($e->detail->FaultVoucher->exceptionMessage) ? $e->detail->FaultVoucher->exceptionMessage : $e->faultstring;
+		    error_log('Error wccd_cert_activation: ' . print_r($e, true));
 		    return $notice;
 
         } 
