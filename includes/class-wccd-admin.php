@@ -143,8 +143,8 @@ class wccd_admin {
 
 		} catch(Exception $e) {
 
-            $notice = $e->detail->FaultVoucher->exceptionMessage;
-		    error_log('Error: ' . $notice);
+            $notice = isset($e->detail->FaultVoucher->exceptionMessage) ? $e->detail->FaultVoucher->exceptionMessage : $e->faultstring;
+		    error_log('Error wccd_cert_activation: ' . print_r($e, true));
 		    return $notice;
 
         } 
@@ -158,13 +158,14 @@ class wccd_admin {
 
 		/*Recupero le opzioni salvate nel db*/
 		$categories = get_option('wccd-categories');
-		$tot_cats = count($categories);
+		$tot_cats = $categories ? count($categories) : 0;
 		$wccd_image = get_option('wccd-image');
 
 		echo '<div class="wrap">';
 	    	echo '<div class="wrap-left">';
 			    echo '<h1>WooCommerce Carta Docente - ' . esc_html(__('Impostazioni', 'wccd')) . '</h1>';
 
+				/*Tabs*/
 				echo '<div class="icon32 icon32-woocommerce-settings" id="icon-woocommerce"></div>';
 				echo '<h2 id="wccd-admin-menu" class="nav-tab-wrapper woo-nav-tab-wrapper">';
 					echo '<a href="#" data-link="wccd-certificate" class="nav-tab nav-tab-active" onclick="return false;">' . esc_html(__('Certificato', 'wccd')) . '</a>';
@@ -341,7 +342,7 @@ class wccd_admin {
 				    					}
 
 						    		echo '</ul>';
-						    		echo '<input type="hidden" name="wccd-tot-cats" class="wccd-tot-cats" value="' . count($categories) . '">';
+						    		echo '<input type="hidden" name="wccd-tot-cats" class="wccd-tot-cats" value="' . ($categories ? count($categories) : '') . '">';
 					    			echo '<p class="description">' . esc_html(__('Seleziona le categorie di prodotti corrispondenti ai beni acquistabili.', 'wccd')) . '</p>';
 				    			echo '</td>';
 				    		echo '</tr>';
