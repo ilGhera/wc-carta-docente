@@ -225,8 +225,8 @@ class wccd_admin {
 
 		} catch(Exception $e) {
 
-            $notice = $e->detail->FaultVoucher->exceptionMessage;
-		    error_log('Error: ' . $notice);
+            $notice = isset($e->detail->FaultVoucher->exceptionMessage) ? $e->detail->FaultVoucher->exceptionMessage : $e->faultstring;
+		    error_log('Error wccd_cert_activation: ' . print_r($e, true));
 		    return $notice;
 
         } 
@@ -241,7 +241,7 @@ class wccd_admin {
 		/*Recupero le opzioni salvate nel db*/
 		$premium_key = get_option('wccd-premium-key');
 		$categories = get_option('wccd-categories');
-		$tot_cats = count($categories);
+		$tot_cats = $categories ? count($categories) : 0;
 		$wccd_image = get_option('wccd-image');
 
 		echo '<div class="wrap">';
@@ -439,7 +439,7 @@ class wccd_admin {
 				    					}
 
 						    		echo '</ul>';
-						    		echo '<input type="hidden" name="wccd-tot-cats" class="wccd-tot-cats" value="' . count($categories) . '">';
+						    		echo '<input type="hidden" name="wccd-tot-cats" class="wccd-tot-cats" value="' . ($categories ? count($categories) : '') . '">';
 					    			echo '<p class="description">' . esc_html(__('Seleziona le categorie di prodotti corrispondenti ai beni acquistabili.', 'wccd')) . '</p>';
 				    			echo '</td>';
 				    		echo '</tr>';
