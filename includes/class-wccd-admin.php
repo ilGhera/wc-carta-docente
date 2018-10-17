@@ -123,7 +123,7 @@ class wccd_admin {
 	 */
 	public function get_go_premium() {
 		$output = '<span class="label label-warning premium">';
-			$output .= '<a href="https://www.ilghera.com/woocommerce-carta-docente-premium" target="_blank">Premium</a>';
+			$output .= '<a href="https://www.ilghera.com/product/woocommerce-carta-docente-premium" target="_blank">Premium</a>';
 		$output .= '</span>';
 
 		return $output;
