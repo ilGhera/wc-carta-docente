@@ -25,7 +25,8 @@ function wccd_activation() {
 	define('WCCD_URI', plugin_dir_url(__FILE__));
 	define('WCCD_INCLUDES', WCCD_DIR . 'includes/');
 	define('WCCD_PRIVATE', WCCD_DIR . 'private/');
-	
+	define('WCCD_PRIVATE_URI', WCCD_URI . 'private/');
+
 	/*Requires*/
 	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';
 	require WCCD_INCLUDES . 'class-wccd-soap-client.php';
