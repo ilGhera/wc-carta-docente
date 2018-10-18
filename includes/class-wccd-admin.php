@@ -240,6 +240,7 @@ class wccd_admin {
 
 		/*Recupero le opzioni salvate nel db*/
 		$premium_key = get_option('wccd-premium-key');
+		$passphrase = base64_decode(get_option('wccd-password'));
 		$categories = get_option('wccd-categories');
 		$tot_cats = $categories ? count($categories) : 0;
 		$wccd_image = get_option('wccd-image');
@@ -274,7 +275,7 @@ class wccd_admin {
 
 		    		/*Carica certificato .pem*/
 		    		echo '<h3>' . esc_html(__('Carica il tuo certificato', 'wccd')) . '</h3>';
-	    			echo '<p class="description">' . esc_html(__('Se sei già in posseso di un certificato non devi fare altro che caricarlo, nient\'altro.', 'wccd')) . '</p>';
+	    			echo '<p class="description">' . esc_html(__('Se sei già in posseso di un certificato non devi fare altro che caricarlo con relativa password, nient\'altro.', 'wccd')) . '</p>';
 
 				    echo '<form name="wccd-upload-certificate" class="wccd-upload-certificate one-of" method="post" enctype="multipart/form-data" action="">';
 				    	echo '<table class="form-table wccd-table">';
@@ -306,13 +307,24 @@ class wccd_admin {
 				    					}
 
 				    				} else {
+
 						    			echo '<input type="file" accept=".pem" name="wccd-certificate" class="wccd-certificate">';
 						    			echo '<p class="description">' . esc_html(__('Carica il certificato (.pem) necessario alla connessione con Carta del docente', 'wccd')) . '</p>';
 			
-								    	wp_nonce_field('wccd-upload-certificate', 'wccd-certificate-nonce');
-								    	echo '<input type="hidden" name="wccd-certificate-hidden" value="1">';
-								    	echo '<input type="submit" class="button-primary wccd-button" value="' . esc_html('Salva certificato', 'wccd') . '">';
 				    				}
+				    			echo '</td>';
+				    		echo '</tr>';
+
+				    		/*Password utilizzata per la creazione del certificato*/
+				    		echo '<tr>';
+				    			echo '<th scope="row">' . esc_html(__('Password', 'wc18')) . '</th>';
+				    			echo '<td>';
+			    					echo '<input type="password" name="wccd-password" placeholder="**********" value="' . $passphrase . '" required>';
+					    			echo '<p class="description">' . esc_html(__('La password utilizzata per la generazione del certificato', 'wccd')) . '</p>';	
+
+							    	wp_nonce_field('wccd-upload-certificate', 'wccd-certificate-nonce');
+							    	echo '<input type="hidden" name="wccd-certificate-hidden" value="1">';
+							    	echo '<input type="submit" class="button-primary wccd-button" value="' . esc_html('Salva certificato', 'wccd') . '">';
 				    			echo '</td>';
 				    		echo '</tr>';
 
@@ -550,6 +562,14 @@ class wccd_admin {
 					}					
 				}
 			}
+
+			/*Password*/
+            $wccd_password = isset($_POST['wccd-password']) ? sanitize_text_field($_POST['wccd-password']) : '';
+
+            /*Salvo passw nel db*/
+            if($wccd_password) {
+            	update_option('wccd-password', base64_encode($wccd_password));
+            }
 		}
 
 		if(isset($_POST['wccd-settings-hidden']) && wp_verify_nonce($_POST['wccd-settings-nonce'], 'wccd-save-settings')) {
