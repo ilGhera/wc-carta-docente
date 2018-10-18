@@ -1,7 +1,9 @@
 <?php
 /**
- * Estende la classe WC_Payment_Gateway di WooCommerce 
- * aggiungendo il nuovo gateway "buono docente".
+ * Estende la classe WC_Payment_Gateway di WooCommerce aggiungendo il nuovo gateway "buono docente".
+ * @author ilGhera
+ * @package wc-carta-docente/includes
+ * @version 0.9.2
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
