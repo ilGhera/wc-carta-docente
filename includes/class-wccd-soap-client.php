@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Gestice le chiamate del web service 
+ * @author ilGhera
+ * @package wc-carta-docente/includes
+ * @version 0.9.2
+ */
 class wccd_soap_client {
 
     public function __construct($codiceVoucher, $import) {
