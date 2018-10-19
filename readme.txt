@@ -66,6 +66,11 @@ This plugin sends data to an external service, like the categories and the price
 
 == Changelog ==
 
+= 0.9.4 =
+Data di rilascio: 18 Ottobre, 2018
+
+* Correzione bug: Richiesta password utilizzata per creare il certificato caricato dall'utente.
+
 = 0.9.3 =
 Data di rilascio: 14 Settembre, 2018
 
