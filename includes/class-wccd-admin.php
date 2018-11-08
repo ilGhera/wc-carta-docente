@@ -59,14 +59,13 @@ class wccd_admin {
 	 * @param  int   $n            il numero dell'elemento aggiunto
 	 * @param  array $data         bene e categoria come chiave e velore
 	 * @param  array $exclude_beni beni già utilizzati da escludere
-	 * @param  array $exclude_cats categorie già utilizzate da escludere
 	 * @return mixed]
 	 */
-	public function setup_cat($n, $data = null, $exclude_beni = null, $exclude_cats = null) {
+	public function setup_cat($n, $data = null, $exclude_beni = null) {
 		echo '<li class="setup-cat cat-' . $n . '">';
 
-			$beni = array_diff(array('libri', 'testi', 'hardware', 'software'), explode(',', $exclude_beni));
-			$terms = get_terms('product_cat', array('exclude' => $exclude_cats));
+			$beni = array_diff(array('libri', 'testi', 'hardware', 'software', 'corsi-di-lingua-straniera'), explode(',', $exclude_beni));
+			$terms = get_terms('product_cat');
 
 			$bene_value = is_array($data) ? key($data) : '';
 			$term_value = $bene_value ? $data[$bene_value] : '';
@@ -75,7 +74,7 @@ class wccd_admin {
 			echo '<select name="wccd-beni-' . $n . '" class="wccd-field beni">';
 				echo '<option value="">Bene carta docente</option>';
 				foreach ($beni as $bene) {
-    				echo '<option value="' . $bene . '"' . ($bene === $bene_value ? ' selected="selected"' : '') . '>' . ucfirst($bene) . '</option>';
+    				echo '<option value="' . $bene . '"' . ($bene === $bene_value ? ' selected="selected"' : '') . '>' . ucfirst(str_replace('-', ' ', $bene)) . '</option>';
 				}
 			echo '</select>';
 
@@ -113,10 +112,9 @@ class wccd_admin {
 
 		$number = isset($_POST['number']) ? sanitize_text_field($_POST['number']) : '';
 		$exclude_beni = isset($_POST['exclude-beni']) ? sanitize_text_field($_POST['exclude-beni']) : '';
-		$exclude_cats = isset($_POST['exclude-cats']) ? sanitize_text_field($_POST['exclude-cats']) : '';
 
 		if($number) {
-			$this->setup_cat($number, null, $exclude_beni, $exclude_cats);
+			$this->setup_cat($number, null, $exclude_beni);
 		}
 
 		exit;
