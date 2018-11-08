@@ -3,7 +3,7 @@
  * Pagina opzioni e gestione certificati
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @version 0.9.3
+ * @version 0.9.2
  */
 class wccd_admin {
 
