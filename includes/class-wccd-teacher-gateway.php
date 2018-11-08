@@ -86,7 +86,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	public function get_purchasable_cat($purchasable) {
 
 		$wccd_categories = get_option('wccd-categories');
-		$bene = strtolower($purchasable);
+		$bene = strtolower(str_replace(' ', '-', $purchasable));
 		
 		for($i=0; $i < count($wccd_categories); $i++) { 
 			if(array_key_exists($bene, $wccd_categories[$i])) {
