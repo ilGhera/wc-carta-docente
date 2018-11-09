@@ -116,7 +116,7 @@ class wccd_admin {
 
 				echo '<div class="add-cat-container">';
 	    			echo '<img class="add-cat" src="' . WCCD_URI . 'images/add-cat.png">';
-	    			echo '<img class="add-cat-hover" src="' . WCCD_URI . 'images/add-cat-hover.png">';
+	    			echo '<img class="add-cat-hover wccd" src="' . WCCD_URI . 'images/add-cat-hover.png">';
 				echo '</div>';				
 
 			} else {
