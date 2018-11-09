@@ -81,6 +81,7 @@ Data di rilascio: 8 Novembre, 2018
 
 = 0.9.2 =
 Data di rilascio: 27 Agosto, 2018
+
 * Correzione bug: Richiesta password utilizzata per creare il certificato caricato dall'utente.
 
 = 0.9.1 =
