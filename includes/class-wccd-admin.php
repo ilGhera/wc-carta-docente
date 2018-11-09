@@ -56,6 +56,21 @@ class wccd_admin {
 
 
 	/**
+	 * Restituisce il nome esatto del bene Carta del Docente partendo dallo slug
+	 * @param  array $beni       l'elenco dei beni di carta del docente
+	 * @param  string $bene_slug lo slug del bene
+	 * @return string
+	 */
+	public function get_bene_lable($beni, $bene_slug) {
+		foreach ($beni as $bene) {
+			if(sanitize_title($bene) === $bene_slug) {
+				return $bene;
+			}
+		}
+	}
+
+
+	/**
 	 * Categoria per la verifica in fase di checkout
 	 * @param  int   $n            il numero dell'elemento aggiunto
 	 * @param  array $data         bene e categoria come chiave e velore
@@ -65,7 +80,19 @@ class wccd_admin {
 	public function setup_cat($n, $data = null, $exclude_beni = null) {
 		echo '<li class="setup-cat cat-' . $n . '">';
 
-			$beni = array_diff(array('libri', 'testi', 'hardware', 'software', 'corsi-di-lingua-straniera'), explode(',', $exclude_beni));
+			/*L'elenco dei beni dei vari ambiti previsti dalla piattaforma*/
+			$beni_index = array(
+				'Abbonamento/Card',
+				'Bigletto d\'igresso',
+				'Hardware',
+				'Software',
+				'Libri',
+				'Riviste e pubblicazioni'
+			);
+
+			$beni_prepared = array_map('sanitize_title', $beni_index); 
+
+			$beni = array_diff($beni_prepared, explode(',', $exclude_beni));
 			$terms = get_terms('product_cat');
 
 			$bene_value = is_array($data) ? key($data) : '';
@@ -75,7 +102,7 @@ class wccd_admin {
 			echo '<select name="wccd-beni-' . $n . '" class="wccd-field beni">';
 				echo '<option value="">Bene carta docente</option>';
 				foreach ($beni as $bene) {
-    				echo '<option value="' . $bene . '"' . ($bene === $bene_value ? ' selected="selected"' : '') . '>' . ucfirst(str_replace('-', ' ', $bene)) . '</option>';
+    				echo '<option value="' . $bene . '"' . ($bene === $bene_value ? ' selected="selected"' : '') . '>' . $this->get_bene_lable($beni_index, $bene) . '</option>';
 				}
 			echo '</select>';
 
