@@ -35,7 +35,7 @@ delete_certificate();
  */
 var add_cat = function() {
 	jQuery(function($){
-		$('.add-cat-hover').on('click', function(){
+		$('.add-cat-hover.wccd').on('click', function(){
 			var number = $('.setup-cat').length + 1;
 			var limit = $('.wccd-field.beni:first option').size() -1;
 
