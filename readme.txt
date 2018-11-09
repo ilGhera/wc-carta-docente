@@ -68,6 +68,7 @@ This plugin sends data to an external service, like the categories and the price
 
 = 0.9.5 =
 Data di rilascio: 8 Novembre, 2018
+
 * Implementazione: Possibilità di abbinare differenti "beni" Carta del Docente alla stessa categoria WooCommeerce.
 * Implementazione: Aggiornata gamma "beni" disponibili.
 
