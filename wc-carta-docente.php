@@ -4,7 +4,7 @@
  * Plugin URI: https://www.ilghera.com/product/wc-carta-docente/
  * Description: Abilita in WooCommerce il pagamento con Carta del Docente prevista dallo stato Italiano. 
  * Author: ilGhera
- * Version: 0.9.5
+ * Version: 1.0.0
  * Author URI: https://ilghera.com 
  * Requires at least: 4.0
  * Tested up to: 5.0
@@ -33,9 +33,17 @@ function wccd_premium_activation() {
 	define('WCCD_DIR', plugin_dir_path(__FILE__));
 	define('WCCD_URI', plugin_dir_url(__FILE__));
 	define('WCCD_INCLUDES', WCCD_DIR . 'includes/');
-	define('WCCD_PRIVATE', WCCD_DIR . 'private/');
-	define('WCCD_PRIVATE_URI', WCCD_URI . 'private/');
+	define('WCCD_INCLUDES_URI', WCCD_URI . 'includes/');
 
+	/*Main directory di upload*/
+	$wp_upload_dir = wp_upload_dir();
+
+	/*Creo se necessario la cartella wccd-private*/
+	if( wp_mkdir_p( trailingslashit( $wp_upload_dir['basedir'] . '/wccd-private/files/' ) ) ) {
+		define('WCCD_PRIVATE', $wp_upload_dir['basedir'] . '/wccd-private/');
+		define('WCCD_PRIVATE_URI', $wp_upload_dir['baseurl'] . '/wccd-private/');
+	}
+	
 	/*Requires*/
 	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';
 	require WCCD_INCLUDES . 'class-wccd-soap-client.php';

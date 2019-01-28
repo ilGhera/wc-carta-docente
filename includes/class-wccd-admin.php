@@ -3,7 +3,7 @@
  * Pagina opzioni e gestione certificati
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @version 0.9.5
+ * @version 1.0.0
  */
 class wccd_admin {
 
@@ -481,7 +481,7 @@ class wccd_admin {
 				    					}
 
 						    		echo '</ul>';
-						    		echo '<input type="hidden" name="wccd-tot-cats" class="wccd-tot-cats" value="' . ($categories ? count($categories) : '') . '">';
+						    		echo '<input type="hidden" name="wccd-tot-cats" class="wccd-tot-cats" value="' . ($categories ? count($categories) : 1) . '">';
 					    			echo '<p class="description">' . esc_html(__('Seleziona le categorie di prodotti corrispondenti ai beni acquistabili.', 'wccd')) . '</p>';
 				    			echo '</td>';
 				    		echo '</tr>';
