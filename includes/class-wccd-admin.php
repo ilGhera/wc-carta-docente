@@ -172,59 +172,77 @@ class wccd_admin {
 
 		if(isset($_POST['generate-der-hidden'])) {
 
-			$cert_req_url = WCCD_PRIVATE . 'files/certificate-request.der';
+			/*Crea il file .der*/
+            $countryName = isset($_POST['countryName']) ? sanitize_text_field($_POST['countryName']) : '';
+            $stateOrProvinceName = isset($_POST['stateOrProvinceName']) ? sanitize_text_field($_POST['stateOrProvinceName']) : '';
+            $localityName = isset($_POST['localityName']) ? sanitize_text_field($_POST['localityName']) : '';
+            $organizationName = isset($_POST['organizationName']) ? sanitize_text_field($_POST['organizationName']) : '';
+            $organizationalUnitName = isset($_POST['organizationalUnitName']) ? sanitize_text_field($_POST['organizationalUnitName']) : '';
+            $commonName = isset($_POST['commonName']) ? sanitize_text_field($_POST['commonName']) : '';
+            $emailAddress = isset($_POST['emailAddress']) ? sanitize_text_field($_POST['emailAddress']) : '';
+            $wccd_password = isset($_POST['wccd-password']) ? sanitize_text_field($_POST['wccd-password']) : '';
 
-			/*Crea il file .der se non presente*/
-			if(!file_exists($cert_req_url)) {
+            /*Salvo passw nel db*/
+            if($wccd_password) {
+            	update_option('wccd-password', base64_encode($wccd_password));
+            }
 
-	            $countryName = isset($_POST['countryName']) ? sanitize_text_field($_POST['countryName']) : '';
-	            $stateOrProvinceName = isset($_POST['stateOrProvinceName']) ? sanitize_text_field($_POST['stateOrProvinceName']) : '';
-	            $localityName = isset($_POST['localityName']) ? sanitize_text_field($_POST['localityName']) : '';
-	            $organizationName = isset($_POST['organizationName']) ? sanitize_text_field($_POST['organizationName']) : '';
-	            $organizationalUnitName = isset($_POST['organizationalUnitName']) ? sanitize_text_field($_POST['organizationalUnitName']) : '';
-	            $commonName = isset($_POST['commonName']) ? sanitize_text_field($_POST['commonName']) : '';
-	            $emailAddress = isset($_POST['emailAddress']) ? sanitize_text_field($_POST['emailAddress']) : '';
-	            $wccd_password = isset($_POST['wccd-password']) ? sanitize_text_field($_POST['wccd-password']) : '';
-
-	            /*Salvo passw nel db*/
-	            if($wccd_password) {
-	            	update_option('wccd-password', base64_encode($wccd_password));
-	            }
-
-				$dn = array(
-                    "countryName" => $countryName,
-                    "stateOrProvinceName" => $stateOrProvinceName,
-                    "localityName" => $localityName,
-                    "organizationName" => $organizationName,
-                    "organizationalUnitName" => $organizationalUnitName,
-                    "commonName" => $commonName,
-                    "emailAddress" => $emailAddress
-                );
+			$dn = array(
+                "countryName" => $countryName,
+                "stateOrProvinceName" => $stateOrProvinceName,
+                "localityName" => $localityName,
+                "organizationName" => $organizationName,
+                "organizationalUnitName" => $organizationalUnitName,
+                "commonName" => $commonName,
+                "emailAddress" => $emailAddress
+            );
 
 
-                /*Genera la private key*/
-                $privkey = openssl_pkey_new(array(
-                    "private_key_bits" => 2048,
-                    "private_key_type" => OPENSSL_KEYTYPE_RSA,
-                ));
+            /*Genera la private key*/
+            $privkey = openssl_pkey_new(array(
+                "private_key_bits" => 2048,
+                "private_key_type" => OPENSSL_KEYTYPE_RSA,
+            ));
 
 
-                /*Genera ed esporta la richiesta di certificato .pem*/
-                $csr = openssl_csr_new($dn, $privkey, array('digest_alg' => 'sha256'));
-                openssl_csr_export_to_file($csr, WCCD_PRIVATE . 'files/certificate-request.pem');
+            /*Genera ed esporta la richiesta di certificato .pem*/
+            $csr = openssl_csr_new($dn, $privkey, array('digest_alg' => 'sha256'));
+            openssl_csr_export_to_file($csr, WCCD_PRIVATE . 'files/certificate-request.pem');
 
 
-                /*Trasforma la richiesta di certificato in .der e la esporta*/
-                $csr_der = $this->pem2der(file_get_contents(WCCD_PRIVATE . 'files/certificate-request.pem'));
-                file_put_contents(WCCD_PRIVATE . 'files/certificate-request.der', $csr_der);
+            /*Trasforma la richiesta di certificato in .der*/
+            $csr_der = $this->pem2der(file_get_contents(WCCD_PRIVATE . 'files/certificate-request.pem'));
+            
+            /*Preparo il backup*/
+            $bu_folder 	   		  = WCCD_PRIVATE . 'files/backups/';
+
+            error_log( count( glob( $bu_folder . '*' , GLOB_ONLYDIR ) ) + 1 );
+
+            $bu_new_folder_name   = count( glob( $bu_folder . '*' , GLOB_ONLYDIR ) ) + 1;
+            $bu_new_folder_create = wp_mkdir_p( trailingslashit( $bu_folder . $bu_new_folder_name ) );
+
+
+            /*Salvo file di backup*/
+            if( $bu_new_folder_create ) {
+
+				/*Esporta la richiesta di certificato .der*/
+                file_put_contents(WCCD_PRIVATE . 'files/backups/' . $bu_new_folder_name . '/certificate-request.der', $csr_der);
                 
                 /*Esporta la private key*/
-                // openssl_csr_export_to_file($csr_der, WCCD_PRIVATE . 'files/certificate-request.der');
-                openssl_pkey_export_to_file($privkey, WCCD_PRIVATE . 'files/key.der');
+                openssl_pkey_export_to_file($privkey, WCCD_PRIVATE . 'files/backups/' . $bu_new_folder_name . '/key.der');
 
-			}
+            }
+
+			/*Esporta la richiesta di certificato .der*/
+            file_put_contents(WCCD_PRIVATE . 'files/certificate-request.der', $csr_der);
+            
+            /*Esporta la private key*/
+            openssl_pkey_export_to_file($privkey, WCCD_PRIVATE . 'files/key.der');
+
 
 			/*Download file .der*/
+			$cert_req_url = WCCD_PRIVATE . 'files/certificate-request.der';
+
 			if($cert_req_url) {
 		    	header('Content-Description: File Transfer');
 			    header('Content-Type: application/octet-stream');
