@@ -39,7 +39,7 @@ function wccd_premium_activation() {
 	$wp_upload_dir = wp_upload_dir();
 
 	/*Creo se necessario la cartella wccd-private*/
-	if( wp_mkdir_p( trailingslashit( $wp_upload_dir['basedir'] . '/wccd-private/files/' ) ) ) {
+	if( wp_mkdir_p( trailingslashit( $wp_upload_dir['basedir'] . '/wccd-private/files/backups' ) ) ) {
 		define('WCCD_PRIVATE', $wp_upload_dir['basedir'] . '/wccd-private/');
 		define('WCCD_PRIVATE_URI', $wp_upload_dir['baseurl'] . '/wccd-private/');
 	}
