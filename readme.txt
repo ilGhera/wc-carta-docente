@@ -67,7 +67,7 @@ This plugin sends data to an external service, like the categories and the price
 == Changelog ==
 
 = 1.0.0 =
-Data di rilascio: 28 Gennaio, 2019
+Data di rilascio: 5 Febbraio, 2019
 
 * Implementazione: Backup di ogni richiesta certificato generato con relativa chiave
 * Implementazione: Nuova cartella wccd-private in wp uploads directory
