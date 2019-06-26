@@ -45,9 +45,9 @@ class wccd_soap_client {
         $soapClient = new SoapClient(
             $this->wsdl, 
             array(
-                'local_cert'  => $this->local_cert,
-                'location'    => $this->location,
-                'passphrase'  => $this->get_user_passphrase(),
+                'local_cert'     => $this->local_cert,
+                'location'       => $this->location,
+                'passphrase'     => $this->get_user_passphrase(),
                 'stream_context' => array(
                     'http' => array(
                         'user_agent' => 'PHP/SOAP',
