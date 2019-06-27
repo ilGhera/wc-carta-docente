@@ -520,6 +520,11 @@ class wccd_admin {
 				    	echo '<input type="submit" class="button-primary" value="' . esc_html('Salva impostazioni', 'wccd') . '">';
 				    echo '</form>';
 			    echo '</div>';
+	
+		    	echo '<div class="wrap-right">';
+					echo '<iframe width="300" height="1300" scrolling="no" src="http://www.ilghera.com/images/wccd-iframe.html"></iframe>';
+				echo '</div>';
+				echo '<div class="clear"></div>';
 
 		    echo '</div>';
 	    echo '</div>';
