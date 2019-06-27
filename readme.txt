@@ -67,7 +67,7 @@ This plugin sends data to an external service, like the categories and the price
 == Changelog ==
 
 = 1.0.1 =
-Data di rilascio: 26 Giugno, 2019
+Data di rilascio: 27 Giugno, 2019
 
 * Correzione bug: SOAP-ERROR: Parsing WSDL: Couldn't load from .../wp-content/plugins/wc-carta-docente-premium/includes/VerificaVoucher.wsdl' : failed to load external entity .../wp-content/plugins/wc-carta-docente-premium/includes/VerificaVoucher.wsdl
 
