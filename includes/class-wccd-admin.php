@@ -520,8 +520,14 @@ class wccd_admin {
 				    	echo '<input type="submit" class="button-primary" value="' . esc_html('Salva impostazioni', 'wccd') . '">';
 				    echo '</form>';
 			    echo '</div>';
-
+	
 		    echo '</div>';
+	
+	    	echo '<div class="wrap-right">';
+			
+			echo '</div>';
+			echo '<div class="clear"></div>';
+
 	    echo '</div>';
 
 	}

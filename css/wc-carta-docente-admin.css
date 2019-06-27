@@ -100,3 +100,15 @@ span.wccd-alert a {
 	color: #a94442;	
 	text-decoration: underline;
 }
+
+.wrap-left {
+    float: left;
+    width: 70%;
+}
+
+.wrap-right {
+    float: left;
+    width: 30%;
+    text-align: center;
+    padding-top: 3rem;
+}
