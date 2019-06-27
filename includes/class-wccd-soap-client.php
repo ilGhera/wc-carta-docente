@@ -3,12 +3,12 @@
  * Gestice le chiamate del web service 
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @version 0.9.2
+ * @version 1.0.0
  */
 class wccd_soap_client {
 
     public function __construct($codiceVoucher, $import) {
-        $this->wsdl = WCCD_PRIVATE_URI . 'VerificaVoucher.wsdl';
+        $this->wsdl = WCCD_INCLUDES_URI . 'VerificaVoucher.wsdl';
         $this->local_cert = WCCD_PRIVATE . $this->get_local_cert();
         $this->location = 'https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
         $this->codiceVoucher = $codiceVoucher;
@@ -45,9 +45,20 @@ class wccd_soap_client {
         $soapClient = new SoapClient(
             $this->wsdl, 
             array(
-              'local_cert'  => $this->local_cert,
-              'location'    => $this->location,
-              'passphrase'  => $this->get_user_passphrase()
+                'local_cert'     => $this->local_cert,
+                'location'       => $this->location,
+                'passphrase'     => $this->get_user_passphrase(),
+                'stream_context' => stream_context_create(
+                    array(
+                        'http' => array(
+                            'user_agent' => 'PHP/SOAP',
+                        ),
+                        'ssl' => array(
+                            'verify_peer'       => false,
+                            'verify_peer_name'  => false,
+                        ),
+                    )
+                ),
             )
         );
   

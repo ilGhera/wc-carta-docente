@@ -1,9 +1,9 @@
 === WooCommerce Carta Docente ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Version: 0.9.3
+Version: 1.0.0
 Requires at least: 4.0
-Tested up to: 5.0
+Tested up to: 5
 
 Abilita in WooCommerce il pagamento con Carta del Docente.
 
@@ -72,6 +72,11 @@ This plugin sends data to an external service, like the categories and the price
 5. Metodo di pagamento in pagina di checkout
 
 == Changelog ==
+
+= 1.0.0 =
+Data di rilascio: 27 Giugno, 2019
+
+* Correzione bug: SOAP-ERROR: Parsing WSDL: Couldn't load from .../wp-content/plugins/wc-carta-docente-premium/includes/VerificaVoucher.wsdl' : failed to load external entity .../wp-content/plugins/wc-carta-docente-premium/includes/VerificaVoucher.wsdl
 
 = 0.9.3 =
 Data di rilascio: 8 Novembre, 2018
