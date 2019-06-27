@@ -3,7 +3,7 @@
  * Pagina opzioni e gestione certificati
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @version 1.0.0
+ * @version 1.0.1
  */
 class wccd_admin {
 
@@ -524,7 +524,7 @@ class wccd_admin {
 		    echo '</div>';
 	
 	    	echo '<div class="wrap-right">';
-			
+				echo '<iframe width="300" height="1300" scrolling="no" src="http://www.ilghera.com/images/wccd-premium-iframe.html"></iframe>';
 			echo '</div>';
 			echo '<div class="clear"></div>';
 
