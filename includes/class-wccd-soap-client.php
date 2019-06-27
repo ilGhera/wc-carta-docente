@@ -48,10 +48,16 @@ class wccd_soap_client {
                 'local_cert'     => $this->local_cert,
                 'location'       => $this->location,
                 'passphrase'     => $this->get_user_passphrase(),
-                'stream_context' => array(
-                    'http' => array(
-                        'user_agent' => 'PHP/SOAP',
-                    ),
+                'stream_context' => stream_context_create(
+                    array(
+                        'http' => array(
+                            'user_agent' => 'PHP/SOAP',
+                        ),
+                        'ssl' => array(
+                            'verify_peer'       => false,
+                            'verify_peer_name'  => false,
+                        ),
+                    )
                 ),
             )
         );
