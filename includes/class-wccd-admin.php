@@ -72,27 +72,27 @@ class wccd_admin {
 
 	/**
 	 * Categoria per la verifica in fase di checkout
-	 * @param  int   $n            il numero dell'elemento aggiunto
-	 * @param  array $data         bene e categoria come chiave e velore
-	 * @param  array $exclude_beni beni già utilizzati da escludere
-	 * @return mixed]
+	 * @param  int   $n             il numero dell'elemento aggiunto
+	 * @param  array $data          bene e categoria come chiave e velore
+	 * @param  array $exclude_beni  buoni già abbinati a categorie WC (al momento non utilizzato)
+	 * @return mixed
 	 */
 	public function setup_cat($n, $data = null, $exclude_beni = null) {
 		echo '<li class="setup-cat cat-' . $n . '">';
 
 			/*L'elenco dei beni dei vari ambiti previsti dalla piattaforma*/
 			$beni_index = array(
-				'Abbonamento/Card',
-				'Bigletto d\'igresso',
-				'Hardware',
-				'Software',
-				'Libri',
-				'Riviste e pubblicazioni'
+				'Libri e testi',
+				'Hardware e software',
+				'Formazione e aggiornamento',
+				'Teatro',
+				'Cinema',
+				'Mostre ed eventi culturali',
+				'Spettacoli dal vivo',
+				'Musei',
 			);
 
-			$beni_prepared = array_map('sanitize_title', $beni_index); 
-
-			$beni = array_diff($beni_prepared, explode(',', $exclude_beni));
+			$beni  = array_map('sanitize_title', $beni_index); 
 			$terms = get_terms('product_cat');
 
 			$bene_value = is_array($data) ? key($data) : '';
@@ -302,7 +302,7 @@ class wccd_admin {
 			    	echo '<table class="form-table wccd-table">';
 						echo '<th scope="row">' . __('Premium Key', 'wccd') . '</th>';
 						echo '<td>';
-							echo '<input type="text" class="regular-text" name="wccd-premium-key" id="wccd-premium-key" placeholder="' . __('Inserisci la tua Premium Key', 'wccd' ) . '" value="' . $premium_key . '" />';
+							echo '<input type="text" class="regular-text code" name="wccd-premium-key" id="wccd-premium-key" placeholder="' . __('Inserisci la tua Premium Key', 'wccd' ) . '" value="' . $premium_key . '" />';
 							echo '<p class="description">' . __('Aggiungi la tua Premium Key e mantieni aggiornato <strong>Woocommerce Carta Docente - Premium</strong>.', 'wccd') . '</p>';
 					    	wp_nonce_field('wccd-premium-key', 'wccd-premium-key-nonce');
 							echo '<input type="hidden" name="premium-key-sent" value="1" />';

@@ -83,15 +83,26 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	 * @param  string $purchasable bene acquistabile
 	 * @return int                 l'id di categoria acquistabile
 	 */
-	public function get_purchasable_cat($purchasable) {
+	public function get_purchasable_cats($purchasable) {
+
 
 		$wccd_categories = get_option('wccd-categories');
-		$bene = strtolower(str_replace(' ', '-', $purchasable));
-		
-		for($i=0; $i < count($wccd_categories); $i++) { 
-			if(array_key_exists($bene, $wccd_categories[$i])) {
-				return $wccd_categories[$i][$bene];
+
+		if ( $wccd_categories ) {
+	
+			$bene = strtolower(str_replace(' ', '-', $purchasable));
+			
+			$output = array();
+
+			for($i=0; $i < count($wccd_categories); $i++) { 
+				if(array_key_exists($bene, $wccd_categories[$i])) {
+
+					$output[] = $wccd_categories[$i][$bene];
+				}
 			}
+
+			return $output;
+				
 		}
 
 	}
@@ -104,7 +115,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function is_purchasable($order, $bene) {
-		$cat = $this->get_purchasable_cat($bene);
+		$cats = $this->get_purchasable_cats($bene);
 
 		$items = $order->get_items();
 
@@ -117,10 +128,14 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 				$ids[] = $term->term_id;
 			}
 
-			if(!in_array($cat, $ids)) {
+			$results = array_intersect($ids, $cats);
+
+			if ( ! is_array( $results ) || empty( $results ) ) {
+
 				$output = false;
 				continue;
-			}				
+
+			}
 
 		}		
 		
@@ -171,7 +186,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		    	/*Prima verifica del buono*/
 	            $response = $soapClient->check();
 
-				$bene    = $response->checkResp->bene; //il bene acquistabile con il buono inserito
+				$bene    = $response->checkResp->ambito; //il bene acquistabile con il buono inserito
 			    $importo_buono = floatval($response->checkResp->importo); //l'importo del buono inserito
 			    
 			    /*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
