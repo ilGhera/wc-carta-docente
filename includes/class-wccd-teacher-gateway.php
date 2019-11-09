@@ -3,7 +3,7 @@
  * Estende la classe WC_Payment_Gateway di WooCommerce aggiungendo il nuovo gateway "buono docente".
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @version 1.0.2
+ * @version 1.0.3
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
