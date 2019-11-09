@@ -1,7 +1,7 @@
 === WooCommerce Carta Docente ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Version: 1.0.1
+Version: 1.0.2
 Requires at least: 4.0
 Tested up to: 5.2
 
@@ -73,6 +73,11 @@ This plugin sends data to an external service, like the categories and the price
 
 == Changelog ==
 
+
+= 1.0.2 =
+Data di rilascio: 09 Novembre, 2019
+
+* Correzione bug: Denominazione ambito "Libri e testi (anche in formato digitale)" errata.
 
 = 1.0.1 =
 Data di rilascio: 02 Ottobre, 2019
