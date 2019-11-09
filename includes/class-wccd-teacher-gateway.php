@@ -90,7 +90,9 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 		if ( $wccd_categories ) {
 	
-			$bene = strtolower(str_replace(' ', '-', $purchasable));
+			$purchasable = str_replace( '(', '', $purchasable );
+			$purchasable = str_replace( ')', '', $purchasable );
+			$bene        = strtolower( str_replace( ' ', '-', $purchasable ) );
 			
 			$output = array();
 

@@ -81,7 +81,7 @@ class wccd_admin {
 
 			/*L'elenco dei beni dei vari ambiti previsti dalla piattaforma*/
 			$beni_index = array(
-				'Libri e testi',
+				'Libri e testi (anche in formato digitale)',
 				'Hardware e software',
 				'Formazione e aggiornamento',
 				'Teatro',
