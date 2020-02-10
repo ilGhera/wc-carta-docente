@@ -117,31 +117,38 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	public function is_purchasable($order, $bene) {
+
 		$cats = $this->get_purchasable_cats($bene);
 
 		$items = $order->get_items();
 
 		$output = true;
-		foreach ($items as $item) {
-			$terms = get_the_terms($item['product_id'], 'product_cat');
-			$ids = array();
-
-			foreach($terms as $term) {
-				$ids[] = $term->term_id;
-			}
-
-			$results = array_intersect($ids, $cats);
-
-			if ( ! is_array( $results ) || empty( $results ) ) {
-
-				$output = false;
-				continue;
-
-			}
-
-		}		
 		
+		if ( is_array( $cats ) && ! empty( $cats ) ) {
+
+			foreach ($items as $item) {
+				$terms = get_the_terms($item['product_id'], 'product_cat');
+				$ids = array();
+
+				foreach($terms as $term) {
+					$ids[] = $term->term_id;
+				}
+
+				$results = array_intersect($ids, $cats);
+
+				if ( ! is_array( $results ) || empty( $results ) ) {
+
+					$output = false;
+					continue;
+
+				}
+
+			}		
+
+		}
+
 		return $output;
+		
 	}
 
 
