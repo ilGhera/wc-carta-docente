@@ -37,7 +37,6 @@ var add_cat = function() {
 	jQuery(function($){
 		$('.add-cat-hover.wccd').on('click', function(){
 			var number = $('.setup-cat').length + 1;
-			var limit = $('.wccd-field.beni:first option').size() -1;
 
 			/*Beni già impostati da escludere*/
 			var beni_values = [];
@@ -45,21 +44,15 @@ var add_cat = function() {
 				beni_values.push($(this).val());
 			})
 
-			/*Se assegnate tutte le categorie visualizza messaggio*/
-			if(number > limit) {
-				alert('Tutte le categorie di prodotto sono state assegnate.');
-			} else {
-				
-				var data = {
-					'action': 'add-cat',
-					'number': number,
-					'exclude-beni': beni_values.toString(),
-				}
-				$.post(ajaxurl, data, function(response){
-					$(response).appendTo('.categories-container');
-					$('.wccd-tot-cats').val(number);
-				})				
+			var data = {
+				'action': 'add-cat',
+				'number': number,
+				'exclude-beni': beni_values.toString(),
 			}
+			$.post(ajaxurl, data, function(response){
+				$(response).appendTo('.categories-container');
+				$('.wccd-tot-cats').val(number);
+			})				
 		})
 	})
 }
