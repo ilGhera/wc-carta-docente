@@ -11,7 +11,7 @@ class wccd_admin {
 		add_action('admin_init', array($this, 'wccd_save_settings'));
 		add_action('admin_init', array($this, 'generate_cert_request'));
 		add_action('admin_menu', array($this, 'register_options_page'));
-		add_action('wp_ajax_delete-certificate', array($this, 'delete_certificate_callback'));
+		add_action('wp_ajax_delete-certificate', array($this, 'delete_certificate_callback'), 1);
 		add_action('wp_ajax_add-cat', array($this, 'add_cat_callback'));
 	}
 
