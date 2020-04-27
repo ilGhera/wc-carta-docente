@@ -1,9 +1,9 @@
 === WooCommerce Carta Docente - Premium ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Version: 1.0.4
+Version: 1.0.5
 Requires at least: 4.0
-Tested up to: 5.3
+Tested up to: 5.4
 
 Abilita in WooCommerce il pagamento con Carta del Docente.
 
@@ -65,6 +65,12 @@ This plugin sends data to an external service, like the categories and the price
 
 
 == Changelog ==
+
+= 1.0.5 =
+Data di rilascio: 28 Aprile, 2020
+
+* Correzione bug: Impossibile eliminare certificato non funzionante
+* Correzione bug: Errore salvataggio file .der in presenza del plugin WooCommerce 18app - Premium 
 
 = 1.0.4 =
 Data di rilascio: 10 Febbraio, 2020
