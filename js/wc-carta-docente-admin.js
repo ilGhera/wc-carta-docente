@@ -2,7 +2,7 @@
  * WC Carta Docente - Admin js
  * @author ilGhera
  * @package wc-carta-docente/js
- * @version 1.0.4
+ * @version 1.0.5
  */
 
 /**
@@ -16,7 +16,7 @@ var delete_certificate = function() {
 				var cert = $('.cert-loaded').text();
 				var data = {
 					'action': 'delete-certificate',
-					'delete': true,
+					'wccd-delete': true,
 					'cert': cert
 				}			
 				$.post(ajaxurl, data, function(response){

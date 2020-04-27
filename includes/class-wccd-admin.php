@@ -44,7 +44,7 @@ class wccd_admin {
 	 * Cancella il certificato
 	 */
 	public function delete_certificate_callback() {
-		if(isset($_POST['delete'])) {
+		if(isset($_POST['wccd-delete'])) {
 			$cert = isset($_POST['cert']) ? sanitize_text_field($_POST['cert']) : '';
 			if($cert) {
 				unlink(WCCD_PRIVATE . $cert);	
