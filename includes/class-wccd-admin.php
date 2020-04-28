@@ -339,7 +339,7 @@ class wccd_admin {
 				    					if($activation === 'ok') {
 
 					    					echo '<span class="cert-loaded">' . esc_html(basename($file)) . '</span>';
-					    					echo '<a class="button delete delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
+					    					echo '<a class="button delete wccd-delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
 					    					echo '<p class="description">' . esc_html(__('File caricato e attivato correttamente.', 'wccd')) . '</p>';
 
 					    					update_option('wccd-cert-activation', 1);
@@ -347,7 +347,7 @@ class wccd_admin {
 				    					} else {
 
 					    					echo '<span class="cert-loaded error">' . esc_html(basename($file)) . '</span>';
-					    					echo '<a class="button delete delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
+					    					echo '<a class="button delete wccd-delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
 					    					echo '<p class="description">' . sprintf(esc_html(__('L\'attivazione del certificato ha restituito il seguente errore: %s', 'wccd')), $activation) . '</p>';
 
 					    					delete_option('wccd-cert-activation');
