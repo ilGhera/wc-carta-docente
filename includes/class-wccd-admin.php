@@ -365,7 +365,7 @@ class wccd_admin {
 
 				    		/*Password utilizzata per la creazione del certificato*/
 				    		echo '<tr>';
-				    			echo '<th scope="row">' . esc_html(__('Password', 'wc18')) . '</th>';
+				    			echo '<th scope="row">' . esc_html(__('Password', 'wccd')) . '</th>';
 				    			echo '<td>';
 			    					echo '<input type="password" name="wccd-password" placeholder="**********" value="' . $passphrase . '" required>';
 					    			echo '<p class="description">' . esc_html(__('La password utilizzata per la generazione del certificato', 'wccd')) . '</p>';	
