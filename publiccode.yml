@@ -1,0 +1,118 @@
+# This repository adheres to the publiccode.yml standard by including this 
+# metadata file that makes public software easily discoverable.
+# More info at https://github.com/italia/publiccode.yml
+
+publiccodeYmlVersion: '0.2'
+categories:
+  - e-commerce
+description:
+  it:
+    documentation: 'https://www.ilghera.com/category/documentation/wc-carta-docente-18app/'
+    features:
+      - Carica il tuo certificato .pem
+      - |-
+        Abbina le categorie WooCommerce agli ambiti d'acquisto di Carta del
+        Docente
+      - Nuovo metodo di pagamento in pagina di checkout
+    genericName: WooCommerce Carta Docente
+    longDescription: |
+      Ogni insegnante di ruolo, in Italia, ha a disposizione un bonus di €  500
+      per ogni anno scolastico, da utilizzarsi per aggiornamenti  professionali.
+
+      Possono essere acquistati libri, riviste, ingressi nei musei, biglietti 
+      per eventi culturali, teatro e cinema, così come iscrizioni a corsi di 
+      laurea, master universitari e corsi di aggiornamento, svolti da enti 
+      qualificati o accreditati presso il Ministero dell'Istruzione, 
+      dell'Università e della Ricerca.
+
+
+      Con** Woocommerce Carta Docente**, consentirai agli insegnanti di
+      acquistare i tuoi prodotti utilizzando i buoni generati su _Carta del
+      Docente._
+
+
+      ### 
+
+      Presentati come esercente
+
+
+      Carica il tuo certificato .pem ed identificati come esercente, una luce
+      verde confermerà l'avvenuto collegamento tra le due piattaforme.
+
+
+      ![](https://i1.wp.com/www.ilghera.com/wp-content/uploads/2018/07/Schermata-da-2018-07-04-21-30-08.png?w=615&ssl=1)
+
+
+      ​
+
+
+      ### Imposta i prodotti acquistabili
+
+
+      I buoni generati sulla piattaforma _Carta del Docente_, possono essere
+      utilizzati solo per acquistare beni della stessa tipologia per i quali
+      sono stati creati.
+
+      Impostando queste categorie con lo strumento dedicato, **Woocommerce Carta
+      Docente** effettuerà un controllo nella fase di checkout, avvisando se
+      necessario l'utente della mancata corrispondenza.
+
+
+      ![](https://i2.wp.com/www.ilghera.com/wp-content/uploads/2018/07/Schermata-da-2018-07-04-23-59-42.png?w=688&ssl=1)
+
+
+      ### 
+
+      Facile per l'utente
+
+
+      Dopo aver generato il certificato, **Woocommerce Carta Docente
+      **aggiungerà il nuovo metodo di pagamento tra quelli disponibili nella
+      pagina di checkout.
+
+      l docente non dovrà fare altro che inserire il codice del suo buono,
+      nient'altro.
+
+
+      ![](https://i0.wp.com/www.ilghera.com/wp-content/uploads/2018/07/Schermata-da-2018-07-05-12-33-06.png?w=343&ssl=1)
+    shortDescription: |-
+      Con Woocommerce Carta Docente – Premium, consentirai agli insegnanti di
+      acquistare i tuoi prodotti utilizzando i buoni generati su Carta del
+      Docente.
+developmentStatus: stable
+intendedAudience:
+  countries:
+    - it
+it:
+  conforme:
+    gdpr: false
+    lineeGuidaDesign: false
+    misureMinimeSicurezza: false
+    modelloInteroperabilita: false
+  countryExtensionVersion: '0.2'
+  piattaforme:
+    anpr: true
+    cie: false
+    pagopa: false
+    spid: false
+legal:
+  license: GPL-2.0-only
+  repoOwner: ilGhera | WordPress Development
+localisation:
+  availableLanguages:
+    - it
+  localisationReady: true
+logo: |-
+  https://raw.githubusercontent.com/ilGhera/wc-carta-docente/master/images/icon.png
+maintenance:
+  contacts:
+    - email: andrea@ilghera.com
+      name: Andrea Gherardi
+  type: internal
+name: WooCommerce Carta Docente
+platforms:
+  - web
+releaseDate: '2020-02-10'
+softwareType: addon
+softwareVersion: 1.0.3
+url: 'https://github.com/ilGhera/wc-carta-docente'
