@@ -12,17 +12,19 @@ description:
       - Carica il tuo certificato .pem
       - |-
         Abbina le categorie WooCommerce agli ambiti d'acquisto di Carta del
+
         Docente
       - Nuovo metodo di pagamento in pagina di checkout
     genericName: WooCommerce Carta Docente
     longDescription: |
-      Ogni insegnante di ruolo, in Italia, ha a disposizione un bonus di €  500
-      per ogni anno scolastico, da utilizzarsi per aggiornamenti  professionali.
+      Ogni insegnante di ruolo, in Italia, ha a disposizione un bonus di € 500
+      per ogni anno scolastico, da utilizzarsi per aggiornamenti professionali.
 
-      Possono essere acquistati libri, riviste, ingressi nei musei, biglietti 
-      per eventi culturali, teatro e cinema, così come iscrizioni a corsi di 
-      laurea, master universitari e corsi di aggiornamento, svolti da enti 
-      qualificati o accreditati presso il Ministero dell'Istruzione, 
+
+      Possono essere acquistati libri, riviste, ingressi nei musei, biglietti
+      per eventi culturali, teatro e cinema, così come iscrizioni a corsi di
+      laurea, master universitari e corsi di aggiornamento, svolti da enti
+      qualificati o accreditati presso il Ministero dell'Istruzione,
       dell'Università e della Ricerca.
 
 
@@ -31,7 +33,8 @@ description:
       Docente._
 
 
-      ### 
+      ###
+
 
       Presentati come esercente
 
@@ -53,6 +56,7 @@ description:
       utilizzati solo per acquistare beni della stessa tipologia per i quali
       sono stati creati.
 
+
       Impostando queste categorie con lo strumento dedicato, **Woocommerce Carta
       Docente** effettuerà un controllo nella fase di checkout, avvisando se
       necessario l'utente della mancata corrispondenza.
@@ -61,23 +65,34 @@ description:
       ![](https://i2.wp.com/www.ilghera.com/wp-content/uploads/2018/07/Schermata-da-2018-07-04-23-59-42.png?w=688&ssl=1)
 
 
-      ### 
+      ###
+
 
       Facile per l'utente
 
 
-      Dopo aver generato il certificato, **Woocommerce Carta Docente
+      Dopo aver attivato il certificato, **Woocommerce Carta Docente
       **aggiungerà il nuovo metodo di pagamento tra quelli disponibili nella
       pagina di checkout.
+
 
       l docente non dovrà fare altro che inserire il codice del suo buono,
       nient'altro.
 
 
       ![](https://i0.wp.com/www.ilghera.com/wp-content/uploads/2018/07/Schermata-da-2018-07-05-12-33-06.png?w=343&ssl=1)
+    screenshots:
+      - |-
+        https://raw.githubusercontent.com/ilGhera/wc-carta-docente/master/images/carica-certificato.jpg
+      - |-
+        https://raw.githubusercontent.com/ilGhera/wc-carta-docente/master/images/abbinamento-categorie.jpg
+      - |-
+        https://raw.githubusercontent.com/ilGhera/wc-carta-docente/master/images/metodo-di-pagamento.jpg
     shortDescription: |-
       Con Woocommerce Carta Docente – Premium, consentirai agli insegnanti di
+
       acquistare i tuoi prodotti utilizzando i buoni generati su Carta del
+
       Docente.
 developmentStatus: stable
 intendedAudience:
