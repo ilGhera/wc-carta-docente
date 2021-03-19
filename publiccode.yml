@@ -13,6 +13,7 @@ description:
       - |-
         Abbina le categorie WooCommerce agli ambiti d'acquisto di Carta del
 
+
         Docente
       - Nuovo metodo di pagamento in pagina di checkout
     genericName: WooCommerce Carta Docente
@@ -33,10 +34,10 @@ description:
       Docente._
 
 
-      ###
+      ​
 
 
-      Presentati come esercente
+      ### Presentati come esercente
 
 
       Carica il tuo certificato .pem ed identificati come esercente, una luce
@@ -65,10 +66,10 @@ description:
       ![](https://i2.wp.com/www.ilghera.com/wp-content/uploads/2018/07/Schermata-da-2018-07-04-23-59-42.png?w=688&ssl=1)
 
 
-      ###
+      ​
 
 
-      Facile per l'utente
+      ### Facile per l'utente
 
 
       Dopo aver attivato il certificato, **Woocommerce Carta Docente
@@ -89,11 +90,8 @@ description:
       - |-
         https://raw.githubusercontent.com/ilGhera/wc-carta-docente/master/images/metodo-di-pagamento.jpg
     shortDescription: |-
-      Con Woocommerce Carta Docente – Premium, consentirai agli insegnanti di
-
-      acquistare i tuoi prodotti utilizzando i buoni generati su Carta del
-
-      Docente.
+      Con Woocommerce Carta Docente, consentirai agli insegnanti diacquistare i
+      tuoi prodotti utilizzando i buoni generati su Carta delDocente.
 developmentStatus: stable
 intendedAudience:
   countries:
