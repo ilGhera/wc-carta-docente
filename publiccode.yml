@@ -72,8 +72,8 @@ description:
       ### Facile per l'utente
 
 
-      Dopo aver attivato il certificato, **Woocommerce Carta Docente
-      **aggiungerà il nuovo metodo di pagamento tra quelli disponibili nella
+      Dopo aver attivato il certificato, **Woocommerce Carta Docente** 
+      aggiungerà il nuovo metodo di pagamento tra quelli disponibili nella
       pagina di checkout.
 
 
@@ -83,6 +83,8 @@ description:
 
       ![](https://i0.wp.com/www.ilghera.com/wp-content/uploads/2018/07/Schermata-da-2018-07-05-12-33-06.png?w=343&ssl=1)
     screenshots:
+      - |-
+        https://raw.githubusercontent.com/ilGhera/wc-carta-docente/master/images/icon.jpg
       - |-
         https://raw.githubusercontent.com/ilGhera/wc-carta-docente/master/images/carica-certificato.jpg
       - |-
