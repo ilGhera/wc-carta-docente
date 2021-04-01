@@ -1,6 +1,7 @@
 <?php
 /**
  * Estende la classe WC_Payment_Gateway di WooCommerce aggiungendo il nuovo gateway "buono docente".
+ *
  * @author ilGhera
  * @package wc-carta-docente/includes
  * @version 0.9.2
@@ -83,7 +84,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	 * @return int                 l'id di categoria acquistabile
 	 */
 	public function get_purchasable_cats($purchasable) {
-
 
 		$wccd_categories = get_option('wccd-categories');
 
@@ -250,10 +250,10 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 			'redirect' => ''
 		);
 
-		$data = $this->get_post_data();
+		$data         = $this->get_post_data();
 	    $teacher_code = $data['wc-codice-docente']; //il buono inserito dall'utente
 
-	    if($teacher_code) {
+        if( $teacher_code ) {
 
 		    $soapClient = new wccd_soap_client($teacher_code, $import);
 		    
@@ -262,7 +262,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		    	/*Prima verifica del buono*/
 	            $response = $soapClient->check();
 
-				$bene    = $response->checkResp->ambito; //il bene acquistabile con il buono inserito
+				$bene          = $response->checkResp->ambito; //il bene acquistabile con il buono inserito
 			    $importo_buono = 20; // floatval($response->checkResp->importo); //l'importo del buono inserito
 			    
                 error_log( 'IMPORTO BUONO: ' . $importo_buono );
@@ -288,7 +288,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                             WC()->cart->apply_coupon( $coupon_code );
 
-                            /* $notice = __( 'Il valore del buono è stato applicato come sconto, ora completa il pagamento! ', 'wccd' ); */
+                            $notice = __( 'Il valore del buono inserito è stato applicato come sconto, ora puoi completare il pagamento! ', 'wccd' );
 
                         }
 
@@ -357,52 +357,14 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 
 /**
- * Se presente un certificato, aggiunge il nuovo gateway a quelli disponibili in WooCommerce
- * @param array $methods gateways disponibili 
+ * Verifica se in sessione è stato applicato un coupon derivante da un buono Carta del Docente
+ *
+ * @return bool
  */
-function wccd_add_teacher_gateway_class($methods) {
-    
-    $session   = WC()->session;
-    $available = true;
+function wccd_coupon_applied() {
 
-    if ( $session ) {
-
-        $session_data = $session->get_session_data();
-        $coupons      = isset( $session_data['applied_coupons'] ) ? maybe_unserialize( $session_data['applied_coupons'] ) : null;
-
-        if ( $coupons && is_array( $coupons ) ) {
-
-            foreach ( $coupons as $coupon ) {
-
-                if ( false !== strpos( $coupon, 'wccd' ) ) {
-                    
-                    $available = false;
-
-                }
-            }
-
-        }
-
-    }
-
-	if ( $available && wccd_admin::get_the_file('.pem') && get_option( 'wccd-cert-activation' ) ) {
-
-        $methods[] = 'WCCD_Teacher_Gateway'; 
-
-	}
-
-    return $methods;
-
-}
-add_filter('woocommerce_payment_gateways', 'wccd_add_teacher_gateway_class');
-
-
-function wccd_check_for_coupon() {
-    
-    echo 'Test 500';
-
-    $session   = WC()->session;
-    $output = false;
+    $session = WC()->session;
+    $output  = false;
 
     if ( $session ) {
 
@@ -426,11 +388,46 @@ function wccd_check_for_coupon() {
 
     }
 
-    echo $output;
+    return $output;
+
+}
+
+
+/**
+ * Verifica di un coupon wccd in sessione al click di aquisto in pagina di checkout
+ *
+ * @return void
+ */
+function wccd_check_for_coupon() {
+    
+    echo wccd_coupon_applied();
 
     exit;
 
 }
 add_action( 'wp_ajax_check-for-coupon', 'wccd_check_for_coupon' );
 add_action( 'wp_ajax_nopriv_check-for-coupon', 'wccd_check_for_coupon' );
+
+
+/**
+ * Se presente un certificato, aggiunge il nuovo gateway a quelli disponibili in WooCommerce
+ *
+ * @param array $methods gateways disponibili 
+ *
+ * @return array
+ */
+function wccd_add_teacher_gateway_class($methods) {
+    
+    $available = wccd_coupon_applied() ? false : true;
+
+	if ( $available && wccd_admin::get_the_file('.pem') && get_option( 'wccd-cert-activation' ) ) {
+
+        $methods[] = 'WCCD_Teacher_Gateway'; 
+
+	}
+
+    return $methods;
+
+}
+add_filter('woocommerce_payment_gateways', 'wccd_add_teacher_gateway_class');
 
