@@ -195,7 +195,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
      */
     private function create_coupon( $order_id, $amount, $teacher_code ) {
         
-        $coupon_code = 'wccd-' . $order_id . '-' . $teacher_code;
+        $coupon_code = 'wccd-' . $teacher_code;
 
         $args = array(
             'post_title'   => $coupon_code,
