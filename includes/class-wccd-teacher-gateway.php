@@ -23,12 +23,11 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 		$this->title = $this->get_option('title');
 		$this->description = $this->get_option('description');
-
+        
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-
-		add_action('woocommerce_order_details_after_order_table', array($this, 'display_teacher_code'), 10, 1);
-		add_action('woocommerce_email_after_order_table', array($this, 'display_teacher_code'), 10, 1);
-		add_action('woocommerce_admin_order_data_after_billing_address', array($this, 'display_teacher_code'), 10, 1);
+		add_action( 'woocommerce_order_details_after_order_table', array( $this, 'display_teacher_code' ), 10, 1 );
+		add_action( 'woocommerce_email_after_order_table', array( $this, 'display_teacher_code'), 10, 1 );
+		add_action( 'woocommerce_admin_order_data_after_billing_address', array( $this, 'display_teacher_code' ), 10, 1 );
 	}
 
 
@@ -167,6 +166,74 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	}
 
 
+    /**
+     * Ricava il coupon id dal suo codice
+     *
+     * @param string $coupon_code il codice del coupon.
+     *
+     * @return int l'id del coupon
+     */
+    private function get_coupon_id( $coupon_code ) {
+
+        $coupon = get_page_by_title( $coupon_code, OBJECT, 'shop_coupon' );
+        
+        if ( $coupon && isset( $coupon->ID ) ) {
+
+            return $coupon->ID;
+        }
+
+    }
+
+    /**
+     * Crea un nuovo coupon
+     *
+     * @param int    $order_id     l'id dell'ordine.
+     * @param float  $amount       il valore da assegnare al coupon.
+     * @param string $teacher_code il codice del buono docente.
+     *
+     * @return int l'id del coupon creato
+     */
+    private function create_coupon( $order_id, $amount, $teacher_code ) {
+        
+        $coupon_code = 'wccd-' . $order_id . '-' . $teacher_code;
+
+        $args = array(
+            'post_title'   => $coupon_code,
+            'post_content' => '',
+            'post_type'    => 'shop_coupon',
+            'post_status'  => 'publish',
+            'post_author'  => 1,
+            'meta_input'   => array(
+                'discount_type' => 'fixed_cart',
+                'coupon_amount' => $amount,
+                'usage_limit'   => 1,
+            ),
+        );
+
+        $coupon_id = $this->get_coupon_id( $coupon_code );
+
+        /* Aggiorna coupon se già presente */
+        if ( $coupon_id ) {
+
+            $args['ID'] = $coupon_id;
+
+            $coupon_id = wp_update_post( $args );
+            
+        } else {
+
+            $coupon_id = wp_insert_post( $args );
+
+        }
+
+        if ( ! is_wp_error( $coupon_id ) ) {
+
+            return $coupon_code;
+
+        }
+
+    }
+
+
 	/**
 	 * Gestisce il processo di pagamento, verificando la validità del buono inserito dall'utente
 	 * @param  int $order_id l'id dell'ordine
@@ -196,8 +263,10 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	            $response = $soapClient->check();
 
 				$bene    = $response->checkResp->ambito; //il bene acquistabile con il buono inserito
-			    $importo_buono = floatval($response->checkResp->importo); //l'importo del buono inserito
+			    $importo_buono = 20; // floatval($response->checkResp->importo); //l'importo del buono inserito
 			    
+                error_log( 'IMPORTO BUONO: ' . $importo_buono );
+
 			    /*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
 			    $purchasable = $this->is_purchasable($order, $bene);
 
@@ -207,8 +276,23 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 				} else {
 
-					$type = null;
-					if($importo_buono === $import) {
+                    $type = null;
+
+                    if ( $importo_buono < $import ) {
+
+                        $coupon_code = $this->create_coupon( $order_id, $importo_buono, $teacher_code );
+
+                        error_log( 'COUPON CODE: ' . $coupon_code );
+
+                        if ( $coupon_code && ! WC()->cart->has_discount( $coupon_code ) ) {
+
+                            WC()->cart->apply_coupon( $coupon_code );
+
+                            /* $notice = __( 'Il valore del buono è stato applicato come sconto, ora completa il pagamento! ', 'wccd' ); */
+
+                        }
+
+                    } elseif ( $importo_buono === $import ) {
 
 						$type = 'check';
 
@@ -277,10 +361,76 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
  * @param array $methods gateways disponibili 
  */
 function wccd_add_teacher_gateway_class($methods) {
-	if(wccd_admin::get_the_file('.pem') && get_option('wccd-cert-activation')) {
-	    $methods[] = 'WCCD_Teacher_Gateway'; 
+    
+    $session   = WC()->session;
+    $available = true;
+
+    if ( $session ) {
+
+        $session_data = $session->get_session_data();
+        $coupons      = isset( $session_data['applied_coupons'] ) ? maybe_unserialize( $session_data['applied_coupons'] ) : null;
+
+        if ( $coupons && is_array( $coupons ) ) {
+
+            foreach ( $coupons as $coupon ) {
+
+                if ( false !== strpos( $coupon, 'wccd' ) ) {
+                    
+                    $available = false;
+
+                }
+            }
+
+        }
+
+    }
+
+	if ( $available && wccd_admin::get_the_file('.pem') && get_option( 'wccd-cert-activation' ) ) {
+
+        $methods[] = 'WCCD_Teacher_Gateway'; 
+
 	}
 
     return $methods;
+
 }
 add_filter('woocommerce_payment_gateways', 'wccd_add_teacher_gateway_class');
+
+
+function wccd_check_for_coupon() {
+    
+    echo 'Test 500';
+
+    $session   = WC()->session;
+    $output = false;
+
+    if ( $session ) {
+
+        $session_data = $session->get_session_data();
+        $coupons      = isset( $session_data['applied_coupons'] ) ? maybe_unserialize( $session_data['applied_coupons'] ) : null;
+        
+        error_log( 'AJAX COUPONS: ' . print_r( $coupons, true ) );
+
+        if ( $coupons && is_array( $coupons ) ) {
+
+            foreach ( $coupons as $coupon ) {
+
+                if ( false !== strpos( $coupon, 'wccd' ) ) {
+                    
+                    $output = true;
+
+                }
+            }
+
+        }
+
+    }
+
+    echo $output;
+
+    exit;
+
+}
+add_action( 'wp_ajax_check-for-coupon', 'wccd_check_for_coupon' );
+add_action( 'wp_ajax_nopriv_check-for-coupon', 'wccd_check_for_coupon' );
+
