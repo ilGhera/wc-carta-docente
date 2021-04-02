@@ -1,5 +1,6 @@
 /**
  * WC Carta Docente - js
+ *
  * @author ilGhera
  * @package wc-carta-docente/js
  * @version 1.0.5

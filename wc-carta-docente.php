@@ -48,6 +48,7 @@ function wccd_premium_activation() {
 	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';
 	require WCCD_INCLUDES . 'class-wccd-soap-client.php';
 	require WCCD_INCLUDES . 'class-wccd-admin.php';
+	require WCCD_INCLUDES . 'class-wccd.php';
 
 	/*Script e folgi di stile front-end*/
 	function wccd_load_scripts() {
