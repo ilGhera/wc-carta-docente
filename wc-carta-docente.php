@@ -58,7 +58,8 @@ function wccd_premium_activation() {
             'wccd-scripts',
             'wccdOptions',
             array(
-                'ajaxURL' => admin_url( 'admin-ajax.php' ),
+                'ajaxURL'          => admin_url( 'admin-ajax.php' ),
+                'couponConversion' => get_option( 'wccd-coupon' ),
             )
         );
 	}

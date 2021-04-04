@@ -288,10 +288,11 @@ class wccd_admin {
 
 		/*Recupero le opzioni salvate nel db*/
 		$premium_key = get_option('wccd-premium-key');
-		$passphrase = base64_decode(get_option('wccd-password'));
-		$categories = get_option('wccd-categories');
-		$tot_cats = $categories ? count($categories) : 0;
-		$wccd_image = get_option('wccd-image');
+		$passphrase  = base64_decode(get_option('wccd-password'));
+		$categories  = get_option('wccd-categories');
+		$tot_cats    = $categories ? count($categories) : 0;
+		$wccd_coupon = get_option('wccd-coupon');
+		$wccd_image  = get_option('wccd-image');
 
 		echo '<div class="wrap">';
 	    	echo '<div class="wrap-left">';
@@ -505,7 +506,17 @@ class wccd_admin {
 				    		echo '</tr>';
 
 				    		echo '<tr>';
-				    			echo '<th scope="row">' . esc_html(__('Utilizzo immagine ', 'wccd')) . '</th>';
+				    			echo '<th scope="row">' . esc_html(__('Conversione in coupon', 'wccd')) . '</th>';
+			    				echo '<td>';
+					    			echo '<label>';
+					    			echo '<input type="checkbox" name="wccd-coupon" value="1"' . ($wccd_coupon === '1' ? ' checked="checked"' : '') . '>';
+					    			echo wp_kses_post( __( 'Nel caso in cui il buono <i>Carta del Docente</i> inserito sia inferiore al totale a carrello, viene convertito in <i>Codice promozionale</i> ed applicato all\'ordine.', 'wccd' ) );
+					    			echo '</label>';
+			    				echo '</td>';
+				    		echo '</tr>';
+
+				    		echo '<tr>';
+				    			echo '<th scope="row">' . esc_html(__('Utilizzo immagine', 'wccd')) . '</th>';
 			    				echo '<td>';
 					    			echo '<label>';
 					    			echo '<input type="checkbox" name="wccd-image" value="1"' . ($wccd_image === '1' ? ' checked="checked"' : '') . '>';
@@ -645,6 +656,10 @@ class wccd_admin {
 
 				update_option('wccd-categories', $wccd_categories);
 			}
+
+			/*Conversione in coupon*/
+			$wccd_coupon = isset($_POST['wccd-coupon']) ? sanitize_text_field($_POST['wccd-coupon']) : '';															
+			update_option('wccd-coupon', $wccd_coupon);
 
 			/*Immagine in pagina di checkout*/
 			$wccd_image = isset($_POST['wccd-image']) ? sanitize_text_field($_POST['wccd-image']) : '';															

@@ -15,27 +15,33 @@ var wccdController = function() {
 
     }
 
+    /**
+     * Aggiorna la pagina di checkout nel caso ion cui sia stato inserito in coupon
+     *
+     * @return void
+     */
     self.checkForCoupon = function() {
     
         jQuery(document).ready(function($){
             
             $('body').on('checkout_error', function() {
                 
-                console.log(wccdOptions.ajaxURL);
+                if ( wccdOptions.couponConversion ) {
 
-                var data = {
-                    'action': 'check-for-coupon'
-                }
-
-                $.post(wccdOptions.ajaxURL, data, function(response) {
-                    
-                    if (response) {
-
-                        $('body').trigger('update_checkout');
-                    
+                    var data = {
+                        'action': 'check-for-coupon'
                     }
 
-                })
+                    $.post(wccdOptions.ajaxURL, data, function(response) {
+                        
+                        if (response) {
+
+                            $('body').trigger('update_checkout');
+                        
+                        }
+
+                    })
+                }
 
             })
 

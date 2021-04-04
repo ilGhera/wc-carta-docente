@@ -8,12 +8,19 @@
  */
 class WCCD {
 
+    
+    public $coupon_option;
+    
+
     /**
      * The constructor
      *
      * @return void
      */
     public function __construct() {
+
+        /* Controlla se l'optione è stata attivata dall'admin */
+        $this->coupon_option = get_option( 'wccd-coupon' );
 
         /* Actions */
         add_action( 'wp_ajax_check-for-coupon', array( $this, 'wccd_check_for_coupon' ) );
@@ -113,7 +120,7 @@ class WCCD {
      */
     public function wccd_add_teacher_gateway_class( $methods ) {
         
-        $available = $this->wccd_coupon_applied() ? false : true;
+        $available = ( $this->coupon_option && $this->wccd_coupon_applied() ) ? false : true;
 
         if ( $available && wccd_admin::get_the_file( '.pem' ) && get_option( 'wccd-cert-activation' ) ) {
 
@@ -134,21 +141,25 @@ class WCCD {
      */
     public function process_coupon() {
 
-        $coupon_code = $this->wccd_coupon_applied( true );
+        if ( $this->coupon_option ) {
 
-        if ( $coupon_code ) {
+            $coupon_code = $this->wccd_coupon_applied( true );
 
-            $parts         = explode( '-', $coupon_code );
-            $coupon        = new WC_Coupon( $coupon_code );
-            $coupon_amount = $coupon->get_amount();
+            if ( $coupon_code ) {
 
-            $notice = WCCD_Teacher_Gateway::process_code( $parts[1], $parts[2], $coupon_amount, true );
+                $parts         = explode( '-', $coupon_code );
+                $coupon        = new WC_Coupon( $coupon_code );
+                $coupon_amount = $coupon->get_amount();
 
-            if ( 1 !== intval( $notice ) ) {
+                $notice = WCCD_Teacher_Gateway::process_code( $parts[1], $parts[2], $coupon_amount, true );
 
-                wc_add_notice( __( 'Buono docente - ' . $notice, 'wccd' ), 'error' );         
+                if ( 1 !== intval( $notice ) ) {
 
+                    wc_add_notice( __( 'Buono docente - ' . $notice, 'wccd' ), 'error' );         
+
+                }
             }
+
         }
   
     }
