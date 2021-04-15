@@ -8,6 +8,10 @@
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
+    
+    public static $coupon_option;
+
+
 	public function __construct() {
 		$this->plugin_id          = 'woocommerce_carta_docente';
 		$this->id                 = 'docente';
@@ -15,6 +19,8 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->method_title       = 'Buono docente';
 		$this->method_description = 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.';
 		
+        self::$coupon_option      = get_option( 'wccd-coupon' );
+
         if ( get_option( 'wccd-image' ) ) {
 
             $this->icon = WCCD_URI . 'images/carta-docente.png';			
@@ -265,7 +271,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
             $response = $soapClient->check();
 
             $bene          = $response->checkResp->ambito; //il bene acquistabile con il buono inserito
-            $importo_buono = 20; // floatval($response->checkResp->importo); //l'importo del buono inserito
+            $importo_buono = floatval($response->checkResp->importo); //l'importo del buono inserito
             
             /*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
             $purchasable = self::is_purchasable( $order, $bene );
@@ -278,7 +284,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                 $type = null;
 
-                if ( $importo_buono < $import && ! $converted  ) {
+                if ( self::$coupon_option && $importo_buono < $import && ! $converted  ) {
 
                     $coupon_code = self::create_coupon( $order_id, $importo_buono, $teacher_code );
 
