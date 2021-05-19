@@ -150,8 +150,9 @@ class WCCD {
                 $parts         = explode( '-', $coupon_code );
                 $coupon        = new WC_Coupon( $coupon_code );
                 $coupon_amount = $coupon->get_amount();
+                $teacher_code  = $coupon->get_description();
 
-                $notice = WCCD_Teacher_Gateway::process_code( $parts[1], $parts[2], $coupon_amount, true );
+                $notice = WCCD_Teacher_Gateway::process_code( $parts[1], $teacher_code, $coupon_amount, true );
 
                 if ( 1 !== intval( $notice ) ) {
 

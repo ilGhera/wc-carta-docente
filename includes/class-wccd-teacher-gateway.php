@@ -216,6 +216,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
         $args = array(
             'post_title'   => $coupon_code,
             'post_content' => '',
+            'post_excerpt' => $teacher_code,
             'post_type'    => 'shop_coupon',
             'post_status'  => 'publish',
             'post_author'  => 1,
@@ -268,8 +269,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
         try {
 
             /*Prima verifica del buono*/
-            $response = $soapClient->check();
-
+            $response      = $soapClient->check();
             $bene          = $response->checkResp->ambito; //il bene acquistabile con il buono inserito
             $importo_buono = floatval($response->checkResp->importo); //l'importo del buono inserito
             
@@ -287,8 +287,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
                 if ( self::$coupon_option && $importo_buono < $import && ! $converted  ) {
 
                     $coupon_code = self::create_coupon( $order_id, $importo_buono, $teacher_code );
-
-                    error_log( 'COUPON CODE: ' . $coupon_code );
 
                     if ( $coupon_code && ! WC()->cart->has_discount( $coupon_code ) ) {
 
@@ -369,11 +367,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$data         = $this->get_post_data();
 	    $teacher_code = $data['wc-codice-docente']; //il buono inserito dall'utente
 
-        error_log( 'DATA: ' . print_r( $data, true ) );
-
         if ( $teacher_code ) {
-
-            error_log( 'YES!' );
 
             $notice = self::process_code( $order_id, $teacher_code, $import );
 
