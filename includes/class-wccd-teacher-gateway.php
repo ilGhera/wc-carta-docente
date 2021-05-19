@@ -369,7 +369,11 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$data         = $this->get_post_data();
 	    $teacher_code = $data['wc-codice-docente']; //il buono inserito dall'utente
 
+        error_log( 'DATA: ' . print_r( $data, true ) );
+
         if ( $teacher_code ) {
+
+            error_log( 'YES!' );
 
             $notice = self::process_code( $order_id, $teacher_code, $import );
 
