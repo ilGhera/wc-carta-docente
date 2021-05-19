@@ -508,20 +508,16 @@ class wccd_admin {
 				    		echo '<tr>';
 				    			echo '<th scope="row">' . esc_html(__('Conversione in coupon', 'wccd')) . '</th>';
 			    				echo '<td>';
-					    			echo '<label>';
 					    			echo '<input type="checkbox" name="wccd-coupon" value="1"' . ($wccd_coupon === '1' ? ' checked="checked"' : '') . '>';
-					    			echo wp_kses_post( __( 'Nel caso in cui il buono <i>Carta del Docente</i> inserito sia inferiore al totale a carrello, viene convertito in <i>Codice promozionale</i> ed applicato all\'ordine.', 'wccd' ) );
-					    			echo '</label>';
+					    			echo '<p class="description">' . wp_kses_post( __( 'Nel caso in cui il buono <i>Carta del Docente</i> inserito sia inferiore al totale a carrello, viene convertito in <i>Codice promozionale</i> ed applicato all\'ordine.', 'wccd' ) ) . '</p>';
 			    				echo '</td>';
 				    		echo '</tr>';
 
 				    		echo '<tr>';
 				    			echo '<th scope="row">' . esc_html(__('Utilizzo immagine', 'wccd')) . '</th>';
 			    				echo '<td>';
-					    			echo '<label>';
 					    			echo '<input type="checkbox" name="wccd-image" value="1"' . ($wccd_image === '1' ? ' checked="checked"' : '') . '>';
-					    			echo esc_html(__('Mostra il logo Carta del docente nella pagine di checkout.', 'wccd'));
-					    			echo '</label>';
+					    			echo '<p class="description">' .  esc_html(__('Mostra il logo Carta del docente nella pagine di checkout.', 'wccd') ) . '</p>';
 			    				echo '</td>';
 				    		echo '</tr>';
 
