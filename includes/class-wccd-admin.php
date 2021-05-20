@@ -3,15 +3,15 @@
  * Pagina opzioni e gestione certificati
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @version 1.0.2
+ * @version 1.1.0
  */
 class wccd_admin {
 
 	public function __construct() {
 		add_action('admin_init', array($this, 'wccd_save_settings'));
 		add_action('admin_menu', array($this, 'register_options_page'));
-		add_action('wp_ajax_delete-certificate', array($this, 'delete_certificate_callback'));
-		add_action('wp_ajax_add-cat', array($this, 'add_cat_callback'));
+		add_action('wp_ajax_wccd-delete-certificate', array($this, 'delete_certificate_callback'), 1);
+		add_action('wp_ajax_wccd-add-cat', array($this, 'add_cat_callback'));
 	}
 
 
@@ -43,7 +43,7 @@ class wccd_admin {
 	 * Cancella il certificato
 	 */
 	public function delete_certificate_callback() {
-		if(isset($_POST['delete'])) {
+		if(isset($_POST['wccd-delete'])) {
 			$cert = isset($_POST['cert']) ? sanitize_text_field($_POST['cert']) : '';
 			if($cert) {
 				unlink(WCCD_PRIVATE . $cert);	
@@ -187,10 +187,11 @@ class wccd_admin {
 	public function wccd_settings() {
 
 		/*Recupero le opzioni salvate nel db*/
-		$passphrase = base64_decode(get_option('wccd-password'));
-		$categories = get_option('wccd-categories');
-		$tot_cats = $categories ? count($categories) : 0;
-		$wccd_image = get_option('wccd-image');
+		$passphrase  = base64_decode(get_option('wccd-password'));
+		$categories  = get_option('wccd-categories');
+		$tot_cats    = $categories ? count($categories) : 0;
+		$wccd_coupon = get_option('wccd-coupon');
+		$wccd_image  = get_option('wccd-image');
 
 		echo '<div class="wrap">';
 	    	echo '<div class="wrap-left">';
@@ -224,7 +225,7 @@ class wccd_admin {
 				    					if($activation === 'ok') {
 
 					    					echo '<span class="cert-loaded">' . esc_html(basename($file)) . '</span>';
-					    					echo '<a class="button delete delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
+					    					echo '<a class="button delete wccd-delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
 					    					echo '<p class="description">' . esc_html(__('File caricato e attivato correttamente.', 'wccd')) . '</p>';
 
 					    					update_option('wccd-cert-activation', 1);
@@ -232,7 +233,7 @@ class wccd_admin {
 				    					} else {
 
 					    					echo '<span class="cert-loaded error">' . esc_html(basename($file)) . '</span>';
-					    					echo '<a class="button delete delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
+					    					echo '<a class="button delete wccd-delete-certificate">' . esc_html(__('Elimina'), 'wccd') . '</a>';
 					    					echo '<p class="description">' . sprintf(esc_html(__('L\'attivazione del certificato ha restituito il seguente errore: %s', 'wccd')), $activation) . '</p>';
 
 					    					delete_option('wccd-cert-activation');
@@ -250,7 +251,7 @@ class wccd_admin {
 
 				    		/*Password utilizzata per la creazione del certificato*/
 				    		echo '<tr>';
-				    			echo '<th scope="row">' . esc_html(__('Password', 'wc18')) . '</th>';
+				    			echo '<th scope="row">' . esc_html(__('Password', 'wccd')) . '</th>';
 				    			echo '<td>';
 			    					echo '<input type="password" name="wccd-password" placeholder="**********" value="' . $passphrase . '" required>';
 					    			echo '<p class="description">' . esc_html(__('La password utilizzata per la generazione del certificato', 'wccd')) . '</p>';	
@@ -390,12 +391,18 @@ class wccd_admin {
 				    		echo '</tr>';
 
 				    		echo '<tr>';
-				    			echo '<th scope="row">' . esc_html(__('Utilizzo immagine ', 'wccd')) . '</th>';
+				    			echo '<th scope="row">' . esc_html(__('Conversione in coupon', 'wccd')) . '</th>';
 			    				echo '<td>';
-					    			echo '<label>';
+					    			echo '<input type="checkbox" name="wccd-coupon" value="1"' . ($wccd_coupon === '1' ? ' checked="checked"' : '') . '>';
+					    			echo '<p class="description">' . wp_kses_post( __( 'Nel caso in cui il buono <i>Carta del Docente</i> inserito sia inferiore al totale a carrello, viene convertito in <i>Codice promozionale</i> ed applicato all\'ordine.', 'wccd' ) ) . '</p>';
+			    				echo '</td>';
+				    		echo '</tr>';
+
+				    		echo '<tr>';
+				    			echo '<th scope="row">' . esc_html(__('Utilizzo immagine', 'wccd')) . '</th>';
+			    				echo '<td>';
 					    			echo '<input type="checkbox" name="wccd-image" value="1"' . ($wccd_image === '1' ? ' checked="checked"' : '') . '>';
-					    			echo esc_html(__('Mostra il logo Carta del docente nella pagine di checkout.', 'wccd'));
-					    			echo '</label>';
+					    			echo '<p class="description">' .  esc_html(__('Mostra il logo Carta del docente nella pagine di checkout.', 'wccd') ) . '</p>';
 			    				echo '</td>';
 				    		echo '</tr>';
 
@@ -480,6 +487,10 @@ class wccd_admin {
 				update_option('wccd-categories', $wccd_categories);
 			}
 
+			/*Conversione in coupon*/
+			$wccd_coupon = isset($_POST['wccd-coupon']) ? sanitize_text_field($_POST['wccd-coupon']) : '';															
+			update_option('wccd-coupon', $wccd_coupon);
+
 			/*Immagine in pagina di checkout*/
 			$wccd_image = isset($_POST['wccd-image']) ? sanitize_text_field($_POST['wccd-image']) : '';															
 			update_option('wccd-image', $wccd_image);
@@ -488,3 +499,4 @@ class wccd_admin {
 
 }
 new wccd_admin();
+

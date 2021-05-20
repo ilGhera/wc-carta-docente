@@ -2,21 +2,21 @@
  * WC Carta Docente - Admin js
  * @author ilGhera
  * @package wc-carta-docente/js
- * @version 1.0.3
+ * @version 1.1.0
  */
 
 /**
  * Ajax - Elimina il certificato caricato precedentemente
  */
-var delete_certificate = function() {
+var wccd_delete_certificate = function() {
 	jQuery(function($){
-		$('.delete-certificate').on('click', function(){
+		$('.wccd-delete-certificate').on('click', function(){
 			var sure = confirm('Sei sicuro di voler eliminare il certificato?');
 			if(sure) {
 				var cert = $('.cert-loaded').text();
 				var data = {
-					'action': 'delete-certificate',
-					'delete': true,
+					'action': 'wccd-delete-certificate',
+					'wccd-delete': true,
 					'cert': cert
 				}			
 				$.post(ajaxurl, data, function(response){
@@ -27,13 +27,13 @@ var delete_certificate = function() {
 		})	
 	})
 }
-delete_certificate();
+wccd_delete_certificate();
 
 
 /**
  * Aggiunge un nuovo abbinamento bene/ categoria per il controllo in pagina di checkout
  */
-var add_cat = function() {
+var wccd_add_cat = function() {
 	jQuery(function($){
 		$('.add-cat-hover.wccd').on('click', function(){
 			var number = $('.setup-cat').length + 1;
@@ -45,7 +45,7 @@ var add_cat = function() {
 			})
 
 			var data = {
-				'action': 'add-cat',
+				'action': 'wccd-add-cat',
 				'number': number,
 				'exclude-beni': beni_values.toString(),
 			}
@@ -56,13 +56,13 @@ var add_cat = function() {
 		})
 	})
 }
-add_cat();
+wccd_add_cat();
 
 
 /**
  * Rimuove un abbinamento bene/ categoria
  */
-var remove_cat = function() {
+var wccd_remove_cat = function() {
 	jQuery(function($){
 		$(document).on('click', '.remove-cat-hover', function(response){
 			var cat = $(this).closest('li');
@@ -72,13 +72,13 @@ var remove_cat = function() {
 		})
 	})
 }
-remove_cat();
+wccd_remove_cat();
 
 
 /**
  * Menu di navigazione della pagina opzioni
  */
-var menu_navigation = function() {
+var wccd_menu_navigation = function() {
 	jQuery(function($){
 		var $contents = $('.wccd-admin')
 		var url = window.location.href.split("#")[0];
@@ -115,4 +115,5 @@ var menu_navigation = function() {
 
 	})
 }
-menu_navigation();
+wccd_menu_navigation();
+

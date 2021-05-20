@@ -10,7 +10,9 @@
 }
 
 .cert-loaded {
-	padding: 0.3rem 4rem;
+	padding: 6px 80px;
+	margin-right: 5px;
+	position: relative;
 	display: inline-block;
 	color: #fff;
 	text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.25);
@@ -128,4 +130,28 @@ ul.categories-container {
     width: 30%;
     text-align: center;
     padding-top: 3rem;
+}
+
+@media screen and (max-width: 1000px) {
+
+	.wrap-left {
+		float: none;
+		width: 100%;
+	}
+
+	.wrap-right {
+		float: none; 
+		width: 100%; 
+		text-align: center; 
+		padding-top: 3rem;
+	}
+
+
+}
+
+@media screen and (max-width: 780px) {
+
+.cert-loaded {
+	padding: 10px 80px;
+	top: -1px;
 }

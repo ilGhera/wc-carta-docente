@@ -4,11 +4,11 @@
  * Plugin URI: https://www.ilghera.com/product/wc-carta-docente/
  * Description: Abilita in WooCommerce il pagamento con Carta del Docente prevista dallo stato Italiano. 
  * Author: ilGhera
- * Version: 1.0.3
+ * Version: 1.1.0
  * Author URI: https://ilghera.com 
  * Requires at least: 4.0
- * Tested up to: 5.3
- * WC tested up to: 3
+ * Tested up to: 5.7
+ * WC tested up to: 5
  * Text Domain: wccd
  * Domain Path: /languages
  */
@@ -39,17 +39,40 @@ function wccd_activation() {
 	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';
 	require WCCD_INCLUDES . 'class-wccd-soap-client.php';
 	require WCCD_INCLUDES . 'class-wccd-admin.php';
+	require WCCD_INCLUDES . 'class-wccd.php';
 
 	/*Script e folgi di stile front-end*/
 	function wccd_load_scripts() {
 		wp_enqueue_style('wccd-style', WCCD_URI . 'css/wc-carta-docente.css');
+		wp_enqueue_script('wccd-scripts', WCCD_URI . 'js/wc-carta-docente.js');
+        wp_localize_script(
+            'wccd-scripts',
+            'wccdOptions',
+            array(
+                'ajaxURL'          => admin_url( 'admin-ajax.php' ),
+                'couponConversion' => get_option( 'wccd-coupon' ),
+            )
+        );
 	}
 
 
 	/*Script e folgi di stile back-end*/
 	function wccd_load_admin_scripts() {
-		wp_enqueue_style('wccd-admin-style', WCCD_URI . 'css/wc-carta-docente-admin.css');
-		wp_enqueue_script('wccd-admin-scripts', WCCD_URI . 'js/wc-carta-docente-admin.js');
+
+        $admin_page = get_current_screen();
+
+        if ( isset( $admin_page->base ) && 'woocommerce_page_wccd-settings' === $admin_page->base ) {
+
+            wp_enqueue_style('wccd-admin-style', WCCD_URI . 'css/wc-carta-docente-admin.css');
+            wp_enqueue_script('wccd-admin-scripts', WCCD_URI . 'js/wc-carta-docente-admin.js');
+
+            /*tzCheckBox*/
+            wp_enqueue_style( 'tzcheckbox-style', WCCD_URI . 'js/tzCheckbox/jquery.tzCheckbox/jquery.tzCheckbox.css' );
+            wp_enqueue_script( 'tzcheckbox', WCCD_URI . 'js/tzCheckbox/jquery.tzCheckbox/jquery.tzCheckbox.js', array( 'jquery' ) );
+            wp_enqueue_script( 'tzcheckbox-script', WCCD_URI . 'js/tzCheckbox/js/script.js', array( 'jquery' ) );
+
+        }
+
 	}
 
 	/*Script e folgi di stile*/
@@ -57,3 +80,4 @@ function wccd_activation() {
 	add_action('admin_enqueue_scripts', 'wccd_load_admin_scripts');
 } 
 add_action('plugins_loaded', 'wccd_activation', 100);
+
