@@ -8,12 +8,12 @@
 class wccd_soap_client {
 
     public function __construct($codiceVoucher, $import) {
-        $this->wsdl = WCCD_INCLUDES_URI . 'VerificaVoucher.wsdl';
-        $this->local_cert = WCCD_PRIVATE . $this->get_local_cert();
-        $this->location = 'https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
+        $this->wsdl          = WCCD_INCLUDES_URI . 'VerificaVoucher.wsdl';
+        $this->local_cert    = WCCD_PRIVATE . $this->get_local_cert();
+        $this->location      = 'https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
         $this->codiceVoucher = $codiceVoucher;
-		$this->import = $import;
-        $this->passphrase = $this->get_user_passphrase(); 
+		$this->import        = $import;
+        $this->passphrase    = $this->get_user_passphrase(); 
 	}
 
 
