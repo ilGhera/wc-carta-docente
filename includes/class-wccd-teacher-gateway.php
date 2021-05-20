@@ -4,7 +4,7 @@
  *
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @version 1.0.4
+ * @version 1.1.0
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 

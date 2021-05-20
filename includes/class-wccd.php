@@ -4,7 +4,7 @@
  *
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @since 0.9.2
+ * @since 1.1.0
  */
 class WCCD {
 

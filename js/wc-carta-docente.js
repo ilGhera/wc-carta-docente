@@ -3,7 +3,7 @@
  *
  * @author ilGhera
  * @package wc-carta-docente/js
- * @version 1.0.5
+ * @version 1.1.0
  */
 var wccdController = function() {
 
