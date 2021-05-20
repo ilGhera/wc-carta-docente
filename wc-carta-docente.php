@@ -48,16 +48,39 @@ function wccd_premium_activation() {
 	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';
 	require WCCD_INCLUDES . 'class-wccd-soap-client.php';
 	require WCCD_INCLUDES . 'class-wccd-admin.php';
+	require WCCD_INCLUDES . 'class-wccd.php';
 
 	/*Script e folgi di stile front-end*/
 	function wccd_load_scripts() {
 		wp_enqueue_style('wccd-style', WCCD_URI . 'css/wc-carta-docente.css');
+		wp_enqueue_script('wccd-scripts', WCCD_URI . 'js/wc-carta-docente.js');
+        wp_localize_script(
+            'wccd-scripts',
+            'wccdOptions',
+            array(
+                'ajaxURL'          => admin_url( 'admin-ajax.php' ),
+                'couponConversion' => get_option( 'wccd-coupon' ),
+            )
+        );
 	}
 
 	/*Script e folgi di stile back-end*/
 	function wccd_load_admin_scripts() {
-		wp_enqueue_style('wccd-admin-style', WCCD_URI . 'css/wc-carta-docente-admin.css');
-		wp_enqueue_script('wccd-admin-scripts', WCCD_URI . 'js/wc-carta-docente-admin.js');
+
+        $admin_page = get_current_screen();
+
+        if ( isset( $admin_page->base ) && 'woocommerce_page_wccd-settings' === $admin_page->base ) {
+
+            wp_enqueue_style('wccd-admin-style', WCCD_URI . 'css/wc-carta-docente-admin.css');
+            wp_enqueue_script('wccd-admin-scripts', WCCD_URI . 'js/wc-carta-docente-admin.js');
+
+            /*tzCheckBox*/
+            wp_enqueue_style( 'tzcheckbox-style', WCCD_URI . 'js/tzCheckbox/jquery.tzCheckbox/jquery.tzCheckbox.css' );
+            wp_enqueue_script( 'tzcheckbox', WCCD_URI . 'js/tzCheckbox/jquery.tzCheckbox/jquery.tzCheckbox.js', array( 'jquery' ) );
+            wp_enqueue_script( 'tzcheckbox-script', WCCD_URI . 'js/tzCheckbox/js/script.js', array( 'jquery' ) );
+
+        }
+
 	}
 
 	/*Script e folgi di stile*/
