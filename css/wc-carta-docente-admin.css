@@ -2,7 +2,7 @@
  * WC Carta Docente - Admin CSS
  * @author ilGhera
  * @package wc-carta-docente/css
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 #wccd-admin-menu {
@@ -118,6 +118,10 @@ ul.categories-container {
     display: inline-block;
     margin: 1rem 1rem 0;
     padding: 0.4rem;
+}
+
+.label.premium.no-margin {
+    margin: 1rem 0;
 }
 
 .wrap-left {

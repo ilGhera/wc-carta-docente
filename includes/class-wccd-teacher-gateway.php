@@ -4,12 +4,9 @@
  *
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @version 1.0.3
+ * @version 1.1.0
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
-
-    
-    public static $coupon_option;
 
 
 	public function __construct() {
@@ -19,8 +16,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->method_title       = 'Buono docente';
 		$this->method_description = 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.';
 		
-        self::$coupon_option      = get_option( 'wccd-coupon' );
-
         if ( get_option( 'wccd-image' ) ) {
 
             $this->icon = WCCD_URI . 'images/carta-docente.png';			
@@ -182,85 +177,15 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 
     /**
-     * Ricava il coupon id dal suo codice
-     *
-     * @param string $coupon_code il codice del coupon.
-     *
-     * @return int l'id del coupon
-     */
-    private static function get_coupon_id( $coupon_code ) {
-
-        $coupon = get_page_by_title( $coupon_code, OBJECT, 'shop_coupon' );
-        
-        if ( $coupon && isset( $coupon->ID ) ) {
-
-            return $coupon->ID;
-
-        }
-
-    }
-
-    /**
-     * Crea un nuovo coupon
-     *
-     * @param int    $order_id     l'id dell'ordine.
-     * @param float  $amount       il valore da assegnare al coupon.
-     * @param string $teacher_code il codice del buono docente.
-     *
-     * @return int l'id del coupon creato
-     */
-    private static function create_coupon( $order_id, $amount, $teacher_code ) {
-        
-        $coupon_code = 'wccd-' . $order_id . '-' . $teacher_code;
-
-        $args = array(
-            'post_title'   => $coupon_code,
-            'post_content' => '',
-            'post_excerpt' => $teacher_code,
-            'post_type'    => 'shop_coupon',
-            'post_status'  => 'publish',
-            'post_author'  => 1,
-            'meta_input'   => array(
-                'discount_type' => 'fixed_cart',
-                'coupon_amount' => $amount,
-                'usage_limit'   => 1,
-            ),
-        );
-
-        $coupon_id = self::get_coupon_id( $coupon_code );
-
-        /* Aggiorna coupon se già presente */
-        if ( $coupon_id ) {
-
-            $args['ID'] = $coupon_id;
-            $coupon_id  = wp_update_post( $args );
-            
-        } else {
-
-            $coupon_id = wp_insert_post( $args );
-
-        }
-
-        if ( ! is_wp_error( $coupon_id ) ) {
-
-            return $coupon_code;
-
-        }
-
-    }
-
-
-    /**
      * Processa il buono docente inserito
      *
-     * @param int    l'id dell'ordine.
-     * @param string il buono docente.
-     * @param float  il totale dell'ordine o il valore del coupon.
-     * @param bool   se valorizzato il metodo viene utilizzato nella validazione del coupon - process_coupon().
+     * @param int    $order_id     l'id dell'ordine.
+     * @param string $teacher_code il buono docente.
+     * @param float  $import       il totale dell'ordine.
      *
      * @return mixed string in caso di errore, 1 in alternativa
      */
-    public static function process_code( $order_id, $teacher_code, $import, $converted = false ) {
+    public static function process_code( $order_id, $teacher_code, $import ) {
 
         $output     = 1; 
         $order      = wc_get_order( $order_id );
@@ -284,19 +209,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                 $type = null;
 
-                if ( self::$coupon_option && $importo_buono < $import && ! $converted  ) {
-
-                    $coupon_code = self::create_coupon( $order_id, $importo_buono, $teacher_code );
-
-                    if ( $coupon_code && ! WC()->cart->has_discount( $coupon_code ) ) {
-
-                        WC()->cart->apply_coupon( $coupon_code );
-
-                        $output = __( 'Il valore del buono inserito non è sufficiente ed è stato convertito in buono sconto.', 'wccd' );
-
-                    }
-
-                } elseif ( $importo_buono === $import ) {
+                if ( $importo_buono === $import ) {
 
                     $type = 'check';
 
@@ -313,15 +226,11 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
                         /*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
                         $operation = $type === 'check' ? $soapClient->check( 2 ) : $soapClient->confirm();
 
-                        if ( ! $converted ) {
+                        /*Ordine completato*/
+                        $order->payment_complete();
 
-                            /*Ordine completato*/
-                            $order->payment_complete();
-
-                            /*Svuota carrello*/ 
-                            $woocommerce->cart->empty_cart();	
-
-                        }
+                        /*Svuota carrello*/
+                        $woocommerce->cart->empty_cart();
 
                         /*Aggiungo il buono docente all'ordine*/
                         update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
