@@ -286,10 +286,12 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                 if ( self::$coupon_option && $importo_buono < $import && ! $converted  ) {
 
+                    /* Creazione coupon */
                     $coupon_code = self::create_coupon( $order_id, $importo_buono, $teacher_code );
 
                     if ( $coupon_code && ! WC()->cart->has_discount( $coupon_code ) ) {
 
+                        /* Coupon aggiunto all'ordine */
                         WC()->cart->apply_coupon( $coupon_code );
 
                         $output = __( 'Il valore del buono inserito non è sufficiente ed è stato convertito in buono sconto.', 'wccd' );
