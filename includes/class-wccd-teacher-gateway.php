@@ -187,6 +187,8 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
      */
     public static function process_code( $order_id, $teacher_code, $import ) {
 
+        global $woocommerce;
+
         $output     = 1; 
         $order      = wc_get_order( $order_id );
         $soapClient = new wccd_soap_client( $teacher_code, $import );
@@ -261,8 +263,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	 * @param  int $order_id l'id dell'ordine
 	 */
 	public function process_payment( $order_id ) {
-
-        global $woocommerce;
 
 	    $order  = wc_get_order( $order_id );
 		$import = floatval( $order->get_total() ); //il totale dell'ordine
