@@ -158,6 +158,11 @@ class WCCD {
 
                     wc_add_notice( __( 'Buono docente - ' . $notice, 'wccd' ), 'error' );         
 
+                } else {
+
+                    /* Eliminazione ordine temporaneo */
+                    wp_delete_post( $parts[1] );
+
                 }
             }
 

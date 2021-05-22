@@ -262,6 +262,8 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
      */
     public static function process_code( $order_id, $teacher_code, $import, $converted = false ) {
 
+        global $woocommerce;
+
         $output     = 1; 
         $order      = wc_get_order( $order_id );
         $soapClient = new wccd_soap_client( $teacher_code, $import );
@@ -286,10 +288,12 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                 if ( self::$coupon_option && $importo_buono < $import && ! $converted  ) {
 
+                    /* Creazione coupon */
                     $coupon_code = self::create_coupon( $order_id, $importo_buono, $teacher_code );
 
                     if ( $coupon_code && ! WC()->cart->has_discount( $coupon_code ) ) {
 
+                        /* Coupon aggiunto all'ordine */
                         WC()->cart->apply_coupon( $coupon_code );
 
                         $output = __( 'Il valore del buono inserito non è sufficiente ed è stato convertito in buono sconto.', 'wccd' );
@@ -352,8 +356,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	 * @param  int $order_id l'id dell'ordine
 	 */
 	public function process_payment( $order_id ) {
-
-        global $woocommerce;
 
 	    $order  = wc_get_order( $order_id );
 		$import = floatval( $order->get_total() ); //il totale dell'ordine
