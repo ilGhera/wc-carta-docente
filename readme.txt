@@ -46,6 +46,7 @@ This plugin sends data to an external service, like the categories and the price
 * Generazione richiesta certificato (.der) (Premium)
 * Generazione certificato (.pem) (Premium)
 
+https://youtu.be/CU00ZZBZplI
 
 == Installation ==
 
