@@ -472,6 +472,7 @@ class wccd_admin {
 			/*Impostazioni categorie per il controllo in fase di checkout*/
 			if(isset($_POST['wccd-tot-cats'])) {
 				$tot = sanitize_text_field($_POST['wccd-tot-cats']);
+                $tot = $tot ? $tot : 1;
 
 				$wccd_categories = array();
 
