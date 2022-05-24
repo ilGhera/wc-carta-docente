@@ -8,12 +8,24 @@
 class wccd_soap_client {
 
     public function __construct($codiceVoucher, $import) {
-        $this->wsdl = WCCD_INCLUDES_URI . 'VerificaVoucher.wsdl';
-        $this->local_cert = WCCD_PRIVATE . $this->get_local_cert();
-        $this->location = 'https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
+
+        $this->sandbox = get_option( 'wccd-sandbox' );
+
+        if ( $this->sandbox ) {
+            $this->local_cert = WCCD_DIR . 'demo/AAAAAA00H01H501P.pem';
+            $this->location   = 'https://wstest.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
+            $this->passphrase = 'm3D0T4aM';
+
+        } else {
+            $this->local_cert = WCCD_PRIVATE . $this->get_local_cert();
+            $this->location   = 'https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
+            $this->passphrase = $this->get_user_passphrase(); 
+        }            
+
+        $this->wsdl          = WCCD_INCLUDES_URI . 'VerificaVoucher.wsdl';
         $this->codiceVoucher = $codiceVoucher;
-        $this->import = $import;
-        $this->passphrase = $this->get_user_passphrase(); 
+        $this->import        = $import;
+
     }
 
 
@@ -47,7 +59,7 @@ class wccd_soap_client {
             array(
                 'local_cert'     => $this->local_cert,
                 'location'       => $this->location,
-                'passphrase'     => $this->get_user_passphrase(),
+                'passphrase'     => $this->passphrase,
                 'stream_context' => stream_context_create(
                     array(
                         'http' => array(
@@ -62,6 +74,10 @@ class wccd_soap_client {
             )
         );
   
+        error_log( 'LOCAL CERT: ' . $this->local_cert );
+        /* error_log( 'LOCATION:' . $this->location ); */
+        /* error_log( 'PASS: ' . $this->passphrase ); */
+        /* error_log( 'SOAP CLIENT: ' . print_r( $soapClient, true ) ); */
         return $soapClient;
     }
 
@@ -79,6 +95,9 @@ class wccd_soap_client {
                 'codiceVoucher'  => $this->codiceVoucher
             )
         ));
+        
+        error_log( 'VALUE: ' . $value );
+        error_log( 'CODICE VOUCHER: ' . print_r( $check, true ) );
 
         return $check;
     }

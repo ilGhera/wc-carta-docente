@@ -7,12 +7,18 @@
  */
 class wccd_admin {
 
+    private $sandbox;
+
 	public function __construct() {
+
+        $this->sandbox = get_option( 'wccd-sandbox' );
+
 		add_action('admin_init', array($this, 'wccd_save_settings'));
 		add_action('admin_init', array($this, 'generate_cert_request'));
 		add_action('admin_menu', array($this, 'register_options_page'));
 		add_action('wp_ajax_wccd-delete-certificate', array($this, 'delete_certificate_callback'), 1);
 		add_action('wp_ajax_wccd-add-cat', array($this, 'add_cat_callback'));
+		add_action('wp_ajax_wccd-sandbox', array($this, 'sandbox_callback'));
 	}
 
 
@@ -265,6 +271,7 @@ class wccd_admin {
 	 */
 	public function wccd_cert_activation() {
 	    $soapClient = new wccd_soap_client('11aa22bb', '');
+        error_log( 'CERT ACTIVATION: ' . print_r( $soapClient, true ) );
 
 	    try {
 
@@ -279,6 +286,41 @@ class wccd_admin {
 
         } 
 	}
+
+
+    /**
+     * Funzionalita Sandbox
+     *
+     * @return void
+     */
+    public function sandbox_callback() {
+
+        if ( isset( $_POST['sandbox'] ) && wp_verify_nonce($_POST['nonce'], 'wccd-sandbox')) {
+
+            $this->sandbox = $_POST['sandbox'];
+            error_log( 'SANDBOX: ' . $this->sandbox );
+            update_option('wccd-sandbox', $_POST['sandbox']);
+            
+            if ( 1 === intval( $_POST['sandbox'] ) ) {
+
+                $activation = $this->wccd_cert_activation();
+                
+                if($activation === 'ok') {
+                
+                    update_option('wccd-cert-activation', 1);
+
+                } else {
+
+                    delete_option('wccd-cert-activation');
+
+                }
+            }
+
+        }
+
+        exit();
+
+    }
 
 
 	/**
@@ -361,6 +403,7 @@ class wccd_admin {
 						    			echo '<p class="description">' . esc_html(__('Carica il certificato (.pem) necessario alla connessione con Carta del docente', 'wccd')) . '</p>';
 			
 				    				}
+
 				    			echo '</td>';
 				    		echo '</tr>';
 
@@ -453,7 +496,7 @@ class wccd_admin {
 			    		echo '<h3>' . esc_html(__('Crea il tuo certificato', 'wccd')) . '</h3>';
 		    			echo '<p class="description">' . esc_html(__('Con questo ultimo passaggio, potrai iniziare a ricevere pagamenti attraverso buoni del docente.', 'wccd')) . '</p>';
 
-						echo '<form name="wccd-generate-certificate" class="wccd-generate-certificate" method="post" enctype="multipart/form-data" action="">';
+						echo '<form name="wccd-generate-certificate" class="wccd-generate-certificate one-of" method="post" enctype="multipart/form-data" action="">';
 					    	echo '<table class="form-table wccd-table">';
 
 					    		/*Carica certificato*/
@@ -478,6 +521,32 @@ class wccd_admin {
 
 			    echo '</div>';
 
+                /*Modalità Sandbox*/
+                echo '<div id="wccd-sandbox-option" class="wccd-admin" style="display: block;">';
+                    echo '<h3>' . esc_html(__('Modalità Sandbox', 'wccd')) . '</h3>';
+                echo '<p class="description">';
+                    printf( wp_kses_post( __( 'Attiva questa funzionalità per testare buoni 18app in un ambiente di prova.<br>Richiedi i buoni test scrivendo a <a href="%s">numeroverde@beniculturali.it</a>', 'wccd' ) ), 'mailto:numeroverde@beniculturali.it' );
+                echo '</p>';
+
+                    echo '<form name="wccd-sandbox" class="wccd-sandbox" method="post" enctype="multipart/form-data" action="">';
+                        echo '<table class="form-table wccd-table">';
+
+                            /*Carica certificato*/
+                            echo '<tr>';
+                                echo '<th scope="row">' . esc_html(__('Sandbox', 'wccd')) . '</th>';
+                                echo '<td class="wccd-sandbox-field">';
+                                    echo '<input type="checkbox" name="wccd-sandbox" class="wccd-sandbox"' . ( $this->sandbox ? ' checked="checked"' : null ) . '>';
+                                    echo '<p class="description">' . esc_html(__('Attiva modalità Sandbox', 'wccd')) . '</p>';
+                                    wp_nonce_field('wccd-sandbox', 'wccd-sandbox-nonce');
+                                    echo '<input type="hidden" name="wccd-sandbox-hidden" value="1">';
+                                    /* echo '<input type="submit" class="button-primary wccd-button" value="' . esc_html('Genera certificato', 'wccd') . '">'; */
+
+                                echo '</td>';
+                            echo '</tr>';
+
+                        echo '</table>';
+                    echo '</form>';			
+                echo '</div>';
 
 			    /*Options*/
 			    echo '<div id="wccd-options" class="wccd-admin">';
