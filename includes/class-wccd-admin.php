@@ -525,7 +525,7 @@ class wccd_admin {
                 echo '<div id="wccd-sandbox-option" class="wccd-admin" style="display: block;">';
                     echo '<h3>' . esc_html(__('Modalità Sandbox', 'wccd')) . '</h3>';
                 echo '<p class="description">';
-                    printf( wp_kses_post( __( 'Attiva questa funzionalità per testare buoni 18app in un ambiente di prova.<br>Richiedi i buoni test scrivendo a <a href="%s">numeroverde@beniculturali.it</a>', 'wccd' ) ), 'mailto:numeroverde@beniculturali.it' );
+                    printf( wp_kses_post( __( 'Attiva questa funzionalità per testare buoni Carta del Docente in un ambiente di prova.<br>Richiedi i buoni test scrivendo a <a href="%s">docenti@sogei.it</a>', 'wccd' ) ), 'mailto:docenti@sogei.it' );
                 echo '</p>';
 
                     echo '<form name="wccd-sandbox" class="wccd-sandbox" method="post" enctype="multipart/form-data" action="">';
