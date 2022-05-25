@@ -317,6 +317,9 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
                         /*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
                         $operation = $type === 'check' ? $soapClient->check( 2 ) : $soapClient->confirm();
 
+                        /*Aggiungo il buono docente all'ordine*/
+                        update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
+
                         if ( ! $converted ) {
 
                             /*Ordine completato*/
@@ -326,9 +329,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
                             $woocommerce->cart->empty_cart();	
 
                         }
-
-                        /*Aggiungo il buono docente all'ordine*/
-                        update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
 
                     } catch ( Exception $e ) {
         
