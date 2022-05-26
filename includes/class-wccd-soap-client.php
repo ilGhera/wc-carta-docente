@@ -74,10 +74,6 @@ class wccd_soap_client {
             )
         );
   
-        error_log( 'LOCAL CERT: ' . $this->local_cert );
-        /* error_log( 'LOCATION:' . $this->location ); */
-        /* error_log( 'PASS: ' . $this->passphrase ); */
-        /* error_log( 'SOAP CLIENT: ' . print_r( $soapClient, true ) ); */
         return $soapClient;
     }
 
@@ -96,9 +92,6 @@ class wccd_soap_client {
             )
         ));
         
-        error_log( 'VALUE: ' . $value );
-        error_log( 'CODICE VOUCHER: ' . print_r( $check, true ) );
-
         return $check;
     }
 

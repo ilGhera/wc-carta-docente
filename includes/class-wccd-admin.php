@@ -271,7 +271,6 @@ class wccd_admin {
 	 */
 	public function wccd_cert_activation() {
 	    $soapClient = new wccd_soap_client('11aa22bb', '');
-        error_log( 'CERT ACTIVATION: ' . print_r( $soapClient, true ) );
 
 	    try {
 
@@ -298,7 +297,6 @@ class wccd_admin {
         if ( isset( $_POST['sandbox'] ) && wp_verify_nonce($_POST['nonce'], 'wccd-sandbox')) {
 
             $this->sandbox = $_POST['sandbox'];
-            error_log( 'SANDBOX: ' . $this->sandbox );
             update_option('wccd-sandbox', $_POST['sandbox']);
             
             if ( 1 === intval( $_POST['sandbox'] ) ) {
