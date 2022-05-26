@@ -20,7 +20,6 @@ var wccd_delete_certificate = function() {
 					'cert': cert
 				}			
 				$.post(ajaxurl, data, function(response){
-					// console.log(response);
 					location.reload();
 				})
 			}
@@ -90,8 +89,11 @@ var wccd_sandbox = function() {
 
                 if ( $('.wccd-sandbox-field .tzCheckBox').hasClass( 'checked' ) ) {
                     $('#wccd-certificate').hide();
+                    $('#wccd-sandbox-option').show();
+
                 } else {
-                    $('#wccd-certificate').show('slow');
+                    $('#wccd-certificate').show();
+                    $('#wccd-sandbox-option').show();
                 }
 
             }
@@ -134,10 +136,11 @@ var wccd_menu_navigation = function() {
 
 		if(hash) {
 	        contents.hide();		    
-		    $('#' + hash).fadeIn(200);		
             
             if( 'wccd-certificate' == hash ) {
-                $('#wccd-sandbox-option').fadeIn(200);
+                wccd_sandbox();
+            } else {
+                $('#' + hash).fadeIn(200);		
             }
 
 	        $('h2#wccd-admin-menu a.nav-tab-active').removeClass("nav-tab-active");
