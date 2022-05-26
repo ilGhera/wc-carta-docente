@@ -329,12 +329,13 @@ class wccd_admin {
 	public function wccd_settings() {
 
 		/*Recupero le opzioni salvate nel db*/
-		$premium_key = get_option('wccd-premium-key');
-		$passphrase  = base64_decode(get_option('wccd-password'));
-		$categories  = get_option('wccd-categories');
-		$tot_cats    = $categories ? count($categories) : 0;
-		$wccd_coupon = get_option('wccd-coupon');
-		$wccd_image  = get_option('wccd-image');
+		$premium_key      = get_option('wccd-premium-key');
+		$passphrase       = base64_decode(get_option('wccd-password'));
+		$categories       = get_option('wccd-categories');
+		$tot_cats         = $categories ? count($categories) : 0;
+		$wccd_coupon      = get_option('wccd-coupon');
+		$wccd_image       = get_option('wccd-image');
+		$wccd_items_check = get_option('wccd-items-check');
 
 		echo '<div class="wrap">';
 	    	echo '<div class="wrap-left">';
@@ -586,11 +587,19 @@ class wccd_admin {
 				    			echo '<th scope="row">' . esc_html(__('Utilizzo immagine', 'wccd')) . '</th>';
 			    				echo '<td>';
 					    			echo '<input type="checkbox" name="wccd-image" value="1"' . ($wccd_image === '1' ? ' checked="checked"' : '') . '>';
-					    			echo '<p class="description">' .  esc_html(__('Mostra il logo Carta del docente nella pagine di checkout.', 'wccd') ) . '</p>';
+					    			echo '<p class="description">' .  wp_kses_post( __( 'Mostra il logo <i>Carta del Docente</i> nella pagine di checkout.', 'wccd' ) ) . '</p>';
 			    				echo '</td>';
 				    		echo '</tr>';
 
+				    		echo '<tr>';
+				    			echo '<th scope="row">' . esc_html(__('Controllo prodotti', 'wccd')) . '</th>';
+			    				echo '<td>';
+                                        echo '<input type="checkbox" name="wccd-items-check" value="1"' . ($wccd_items_check === '1' ? ' checked="checked"' : '') . '>';
+					    			echo '<p class="description">' .  wp_kses_post( __( 'Mostra il metodo di pagamento solo se il/ i prodotti a carrello sono acquistabili con buoni <i>Carta del Docente</i>.<br>Più prodotti dovranno prevedere l\'uso di buoni dello stesso ambito di utilizzo.', 'wccd' ) ) . '</p>';
+			    				echo '</td>';
+				    		echo '</tr>';
 				    	echo '</table>';
+
 				    	wp_nonce_field('wccd-save-settings', 'wccd-settings-nonce');
 				    	echo '<input type="hidden" name="wccd-settings-hidden" value="1">';
 				    	echo '<input type="submit" class="button-primary" value="' . esc_html('Salva impostazioni', 'wccd') . '">';
@@ -730,6 +739,10 @@ class wccd_admin {
 			/*Immagine in pagina di checkout*/
 			$wccd_image = isset($_POST['wccd-image']) ? sanitize_text_field($_POST['wccd-image']) : '';															
 			update_option('wccd-image', $wccd_image);
+
+			/*Controllo prodotti a carrello*/
+			$wccd_items_check = isset($_POST['wccd-items-check']) ? sanitize_text_field($_POST['wccd-items-check']) : '';															
+			update_option('wccd-items-check', $wccd_items_check);
 		}
 	}
 
