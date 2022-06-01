@@ -2,7 +2,7 @@
  * WC Carta Docente - Admin js
  * @author ilGhera
  * @package wc-carta-docente/js
- * @version 1.0.5
+ * @since 1.2.0
  */
 
 /**
