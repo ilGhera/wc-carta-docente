@@ -7,12 +7,18 @@
  */
 class wccd_admin {
 
+    private $sandbox;
+
 	public function __construct() {
+
+        $this->sandbox = get_option( 'wccd-sandbox' );
+
 		add_action('admin_init', array($this, 'wccd_save_settings'));
 		add_action('admin_init', array($this, 'generate_cert_request'));
 		add_action('admin_menu', array($this, 'register_options_page'));
 		add_action('wp_ajax_wccd-delete-certificate', array($this, 'delete_certificate_callback'), 1);
 		add_action('wp_ajax_wccd-add-cat', array($this, 'add_cat_callback'));
+		add_action('wp_ajax_wccd-sandbox', array($this, 'sandbox_callback'));
 	}
 
 
@@ -281,18 +287,53 @@ class wccd_admin {
 	}
 
 
+    /**
+     * Funzionalita Sandbox
+     *
+     * @return void
+     */
+    public function sandbox_callback() {
+
+        if ( isset( $_POST['sandbox'] ) && wp_verify_nonce($_POST['nonce'], 'wccd-sandbox')) {
+
+            $this->sandbox = $_POST['sandbox'];
+            update_option('wccd-sandbox', $_POST['sandbox']);
+            
+            if ( 1 === intval( $_POST['sandbox'] ) ) {
+
+                $activation = $this->wccd_cert_activation();
+                
+                if($activation === 'ok') {
+                
+                    update_option('wccd-cert-activation', 1);
+
+                } else {
+
+                    delete_option('wccd-cert-activation');
+
+                }
+            }
+
+        }
+
+        exit();
+
+    }
+
+
 	/**
 	 * Pagina opzioni plugin
 	 */
 	public function wccd_settings() {
 
 		/*Recupero le opzioni salvate nel db*/
-		$premium_key = get_option('wccd-premium-key');
-		$passphrase  = base64_decode(get_option('wccd-password'));
-		$categories  = get_option('wccd-categories');
-		$tot_cats    = $categories ? count($categories) : 0;
-		$wccd_coupon = get_option('wccd-coupon');
-		$wccd_image  = get_option('wccd-image');
+		$premium_key      = get_option('wccd-premium-key');
+		$passphrase       = base64_decode(get_option('wccd-password'));
+		$categories       = get_option('wccd-categories');
+		$tot_cats         = $categories ? count($categories) : 0;
+		$wccd_coupon      = get_option('wccd-coupon');
+		$wccd_image       = get_option('wccd-image');
+		$wccd_items_check = get_option('wccd-items-check');
 
 		echo '<div class="wrap">';
 	    	echo '<div class="wrap-left">';
@@ -361,6 +402,7 @@ class wccd_admin {
 						    			echo '<p class="description">' . esc_html(__('Carica il certificato (.pem) necessario alla connessione con Carta del docente', 'wccd')) . '</p>';
 			
 				    				}
+
 				    			echo '</td>';
 				    		echo '</tr>';
 
@@ -453,7 +495,7 @@ class wccd_admin {
 			    		echo '<h3>' . esc_html(__('Crea il tuo certificato', 'wccd')) . '</h3>';
 		    			echo '<p class="description">' . esc_html(__('Con questo ultimo passaggio, potrai iniziare a ricevere pagamenti attraverso buoni del docente.', 'wccd')) . '</p>';
 
-						echo '<form name="wccd-generate-certificate" class="wccd-generate-certificate" method="post" enctype="multipart/form-data" action="">';
+						echo '<form name="wccd-generate-certificate" class="wccd-generate-certificate one-of" method="post" enctype="multipart/form-data" action="">';
 					    	echo '<table class="form-table wccd-table">';
 
 					    		/*Carica certificato*/
@@ -478,6 +520,32 @@ class wccd_admin {
 
 			    echo '</div>';
 
+                /*Modalità Sandbox*/
+                echo '<div id="wccd-sandbox-option" class="wccd-admin" style="display: block;">';
+                    echo '<h3>' . esc_html(__('Modalità Sandbox', 'wccd')) . '</h3>';
+                echo '<p class="description">';
+                    printf( wp_kses_post( __( 'Attiva questa funzionalità per testare buoni Carta del Docente in un ambiente di prova.<br>Richiedi i buoni test scrivendo a <a href="%s">docenti@sogei.it</a>', 'wccd' ) ), 'mailto:docenti@sogei.it' );
+                echo '</p>';
+
+                    echo '<form name="wccd-sandbox" class="wccd-sandbox" method="post" enctype="multipart/form-data" action="">';
+                        echo '<table class="form-table wccd-table">';
+
+                            /*Carica certificato*/
+                            echo '<tr>';
+                                echo '<th scope="row">' . esc_html(__('Sandbox', 'wccd')) . '</th>';
+                                echo '<td class="wccd-sandbox-field">';
+                                    echo '<input type="checkbox" name="wccd-sandbox" class="wccd-sandbox"' . ( $this->sandbox ? ' checked="checked"' : null ) . '>';
+                                    echo '<p class="description">' . esc_html(__('Attiva modalità Sandbox', 'wccd')) . '</p>';
+                                    wp_nonce_field('wccd-sandbox', 'wccd-sandbox-nonce');
+                                    echo '<input type="hidden" name="wccd-sandbox-hidden" value="1">';
+                                    /* echo '<input type="submit" class="button-primary wccd-button" value="' . esc_html('Genera certificato', 'wccd') . '">'; */
+
+                                echo '</td>';
+                            echo '</tr>';
+
+                        echo '</table>';
+                    echo '</form>';			
+                echo '</div>';
 
 			    /*Options*/
 			    echo '<div id="wccd-options" class="wccd-admin">';
@@ -517,11 +585,19 @@ class wccd_admin {
 				    			echo '<th scope="row">' . esc_html(__('Utilizzo immagine', 'wccd')) . '</th>';
 			    				echo '<td>';
 					    			echo '<input type="checkbox" name="wccd-image" value="1"' . ($wccd_image === '1' ? ' checked="checked"' : '') . '>';
-					    			echo '<p class="description">' .  esc_html(__('Mostra il logo Carta del docente nella pagine di checkout.', 'wccd') ) . '</p>';
+					    			echo '<p class="description">' .  wp_kses_post( __( 'Mostra il logo <i>Carta del Docente</i> nella pagine di checkout.', 'wccd' ) ) . '</p>';
 			    				echo '</td>';
 				    		echo '</tr>';
 
+				    		echo '<tr>';
+				    			echo '<th scope="row">' . esc_html(__('Controllo prodotti', 'wccd')) . '</th>';
+			    				echo '<td>';
+                                        echo '<input type="checkbox" name="wccd-items-check" value="1"' . ($wccd_items_check === '1' ? ' checked="checked"' : '') . '>';
+					    			echo '<p class="description">' .  wp_kses_post( __( 'Mostra il metodo di pagamento solo se il/ i prodotti a carrello sono acquistabili con buoni <i>Carta del Docente</i>.<br>Più prodotti dovranno prevedere l\'uso di buoni dello stesso ambito di utilizzo.', 'wccd' ) ) . '</p>';
+			    				echo '</td>';
+				    		echo '</tr>';
 				    	echo '</table>';
+
 				    	wp_nonce_field('wccd-save-settings', 'wccd-settings-nonce');
 				    	echo '<input type="hidden" name="wccd-settings-hidden" value="1">';
 				    	echo '<input type="submit" class="button-primary" value="' . esc_html('Salva impostazioni', 'wccd') . '">';
@@ -661,6 +737,10 @@ class wccd_admin {
 			/*Immagine in pagina di checkout*/
 			$wccd_image = isset($_POST['wccd-image']) ? sanitize_text_field($_POST['wccd-image']) : '';															
 			update_option('wccd-image', $wccd_image);
+
+			/*Controllo prodotti a carrello*/
+			$wccd_items_check = isset($_POST['wccd-items-check']) ? sanitize_text_field($_POST['wccd-items-check']) : '';															
+			update_option('wccd-items-check', $wccd_items_check);
 		}
 	}
 

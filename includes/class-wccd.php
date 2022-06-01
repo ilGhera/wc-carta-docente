@@ -121,8 +121,9 @@ class WCCD {
     public function wccd_add_teacher_gateway_class( $methods ) {
         
         $available = ( $this->coupon_option && $this->wccd_coupon_applied() ) ? false : true;
+        $sandbox   = get_option( 'wccd-sandbox' );
 
-        if ( $available && wccd_admin::get_the_file( '.pem' ) && get_option( 'wccd-cert-activation' ) ) {
+        if ( $sandbox || ( $available && wccd_admin::get_the_file( '.pem' ) && get_option( 'wccd-cert-activation' ) ) ) {
 
             $methods[] = 'WCCD_Teacher_Gateway'; 
 
