@@ -1,9 +1,9 @@
 === WooCommerce Carta Docente ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Version: 1.1.1
+Version: 1.2.0
 Requires at least: 4.0
-Tested up to: 5.9
+Tested up to: 6.0
 
 Abilita in WooCommerce il pagamento con Carta del Docente.
 
@@ -74,6 +74,13 @@ https://youtu.be/CU00ZZBZplI
 
 == Changelog ==
 
+
+= 1.2.0 =
+Data di rilascio: 2 Giugno, 2022
+
+* Implementazione: Nuova funzionalità sandbox
+* Implementazione: (Premium) Mostra metodo di pagamento solo se consentito dai prodotti presenti a carrello
+* Correzione bug: Codice Carta del Docente mancante in email di conferma d'ordine
 
 = 1.1.1 =
 Data di rilascio: 2 Aprile, 2022
