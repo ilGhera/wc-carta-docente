@@ -301,17 +301,8 @@ class wccd_admin {
             
             if ( 1 === intval( $_POST['sandbox'] ) ) {
 
-                $activation = $this->wccd_cert_activation();
-                
-                if($activation === 'ok') {
-                
-                    update_option('wccd-cert-activation', 1);
+                update_option('wccd-cert-activation', 1);
 
-                } else {
-
-                    delete_option('wccd-cert-activation');
-
-                }
             }
 
         }
