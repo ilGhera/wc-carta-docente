@@ -196,23 +196,10 @@ class wccd_admin {
 
         if ( isset( $_POST['sandbox'] ) && wp_verify_nonce($_POST['nonce'], 'wccd-sandbox')) {
 
-            $this->sandbox = $_POST['sandbox'];
-            update_option('wccd-sandbox', $_POST['sandbox']);
-            
-            if ( 1 === intval( $_POST['sandbox'] ) ) {
+            $this->sandbox = sanitize_text_field( wp_unslash( $_POST['sandbox'] ) );
 
-                $activation = $this->wccd_cert_activation();
-                
-                if($activation === 'ok') {
-                
-                    update_option('wccd-cert-activation', 1);
-
-                } else {
-
-                    delete_option('wccd-cert-activation');
-
-                }
-            }
+            update_option( 'wccd-sandbox', $this->sandbox );
+            update_option( 'wccd-cert-activation', $this->sandbox );
 
         }
 
