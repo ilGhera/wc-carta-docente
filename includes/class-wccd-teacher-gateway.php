@@ -10,6 +10,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 
 	public function __construct() {
+
 		$this->plugin_id          = 'woocommerce_carta_docente';
 		$this->id                 = 'docente';
 		$this->has_fields         = true;
@@ -28,11 +29,85 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->title       = $this->get_option('title');
 		$this->description = $this->get_option('description');
         
+        add_filter( 'woocommerce_available_payment_gateways', array( $this, 'unset_teacher_gateway' ) );
+
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_details_after_order_table', array( $this, 'display_teacher_code' ), 10, 1 );
 		add_action( 'woocommerce_email_after_order_table', array( $this, 'display_teacher_code'), 10, 1 );
 		add_action( 'woocommerce_admin_order_data_after_billing_address', array( $this, 'display_teacher_code' ), 10, 1 );
 	}
+
+
+    /**
+     * Disabilita il metodo di pagamento se i prodotti a carrello richiedono buoni con ambito differente
+     *
+     * @param array $available_gateways I metodi di pagamento disponibili.
+     *
+     * @return array I metodi aggiornati
+     */
+    public function unset_teacher_gateway( $available_gateways ) {
+
+        if ( is_admin() || ! is_checkout() || ! get_option('wccd-items-check') ) {
+
+            return $available_gateways;
+
+        }
+
+        $unset      = false;
+        $cat_ids    = array();
+        $categories = get_option('wccd-categories');
+
+        if ( empty( $categories ) ) {
+
+            return $available_gateways;
+
+        }
+
+        $categories = call_user_func_array( 'array_merge', $categories );
+
+        foreach ( $categories as $cat ) {
+
+            $cat_ids[] = $cat;
+
+        }
+
+        $items_term_ids = array();
+        
+        foreach ( WC()->cart->get_cart_contents() as $key => $values ) {
+
+            $item_ids = array();
+            $terms    = get_the_terms( $values['product_id'], 'product_cat' );    
+
+            foreach ( $terms as $term ) {        
+
+                $item_ids[] = $term->term_id;
+
+            }
+
+            $results = array_intersect( $item_ids, $cat_ids );
+
+            if ( ! is_array( $results ) || empty( $results ) ) {
+
+                $unset = true;
+
+            } else {
+
+                $items_term_ids[] = $results;
+            }
+
+        }
+
+        $intersect = call_user_func_array( 'array_intersect', $items_term_ids );
+
+        if ( empty( $intersect ) || $unset ) {
+
+            unset( $available_gateways['docente'] );
+        
+        }
+
+        return $available_gateways;
+
+    }
 
 
 	/**
@@ -228,14 +303,14 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
                         /*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
                         $operation = $type === 'check' ? $soapClient->check( 2 ) : $soapClient->confirm();
 
+                        /*Aggiungo il buono docente all'ordine*/
+                        update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
+
                         /*Ordine completato*/
                         $order->payment_complete();
 
                         /*Svuota carrello*/
                         $woocommerce->cart->empty_cart();
-
-                        /*Aggiungo il buono docente all'ordine*/
-                        update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
 
                     } catch ( Exception $e ) {
         

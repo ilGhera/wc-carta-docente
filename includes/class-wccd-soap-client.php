@@ -8,12 +8,24 @@
 class wccd_soap_client {
 
     public function __construct($codiceVoucher, $import) {
+
+        $this->sandbox = get_option( 'wccd-sandbox' );
+
+        if ( $this->sandbox ) {
+            $this->local_cert = WCCD_DIR . 'demo/AAAAAA00H01H501P.pem';
+            $this->location   = 'https://wstest.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
+            $this->passphrase = 'm3D0T4aM';
+
+        } else {
+            $this->local_cert = WCCD_PRIVATE . $this->get_local_cert();
+            $this->location   = 'https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
+            $this->passphrase = $this->get_user_passphrase(); 
+        }            
+
         $this->wsdl          = WCCD_INCLUDES_URI . 'VerificaVoucher.wsdl';
-        $this->local_cert    = WCCD_PRIVATE . $this->get_local_cert();
-        $this->location      = 'https://ws.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
         $this->codiceVoucher = $codiceVoucher;
         $this->import        = $import;
-        $this->passphrase    = $this->get_user_passphrase(); 
+
     }
 
 
@@ -47,7 +59,7 @@ class wccd_soap_client {
             array(
                 'local_cert'     => $this->local_cert,
                 'location'       => $this->location,
-                'passphrase'     => $this->get_user_passphrase(),
+                'passphrase'     => $this->passphrase,
                 'stream_context' => stream_context_create(
                     array(
                         'http' => array(
@@ -79,7 +91,7 @@ class wccd_soap_client {
                 'codiceVoucher'  => $this->codiceVoucher
             )
         ));
-
+        
         return $check;
     }
 

@@ -20,7 +20,6 @@ var wccd_delete_certificate = function() {
 					'cert': cert
 				}			
 				$.post(ajaxurl, data, function(response){
-					// console.log(response);
 					location.reload();
 				})
 			}
@@ -76,17 +75,74 @@ wccd_remove_cat();
 
 
 /**
+ * Funzionalità Sandbox
+ */
+var wccd_sandbox = function() {
+	jQuery(function($){
+
+        var data, sandbox;
+        var nonce = $('#wccd-sandbox-nonce').attr('value');
+        
+        $(document).ready(function() {
+
+            if ( 'wccd-certificate' == $('.nav-tab.nav-tab-active').data('link') ) {
+
+                if ( $('.wccd-sandbox-field .tzCheckBox').hasClass( 'checked' ) ) {
+                    $('#wccd-certificate').hide();
+                    $('#wccd-sandbox-option').show();
+
+                } else {
+                    $('#wccd-certificate').show();
+                    $('#wccd-sandbox-option').show();
+                }
+
+            }
+
+        })
+
+        $(document).on( 'click', '.wccd-sandbox-field .tzCheckBox', function() {
+
+            if ( $(this).hasClass( 'checked' ) ) {
+                $('#wccd-certificate').hide();
+                sandbox = 1;
+            } else {
+                $('#wccd-certificate').show('slow');
+                sandbox = 0;
+            }
+
+            data = {
+                'action': 'wccd-sandbox',
+                'sandbox': sandbox,
+                'nonce': nonce
+            }
+
+            $.post(ajaxurl, data);
+
+        })
+
+    })
+}
+wccd_sandbox();
+
+
+/**
  * Menu di navigazione della pagina opzioni
  */
 var wccd_menu_navigation = function() {
 	jQuery(function($){
-		var $contents = $('.wccd-admin')
+		var contents = $('.wccd-admin');
 		var url = window.location.href.split("#")[0];
 		var hash = window.location.href.split("#")[1];
 
 		if(hash) {
-	        $contents.hide();		    
-		    $('#' + hash).fadeIn(200);		
+	        contents.hide();		    
+            
+            if( 'wccd-certificate' == hash ) {
+                wccd_sandbox();
+            } else {
+                $('#' + hash).fadeIn(200);		
+            }
+
 	        $('h2#wccd-admin-menu a.nav-tab-active').removeClass("nav-tab-active");
 	        $('h2#wccd-admin-menu a').each(function(){
 	        	if($(this).data('link') == hash) {
@@ -102,9 +158,17 @@ var wccd_menu_navigation = function() {
 		$("h2#wccd-admin-menu a").click(function () {
 	        var $this = $(this);
 	        
-	        $contents.hide();
+	        contents.hide();
 	        $("#" + $this.data("link")).fadeIn(200);
-	        $('h2#wccd-admin-menu a.nav-tab-active').removeClass("nav-tab-active");
+
+            if( 'wccd-certificate' == $this.data("link") ) {
+                $('#wccd-sandbox-option').fadeIn(200);
+            
+                wccd_sandbox();
+            
+            }
+	        
+            $('h2#wccd-admin-menu a.nav-tab-active').removeClass("nav-tab-active");
 	        $this.addClass('nav-tab-active');
 
 	        window.location = url + '#' + $this.data('link');

@@ -48,7 +48,9 @@ class WCCD {
      */
     public function wccd_add_teacher_gateway_class( $methods ) {
         
-        if ( wccd_admin::get_the_file( '.pem' ) && get_option( 'wccd-cert-activation' ) ) {
+        $sandbox   = get_option( 'wccd-sandbox' );
+
+        if ( $sandbox || ( wccd_admin::get_the_file( '.pem' ) && get_option( 'wccd-cert-activation' ) ) ) {
 
             $methods[] = 'WCCD_Teacher_Gateway'; 
 
