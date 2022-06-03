@@ -10,12 +10,13 @@ description:
     documentation: 'https://www.ilghera.com/category/documentation/wc-carta-docente-18app/'
     features:
       - Carica il tuo certificato .pem
-      - |-
-        Abbina le categorie WooCommerce agli ambiti d'acquisto di Carta del
-
-
-        Docente
+      - Abbina le categorie WooCommerce agli ambiti d'acquisto di Carta del Docente
       - Nuovo metodo di pagamento in pagina di checkout
+      - Opzione Sandbox per effettuare test d'acquisto
+      - (Premium) Generazione richiesta certificato .der
+      - (Premium) Generazione certificato .pem
+      - (Premium) Conversione valore buono Carta del Docente in voucher WooCommerce
+      - (Premium) Mostra il metodo di pagamento solo se i prodotti a carrello sono acquistabili con Carta del Docente
     genericName: WordPress plugin
     longDescription: |
       Ogni insegnante di ruolo, in Italia, ha a disposizione un bonus di € 500
@@ -127,7 +128,7 @@ maintenance:
 name: WooCommerce Carta Docente
 platforms:
   - web
-releaseDate: '2020-02-10'
+releaseDate: '2022-06-03'
 softwareType: addon
-softwareVersion: 1.0.3
+softwareVersion: 1.2.0
 url: 'https://github.com/ilGhera/wc-carta-docente'
