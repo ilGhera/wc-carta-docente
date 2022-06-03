@@ -16,7 +16,7 @@ description:
       - (Premium) Generazione richiesta certificato .der
       - (Premium) Generazione certificato .pem
       - (Premium) Conversione valore buono Carta del Docente in voucher WooCommerce
-      - (Premium) Mostra il metodo di pagamento solo se i prodotti a carrello sono acquistabili con Carta del Docente
+      - (Premium) Mostra il metodo di pagamento solo se i prodotti a carrello sono acquistabili con C.d.D.
     genericName: WordPress plugin
     longDescription: |
       Ogni insegnante di ruolo, in Italia, ha a disposizione un bonus di € 500
