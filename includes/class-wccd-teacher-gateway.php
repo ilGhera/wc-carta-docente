@@ -122,7 +122,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         error_log( 'ITEMS TERM IDS: ' . print_r( $items_term_ids, true ) );
 
-        if ( ! $unset && ! empty( $items_term_ids ) ) {
+        if ( ! $unset && 1 < count( $items_term_ids ) ) {
 
             $intersect = call_user_func_array( 'array_intersect', $items_term_ids );
 
