@@ -77,7 +77,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                 if ( is_array( $value ) ) {
                     
-                    error_log( 'ARRAY VALUES: ' . print_r( array_values( $value ), true ) );
+                    /* error_log( 'ARRAY VALUES: ' . print_r( array_values( $value ), true ) ); */
                     $cat_ids = array_unique( array_merge( $cat_ids, array_values( $value ) ) );
 
                 }
@@ -120,6 +120,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         }
 
+        error_log( 'ITEMS TERM IDS: ' . print_r( $items_term_ids, true ) );
         $intersect = call_user_func_array( 'array_intersect', $items_term_ids );
 
         if ( empty( $intersect ) || $unset ) {
