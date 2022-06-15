@@ -68,11 +68,17 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         }
 
-        $categories = call_user_func_array( 'array_merge', $categories );
+        if ( is_array( $categories ) ) {
+            
+            foreach ( $categories as $key => $value ) {
 
-        foreach ( $categories as $cat ) {
+                if ( is_array( $value ) ) {
+                    
+                    $cat_ids = array_unique( array_merge( $cat_ids, array_values( $value ) ) );
 
-            $cat_ids[] = $cat;
+                }
+
+            }
 
         }
 
