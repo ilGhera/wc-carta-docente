@@ -121,9 +121,19 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
         }
 
         error_log( 'ITEMS TERM IDS: ' . print_r( $items_term_ids, true ) );
-        $intersect = call_user_func_array( 'array_intersect', $items_term_ids );
 
-        if ( empty( $intersect ) || $unset ) {
+        if ( ! $unset && ! empty( $items_term_ids ) ) {
+
+            $intersect = call_user_func_array( 'array_intersect', $items_term_ids );
+
+            if ( empty( $intersect ) ) {
+
+                $unset = true;
+
+            }
+        }
+
+        if ( $unset ) {
 
             unset( $available_gateways['docente'] );
         
