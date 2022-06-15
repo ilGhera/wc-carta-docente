@@ -61,6 +61,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
         $unset      = false;
         $cat_ids    = array();
         $categories = get_option('wccd-categories');
+        error_log( 'CATEGORIES 1: ' . print_r( $categories, true ) );
 
         if ( empty( $categories ) ) {
 
@@ -68,13 +69,29 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         }
 
-        $categories = call_user_func_array( 'array_merge', $categories );
+        /* $categories = call_user_func_array( 'array_merge', $categories ); */
 
-        foreach ( $categories as $cat ) {
+        if ( is_array( $categories ) ) {
+            
+            foreach ( $categories as $key => $value ) {
 
-            $cat_ids[] = $cat;
+                if ( is_array( $value ) ) {
+                    
+                    error_log( 'ARRAY VALUES: ' . print_r( array_values( $value ), true ) );
+                    $cat_ids = array_unique( array_merge( $cat_ids, array_values( $value ) ) );
+
+                }
+
+            }
 
         }
+
+        /* foreach ( $categories as $cat ) { */
+
+        /*     $cat_ids[] = $cat; */
+
+        /* } */
+        error_log( 'CAT IDS: ' . print_r( $cat_ids, true ) );
 
         $items_term_ids = array();
         
@@ -89,6 +106,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
             }
 
+            error_log( 'ITEM IDS: ' . print_r( $item_ids, true ) );
             $results = array_intersect( $item_ids, $cat_ids );
 
             if ( ! is_array( $results ) || empty( $results ) ) {
