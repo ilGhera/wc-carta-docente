@@ -1,7 +1,7 @@
 === WooCommerce Carta Docente - Premium ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Version: 1.2.0
+Version: 1.2.1
 Requires at least: 4.0
 Tested up to: 6.0
 
@@ -65,6 +65,11 @@ This plugin sends data to an external service, like the categories and the price
 
 
 == Changelog ==
+
+= 1.2.1 =
+Data di rilascio: 16 Giugno, 2022
+
+* Correzione bug: Errore in array_intersect con opzione controllo prodotti a carrello attiva
 
 = 1.2.0 =
 Data di rilascio: 1 Giugno, 2022
