@@ -75,6 +75,11 @@ https://youtu.be/CU00ZZBZplI
 == Changelog ==
 
 
+= 1.2.1 =
+Data di rilascio: 23 Giugno, 2022
+
+* Correzione bug: Errore controllo abbinamenti Categorie/ Beni Carta del Docente
+
 = 1.2.0 =
 Data di rilascio: 2 Giugno, 2022
 
