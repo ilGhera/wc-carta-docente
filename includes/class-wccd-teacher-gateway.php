@@ -63,11 +63,17 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         }
 
-        $categories = call_user_func_array( 'array_merge', $categories );
+        if ( is_array( $categories ) ) {
+            
+            foreach ( $categories as $key => $value ) {
 
-        foreach ( $categories as $cat ) {
+                if ( is_array( $value ) ) {
+                    
+                    $cat_ids = array_unique( array_merge( $cat_ids, array_values( $value ) ) );
 
-            $cat_ids[] = $cat;
+                }
+
+            }
 
         }
 
@@ -97,9 +103,18 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         }
 
-        $intersect = call_user_func_array( 'array_intersect', $items_term_ids );
+        if ( ! $unset && 1 < count( $items_term_ids ) ) {
 
-        if ( empty( $intersect ) || $unset ) {
+            $intersect = call_user_func_array( 'array_intersect', $items_term_ids );
+
+            if ( empty( $intersect ) ) {
+
+                $unset = true;
+
+            }
+        }
+
+        if ( $unset ) {
 
             unset( $available_gateways['docente'] );
         
@@ -159,13 +174,14 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Restituisce la cateogia prodotto corrispondente al bene acquistabile con il buono
      *
-	 * @param  string $purchasable bene acquistabile
+	 * @param string $purchasable bene acquistabile.
+     * @param array  $categories  gli abbinamenti di categoria salvati nel db.
      *
 	 * @return int l'id di categoria acquistabile
 	 */
-	public static function get_purchasable_cats( $purchasable ) {
+	public static function get_purchasable_cats( $purchasable, $categories = null ) {
 
-		$wccd_categories = get_option( 'wccd-categories' );
+		$wccd_categories = is_array( $categories ) ? $categories : get_option( 'wccd-categories' );
 
 		if ( $wccd_categories ) {
 	
@@ -200,11 +216,12 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	 */
 	public static function is_purchasable( $order, $bene ) {
 
-		$cats   = self::get_purchasable_cats( $bene );
-		$items  = $order->get_items();
-		$output = true;
+        $wccd_categories = get_option( 'wccd-categories' );
+		$cats            = self::get_purchasable_cats( $bene, $wccd_categories );
+		$items           = $order->get_items();
+		$output          = true;
 		
-		if ( is_array( $cats ) && ! empty( $cats ) ) {
+		if ( is_array( $cats ) && ! empty( $wccd_categories ) ) {
 
 			foreach ( $items as $item ) {
 				$terms = get_the_terms( $item['product_id'], 'product_cat' );
