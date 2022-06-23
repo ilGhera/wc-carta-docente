@@ -4,7 +4,7 @@
  *
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @since 1.2.0
+ * @since 1.2.1
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
@@ -29,100 +29,11 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->title       = $this->get_option('title');
 		$this->description = $this->get_option('description');
         
-        add_filter( 'woocommerce_available_payment_gateways', array( $this, 'unset_teacher_gateway' ) );
-
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_details_after_order_table', array( $this, 'display_teacher_code' ), 10, 1 );
 		add_action( 'woocommerce_email_after_order_table', array( $this, 'display_teacher_code'), 10, 1 );
 		add_action( 'woocommerce_admin_order_data_after_billing_address', array( $this, 'display_teacher_code' ), 10, 1 );
 	}
-
-
-    /**
-     * Disabilita il metodo di pagamento se i prodotti a carrello richiedono buoni con ambito differente
-     *
-     * @param array $available_gateways I metodi di pagamento disponibili.
-     *
-     * @return array I metodi aggiornati
-     */
-    public function unset_teacher_gateway( $available_gateways ) {
-
-        if ( is_admin() || ! is_checkout() || ! get_option('wccd-items-check') ) {
-
-            return $available_gateways;
-
-        }
-
-        $unset      = false;
-        $cat_ids    = array();
-        $categories = get_option('wccd-categories');
-
-        if ( empty( $categories ) ) {
-
-            return $available_gateways;
-
-        }
-
-        if ( is_array( $categories ) ) {
-            
-            foreach ( $categories as $key => $value ) {
-
-                if ( is_array( $value ) ) {
-                    
-                    $cat_ids = array_unique( array_merge( $cat_ids, array_values( $value ) ) );
-
-                }
-
-            }
-
-        }
-
-        $items_term_ids = array();
-        
-        foreach ( WC()->cart->get_cart_contents() as $key => $values ) {
-
-            $item_ids = array();
-            $terms    = get_the_terms( $values['product_id'], 'product_cat' );    
-
-            foreach ( $terms as $term ) {        
-
-                $item_ids[] = $term->term_id;
-
-            }
-
-            $results = array_intersect( $item_ids, $cat_ids );
-
-            if ( ! is_array( $results ) || empty( $results ) ) {
-
-                $unset = true;
-
-            } else {
-
-                $items_term_ids[] = $results;
-            }
-
-        }
-
-        if ( ! $unset && 1 < count( $items_term_ids ) ) {
-
-            $intersect = call_user_func_array( 'array_intersect', $items_term_ids );
-
-            if ( empty( $intersect ) ) {
-
-                $unset = true;
-
-            }
-        }
-
-        if ( $unset ) {
-
-            unset( $available_gateways['docente'] );
-        
-        }
-
-        return $available_gateways;
-
-    }
 
 
 	/**

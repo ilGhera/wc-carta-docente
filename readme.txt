@@ -1,7 +1,7 @@
 === WooCommerce Carta Docente ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Version: 1.2.0
+Version: 1.2.1
 Requires at least: 4.0
 Tested up to: 6.0
 
