@@ -359,11 +359,13 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
         $output     = 1; 
         $order      = wc_get_order( $order_id );
         $soapClient = new wccd_soap_client( $teacher_code, $import );
+        error_log( 'SOAP CLIENT: ' . print_r( $soapClient, true ) );
         
         try {
 
             /*Prima verifica del buono*/
             $response      = $soapClient->check();
+            error_log( 'RESPONSE: ' . print_r( $response, true ) );
             $bene          = $response->checkResp->ambito; //il bene acquistabile con il buono inserito
             $importo_buono = floatval($response->checkResp->importo); //l'importo del buono inserito
             
@@ -433,6 +435,8 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
             }
 
         } catch ( Exception $e ) {
+
+            error_log( 'ERRORE: ' . print_r( $e, true ) );
 
             $output = $e->detail->FaultVoucher->exceptionMessage;
         
