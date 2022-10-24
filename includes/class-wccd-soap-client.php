@@ -12,7 +12,7 @@ class wccd_soap_client {
         $this->sandbox = get_option( 'wccd-sandbox' );
 
         if ( $this->sandbox ) {
-            $this->local_cert = WCCD_DIR . 'demo/AAAAAA00H01H501P.pem';
+            $this->local_cert = WCCD_DIR . 'demo/wccd-demo-certificate.pem';
             $this->location   = 'https://wstest.cartadeldocente.istruzione.it/VerificaVoucherDocWEB/VerificaVoucher';
             $this->passphrase = 'm3D0T4aM';
 
@@ -60,6 +60,7 @@ class wccd_soap_client {
                 'local_cert'     => $this->local_cert,
                 'location'       => $this->location,
                 'passphrase'     => $this->passphrase,
+                /* 'cache_wsdl' => WSDL_CACHE_BOTH, */
                 'stream_context' => stream_context_create(
                     array(
                         'http' => array(
@@ -73,7 +74,7 @@ class wccd_soap_client {
                 ),
             )
         );
-  
+
         return $soapClient;
     }
 
