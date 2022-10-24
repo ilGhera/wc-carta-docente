@@ -76,8 +76,6 @@ class wccd_soap_client {
             )
         );
 
-        /* error_log( 'SOAP CLIENT: ' . print_r( $soapClient, true ) ); */
-  
         return $soapClient;
     }
 
