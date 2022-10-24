@@ -1,7 +1,7 @@
 === WooCommerce Carta Docente ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Version: 1.2.1
+Version: 1.2.2
 Requires at least: 4.0
 Tested up to: 6.0
 
@@ -74,6 +74,10 @@ https://youtu.be/CU00ZZBZplI
 
 == Changelog ==
 
+= 1.2.2 =
+Data di rilascio: 24 Ottobre, 2022
+
+* Update: Nuovo certificato per funzionalità Sandbox 
 
 = 1.2.1 =
 Data di rilascio: 23 Giugno, 2022

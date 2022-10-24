@@ -3,7 +3,7 @@
  * Gestice le chiamate del web service 
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @since 1.2.0
+ * @since 1.2.2
  */
 class wccd_soap_client {
 
