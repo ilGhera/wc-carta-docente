@@ -61,7 +61,7 @@ class wccd_soap_client {
                 'local_cert'     => $this->local_cert,
                 'location'       => $this->location,
                 'passphrase'     => $this->passphrase,
-                'cache_wsdl' => WSDL_CACHE_BOTH,
+                /* 'cache_wsdl' => WSDL_CACHE_BOTH, */
                 'stream_context' => stream_context_create(
                     array(
                         'http' => array(
