@@ -95,7 +95,8 @@ add_action('plugins_loaded', 'wccd_premium_activation', 1);
  * Update checker
  */
 require( plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php');
-$wccd_update_checker = Puc_v4_Factory::buildUpdateChecker(
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+$wccd_update_checker = PucFactory::buildUpdateChecker(
     'https://www.ilghera.com/wp-update-server-2/?action=get_metadata&slug=wc-carta-docente-premium',
     __FILE__,
     'wc-carta-docente-premium'
