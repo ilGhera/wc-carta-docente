@@ -66,6 +66,14 @@ This plugin sends data to an external service, like the categories and the price
 
 == Changelog ==
 
+= 1.2.5 =
+Data di rilascio: 15 Febbraio, 2023
+
+* Implementazione: Notifica admin chiave di licenza 
+* Update: Plugin Update Checker
+* Update: POT file
+
+
 = 1.2.4 =
 Data di rilascio: 7 Novembre, 2022
 
