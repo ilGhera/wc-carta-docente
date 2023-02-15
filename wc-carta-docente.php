@@ -45,6 +45,7 @@ function wccd_premium_activation() {
 	}
 	
 	/*Requires*/
+	require WCCD_INCLUDES . 'ilghera-notice/class-ilghera-notice.php';
 	require WCCD_INCLUDES . 'class-wccd-teacher-gateway.php';
 	require WCCD_INCLUDES . 'class-wccd-soap-client.php';
 	require WCCD_INCLUDES . 'class-wccd-admin.php';
