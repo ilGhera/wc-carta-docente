@@ -263,13 +263,31 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	 */
 	public function display_teacher_code( $order ) {
 		
-		$data = $order->get_data();
+		$data         = $order->get_data();
+        $teacher_code = null;
 
-		if ( $data['payment_method'] === 'docente' ) {
+        foreach( $order->get_coupon_codes() as $coupon_code ) {
+
+            if ( false !== strpos( $coupon_code, 'wccd' ) ) {
+
+                $parts        = explode( '-', $coupon_code );
+                $teacher_code = isset( $parts[2] ) ? $parts[2] : null;
+
+            }
+
+            break;
+        }
+
+		if ( 'docente' === $data['payment_method'] ) {
 
 		    echo '<p><strong>' . __( 'Buono docente', 'wccd' ) . ': </strong>' . get_post_meta( $order->get_id(), 'wc-codice-docente', true ) . '</p>';
 
-		}
+        } elseif ( $teacher_code ) {
+
+		    echo '<p><strong>' . __( 'Buono docente', 'wccd' ) . ': </strong>' . $teacher_code . '</p>';
+
+        }
+
 	}
 
 
