@@ -27,6 +27,10 @@ class WCCD {
         add_action( 'wp_ajax_nopriv_check-for-coupon', array( $this, 'wccd_check_for_coupon' ) );
         add_action( 'woocommerce_checkout_process', array( $this, 'process_coupon' ) );
 
+        /* Temp */
+        /* add_action( 'woocommerce_order_status_changed', array( $this, 'complete_process_code' ), 10, 4 ); */
+        add_action( 'woocommerce_order_status_completed', array( $this, 'complete_process_code' ), 10, 1 );
+
         /* Filters */
         add_filter( 'woocommerce_payment_gateways', array( $this, 'wccd_add_teacher_gateway_class' ) );
 
@@ -173,6 +177,81 @@ class WCCD {
 
         }
   
+    }
+
+
+    function refused_code_customer_notification( $order_id, $order ) {
+      
+        $heading = $subject = 'Order Refused';
+      
+        // Get WooCommerce email objects
+        $mailer = WC()->mailer()->get_emails();
+        /* error_log( 'MAILER: ' . print_r( $mailer, true ) ); */
+      
+        // Use one of the active emails e.g. "Customer_Completed_Order"
+        // Wont work if you choose an object that is not active
+        // Assign heading & subject to chosen object
+        $mailer['WC_Email_Customer_On_Hold_Order']->settings['heading'] = $heading;
+        $mailer['WC_Email_Customer_On_Hold_Order']->settings['subject'] = $subject;
+      
+        // Send the email with custom heading & subject
+        $mailer['WC_Email_Customer_On_Hold_Order']->trigger( $order_id );
+      
+        // To add email content use https://businessbloomer.com/woocommerce-add-extra-content-order-email/
+        // You have to use the email ID chosen above and also that $order->get_status() == "refused"
+      
+    }
+
+
+    /* public function complete_process_code( $order_id, $old_status, $new_status, $order  ) { */
+    public function complete_process_code( $order_id ) {
+
+        error_log( 'ORDER ID: ' . $order_id );
+        /* error_log( 'OLS STATUS: ' . $old_status ); */
+        /* error_log( 'NEW STATUS: ' . $new_status ); */
+        $order = wc_get_order( $order_id );
+
+        if ( is_object( $order ) && ! is_wp_error( $order ) ) {
+
+            /* if ( 'docente' === $order->get_payment_method() && 'completed' === $new_status ) { */
+            if ( 'docente' === $order->get_payment_method() ) {
+
+                $teacher_code = get_post_meta( $order_id, 'wc-codice-docente', true );
+                $total        = $order->get_total();
+                $validate     = 2; //WCCD_Teacher_Gateway::process_code( $order_id, $teacher_code, $total, false, true );
+
+                if ( 1 !== intval( $validate ) ) {
+
+                    error_log( 'ERROR: ' . print_r( $validate, true ) );
+                    $order->update_status( 'wc-failed' );
+                    
+                    $this->refused_code_customer_notification( $order_id, $order );
+
+                    add_filter(
+                        'woocommerce_email_enabled_customer_completed_order',
+                        function() {
+                            return false;
+                        }
+                    );
+
+                } else {
+
+                    error_log( 'VALIDATE: ' . print_r( $validate, true ) );
+
+                }
+
+            }
+
+        }
+
+    }
+
+
+    public function process_code( $order_id ) {
+
+        $order = wc_get_order( $order_id );
+        error_log( 'ORDER: ' . print_r( $order, true ) );
+
     }
 
 }

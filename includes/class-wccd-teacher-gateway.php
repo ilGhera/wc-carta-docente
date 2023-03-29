@@ -288,6 +288,16 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         }
 
+        /* Temp */
+        error_log( 'STATUSES: ' . print_r( wc_get_order_statuses(), true ) );
+        error_log( 'STATUS: ' . $order->get_status() );
+        
+        if ( 1 === 1 && in_array( $order->get_status(), array( 'wc-on-hold', 'wc-pending' ) ) ) {
+
+            echo '<p>L\'ordine verrà completato manualmente nei prossimi giorni e, contestualmente, verrà validato il buono Carta del Docente inserito. Riceverai una notifica email di conferma, grazie!</p>';
+
+        }
+
 	}
 
 
@@ -370,20 +380,20 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
      *
      * @return mixed string in caso di errore, 1 in alternativa
      */
-    public static function process_code( $order_id, $teacher_code, $import, $converted = false ) {
+    public static function process_code( $order_id, $teacher_code, $import, $converted = false, $complete = false ) {
 
         global $woocommerce;
 
         $output     = 1; 
         $order      = wc_get_order( $order_id );
-        $soapClient = new wccd_soap_client( $teacher_code, $import );
+        /* $soapClient = new wccd_soap_client( $teacher_code, $import ); */
         
         try {
 
             /*Prima verifica del buono*/
-            $response      = $soapClient->check();
-            $bene          = $response->checkResp->ambito; //il bene acquistabile con il buono inserito
-            $importo_buono = floatval($response->checkResp->importo); //l'importo del buono inserito
+            /* $response      = $soapClient->check(); */
+            $bene          = 'libri'; // $response->checkResp->ambito; //il bene acquistabile con il buono inserito
+            $importo_buono = 40; // floatval($response->checkResp->importo); //l'importo del buono inserito
             
             /*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
             $purchasable = self::is_purchasable( $order, $bene );
@@ -425,15 +435,16 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
                     try {
 
                         /*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
-                        $operation = $type === 'check' ? $soapClient->check( 2 ) : $soapClient->confirm();
+                        /* $operation = $type === 'check' ? $soapClient->check( 2 ) : $soapClient->confirm(); */
 
                         /*Aggiungo il buono docente all'ordine*/
                         update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
 
-                        if ( ! $converted ) {
+                        if ( ! $converted && ! $complete ) {
 
                             /*Ordine completato*/
-                            $order->payment_complete();
+                            /* $order->payment_complete(); */
+                            $order->update_status( 'wc-on-hold' );
 
                             /*Svuota carrello*/ 
                             $woocommerce->cart->empty_cart();	
