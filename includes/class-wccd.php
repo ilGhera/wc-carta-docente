@@ -186,16 +186,20 @@ class WCCD {
       
         // Get WooCommerce email objects
         $mailer = WC()->mailer()->get_emails();
-        /* error_log( 'MAILER: ' . print_r( $mailer, true ) ); */
+        error_log( 'MAILER: ' . print_r( $mailer, true ) );
       
         // Use one of the active emails e.g. "Customer_Completed_Order"
         // Wont work if you choose an object that is not active
         // Assign heading & subject to chosen object
-        $mailer['WC_Email_Customer_On_Hold_Order']->settings['heading'] = $heading;
-        $mailer['WC_Email_Customer_On_Hold_Order']->settings['subject'] = $subject;
+        $mailer['WC_Email_Failed_Order']->settings['heading']    = $heading;
+        $mailer['WC_Email_Failed_Order']->settings['subject']    = $subject;
+        $mailer['WC_Email_Failed_Order']->settings['recipient'] = $order->get_billing_email();
+        /* $mailer['WC_Email_Customer_On_Hold_Order']->settings['subject'] = $subject; */
+
       
         // Send the email with custom heading & subject
-        $mailer['WC_Email_Customer_On_Hold_Order']->trigger( $order_id );
+        /* $mailer['WC_Email_Customer_On_Hold_Order']->trigger( $order_id ); */
+        $mailer['WC_Email_Failed_Order']->trigger( $order_id );
       
         // To add email content use https://businessbloomer.com/woocommerce-add-extra-content-order-email/
         // You have to use the email ID chosen above and also that $order->get_status() == "refused"
@@ -222,7 +226,7 @@ class WCCD {
 
                 if ( 1 !== intval( $validate ) ) {
 
-                    error_log( 'ERROR: ' . print_r( $validate, true ) );
+                    /* error_log( 'ERROR: ' . print_r( $validate, true ) ); */
                     $order->update_status( 'wc-failed' );
                     
                     $this->refused_code_customer_notification( $order_id, $order );

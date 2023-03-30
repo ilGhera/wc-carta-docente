@@ -292,9 +292,13 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
         error_log( 'STATUSES: ' . print_r( wc_get_order_statuses(), true ) );
         error_log( 'STATUS: ' . $order->get_status() );
         
-        if ( 1 === 1 && in_array( $order->get_status(), array( 'wc-on-hold', 'wc-pending' ) ) ) {
+        if ( 1 === 1 && in_array( $order->get_status(), array( 'on-hold', 'pending' ) ) ) {
 
             echo '<p>L\'ordine verrà completato manualmente nei prossimi giorni e, contestualmente, verrà validato il buono Carta del Docente inserito. Riceverai una notifica email di conferma, grazie!</p>';
+
+        } else {
+
+            echo '<p>La validazione del buono Carta del Docente ha restituito un errore e non è stato possibile completare l\'ordine, completa il pagamento a questo indirizzo. </p>';
 
         }
 
