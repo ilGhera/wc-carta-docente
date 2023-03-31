@@ -298,7 +298,9 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         } else {
 
-            echo '<p>La validazione del buono Carta del Docente ha restituito un errore e non è stato possibile completare l\'ordine, completa il pagamento a questo indirizzo. </p>';
+            error_log( 'URL: ' . $order->get_checkout_payment_url() );
+
+            echo '<p>La validazone del buono Carta del Docente ha restituito un errore e non è stato possibile completare l\'ordine, completa il pagamento a <a href="' . $order->get_checkout_payment_url() . '">questo indirizzo</a>. </p>';
 
         }
 
