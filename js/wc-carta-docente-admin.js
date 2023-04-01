@@ -181,3 +181,34 @@ var wccd_menu_navigation = function() {
 }
 wccd_menu_navigation();
 
+/**
+ * Mostra i dettagli della mail all'utente
+ * nel caso la funzione ordini in sospeso sia stata attivata
+ *
+ * @return void
+ */
+var wccd_email_details = function() {
+    jQuery(function($){
+        $(document).ready(function() {
+
+            var on_hold       = $('.wccd-orders-on-hold');
+            var email_details = $('.wccd-email-details');
+
+            if ( $('.tzCheckBox', on_hold).hasClass( 'checked' ) ) {
+                $(email_details).show();
+            }
+
+            $('.tzCheckBox', on_hold).on( 'click', function() {
+
+                if ( $(this).hasClass( 'checked' ) ) {
+                    $(email_details).show('slow');
+                } else {
+                    $(email_details).hide();
+                }
+
+            })
+            
+        })
+    })
+}
+wccd_email_details();

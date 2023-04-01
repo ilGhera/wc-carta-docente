@@ -89,6 +89,10 @@ ul.categories-container {
 	display: none;
 }
 
+.wccd-email-subject, .wccd-email-heading {
+    display: none;
+}
+
 span.wccd-alert {
 	display: block;
 	margin: 1rem 0 0;

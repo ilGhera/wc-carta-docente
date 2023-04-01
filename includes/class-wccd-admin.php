@@ -587,7 +587,7 @@ class wccd_admin {
 			    				echo '</td>';
 				    		echo '</tr>';
 
-				    		echo '<tr>';
+				    		echo '<tr class="wccd-orders-on-hold">';
 				    			echo '<th scope="row">' . esc_html(__('Ordini in sospeso', 'wccd')) . '</th>';
 			    				echo '<td>';
                                         echo '<input type="checkbox" name="wccd-orders-on-hold" value="1"' . ($wccd_orders_on_hold === '1' ? ' checked="checked"' : '') . '>';
@@ -595,7 +595,7 @@ class wccd_admin {
 			    				echo '</td>';
 				    		echo '</tr>';
 
-				    		echo '<tr>';
+				    		echo '<tr class="wccd-email-subject wccd-email-details">';
 				    			echo '<th scope="row">' . esc_html(__('Oggetto email', 'wccd')) . '</th>';
 			    				echo '<td>';
                                         echo '<input type="text" class="regular-text" name="wccd-email-subject" placeholder="' . __( 'Ordine fallito', 'wccd' ) . '" value="' . esc_attr( $wccd_email_subject ) . '">';
@@ -603,7 +603,7 @@ class wccd_admin {
 			    				echo '</td>';
 				    		echo '</tr>';
 
-				    		echo '<tr>';
+				    		echo '<tr class="wccd-email-heading wccd-email-details">';
 				    			echo '<th scope="row">' . esc_html(__('Intestazione email', 'wccd')) . '</th>';
 			    				echo '<td>';
                                         echo '<input type="text" class="regular-text" name="wccd-email-heading" placeholder="' . __( 'Ordine fallito', 'wccd' ) . '" value="' . esc_attr( $wccd_email_heading ) . '">';
