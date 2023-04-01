@@ -314,13 +314,16 @@ class wccd_admin {
 	public function wccd_settings() {
 
 		/*Recupero le opzioni salvate nel db*/
-		$premium_key      = get_option('wccd-premium-key');
-		$passphrase       = base64_decode(get_option('wccd-password'));
-		$categories       = get_option('wccd-categories');
-		$tot_cats         = $categories ? count($categories) : 0;
-		$wccd_coupon      = get_option('wccd-coupon');
-		$wccd_image       = get_option('wccd-image');
-		$wccd_items_check = get_option('wccd-items-check');
+		$premium_key         = get_option('wccd-premium-key');
+		$passphrase          = base64_decode(get_option('wccd-password'));
+		$categories          = get_option('wccd-categories');
+		$tot_cats            = $categories ? count($categories) : 0;
+		$wccd_coupon         = get_option('wccd-coupon');
+		$wccd_image          = get_option('wccd-image');
+		$wccd_items_check    = get_option('wccd-items-check');
+        $wccd_orders_on_hold = get_option('wccd-orders-on-hold');
+        $wccd_email_subject  = get_option('wccd-email-subject');
+        $wccd_email_heading  = get_option('wccd-email-heading');
 
 		echo '<div class="wrap">';
 	    	echo '<div class="wrap-left">';
@@ -583,6 +586,31 @@ class wccd_admin {
 					    			echo '<p class="description">' .  wp_kses_post( __( 'Mostra il metodo di pagamento solo se il/ i prodotti a carrello sono acquistabili con buoni <i>Carta del Docente</i>.<br>Più prodotti dovranno prevedere l\'uso di buoni dello stesso ambito di utilizzo.', 'wccd' ) ) . '</p>';
 			    				echo '</td>';
 				    		echo '</tr>';
+
+				    		echo '<tr>';
+				    			echo '<th scope="row">' . esc_html(__('Ordini in sospeso', 'wccd')) . '</th>';
+			    				echo '<td>';
+                                        echo '<input type="checkbox" name="wccd-orders-on-hold" value="1"' . ($wccd_orders_on_hold === '1' ? ' checked="checked"' : '') . '>';
+					    			echo '<p class="description">' .  wp_kses_post( __( 'I buoni Carta del Docente verranno validati con il completamento manuale degli ordini.', 'wccd' ) ) . '</p>';
+			    				echo '</td>';
+				    		echo '</tr>';
+
+				    		echo '<tr>';
+				    			echo '<th scope="row">' . esc_html(__('Oggetto email', 'wccd')) . '</th>';
+			    				echo '<td>';
+                                        echo '<input type="text" class="regular-text" name="wccd-email-subject" placeholder="' . __( 'Ordine fallito', 'wccd' ) . '" value="' . esc_attr( $wccd_email_subject ) . '">';
+					    			echo '<p class="description">' .  wp_kses_post( __( 'Oggetto della mail inviata all\'utente nel caso in cui la validazione del buono non sia andata a buon fine.', 'wccd' ) ) . '</p>';
+			    				echo '</td>';
+				    		echo '</tr>';
+
+				    		echo '<tr>';
+				    			echo '<th scope="row">' . esc_html(__('Intestazione email', 'wccd')) . '</th>';
+			    				echo '<td>';
+                                        echo '<input type="text" class="regular-text" name="wccd-email-heading" placeholder="' . __( 'Ordine fallito', 'wccd' ) . '" value="' . esc_attr( $wccd_email_heading ) . '">';
+					    			echo '<p class="description">' .  wp_kses_post( __( 'Intestazione della mail inviata all\'utente nel caso in cui la validazione del buono non sia andata a buon fine.', 'wccd' ) ) . '</p>';
+			    				echo '</td>';
+				    		echo '</tr>';
+
 				    	echo '</table>';
 
 				    	wp_nonce_field('wccd-save-settings', 'wccd-settings-nonce');
@@ -728,6 +756,18 @@ class wccd_admin {
 			/*Controllo prodotti a carrello*/
 			$wccd_items_check = isset($_POST['wccd-items-check']) ? sanitize_text_field($_POST['wccd-items-check']) : '';															
 			update_option('wccd-items-check', $wccd_items_check);
+
+			/*Ordini in sospeso*/
+			$wccd_orders_on_hold = isset($_POST['wccd-orders-on-hold']) ? sanitize_text_field($_POST['wccd-orders-on-hold']) : '';															
+			update_option('wccd-orders-on-hold', $wccd_orders_on_hold);
+
+			/*Oggetto email*/
+			$wccd_email_subject = isset($_POST['wccd-email-subject']) ? sanitize_text_field($_POST['wccd-email-subject']) : '';															
+			update_option('wccd-email-subject', $wccd_email_subject);
+
+			/*Intestazione email*/
+			$wccd_email_heading = isset($_POST['wccd-email-heading']) ? sanitize_text_field($_POST['wccd-email-heading']) : '';															
+			update_option('wccd-email-heading', $wccd_email_heading);
 		}
 	}
 

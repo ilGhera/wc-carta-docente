@@ -8,10 +8,27 @@
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
-    
+    /**
+     * Coupon option 
+     *
+     * @var bool
+     */
     public static $coupon_option;
 
 
+    /**
+     * Orders on hold option
+     *
+     * @var bool
+     */
+    public $orders_on_hold; 
+
+
+    /**
+     * The constructor
+     *
+     * @return void
+     */ 
 	public function __construct() {
 
 		$this->plugin_id          = 'woocommerce_carta_docente';
@@ -21,6 +38,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->method_description = 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.';
 		
         self::$coupon_option      = get_option( 'wccd-coupon' );
+        $this->orders_on_hold     = get_option( 'wccd-orders-on-hold' );
 
         if ( get_option( 'wccd-image' ) ) {
 
@@ -215,8 +233,10 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Tutti i prodotti dell'ordine devono essere della tipologia (cat) consentita dal buono docente. 
+     *
 	 * @param  object $order  
 	 * @param  string $bene il bene acquistabile con il buono
+     *
 	 * @return bool
 	 */
 	public static function is_purchasable( $order, $bene ) {
@@ -258,7 +278,9 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Mostra il buono docente nella thankyou page, nelle mail e nella pagina dell'ordine.
+     *
 	 * @param  object $order
+     *
 	 * @return mixed        testo formattato con il buono utilizzato per l'acquisto
 	 */
 	public function display_teacher_code( $order ) {
@@ -288,17 +310,11 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         }
 
-        /* Temp */
-        error_log( 'STATUSES: ' . print_r( wc_get_order_statuses(), true ) );
-        error_log( 'STATUS: ' . $order->get_status() );
-        
-        if ( 1 === 1 && in_array( $order->get_status(), array( 'on-hold', 'pending' ) ) ) {
+        if ( $this->orders_on_hold && in_array( $order->get_status(), array( 'on-hold', 'pending' ) ) ) {
 
             echo '<p>L\'ordine verrà completato manualmente nei prossimi giorni e, contestualmente, verrà validato il buono Carta del Docente inserito. Riceverai una notifica email di conferma, grazie!</p>';
 
         } else {
-
-            error_log( 'URL: ' . $order->get_checkout_payment_url() );
 
             echo '<p>La validazone del buono Carta del Docente ha restituito un errore e non è stato possibile completare l\'ordine, completa il pagamento a <a href="' . $order->get_checkout_payment_url() . '">questo indirizzo</a>. </p>';
 

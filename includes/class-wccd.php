@@ -8,9 +8,20 @@
  */
 class WCCD {
 
-    
+    /**
+     * Coupon option 
+     *
+     * @var bool
+     */
     public $coupon_option;
     
+    /**
+     * Orders on hold option
+     *
+     * @var bool
+     */
+    public $orders_on_hold; 
+
 
     /**
      * The constructor
@@ -19,17 +30,22 @@ class WCCD {
      */
     public function __construct() {
 
-        /* Controlla se l'optione è stata attivata dall'admin */
-        $this->coupon_option = get_option( 'wccd-coupon' );
+        $this->coupon_option  = get_option( 'wccd-coupon' );
+        $this->orders_on_hold = get_option( 'wccd-orders-on-hold' );
+
+        /* Filters */
+        add_filter( 'woocommerce_payment_gateways', array( $this, 'wccd_add_teacher_gateway_class' ) );
 
         /* Actions */
         add_action( 'wp_ajax_check-for-coupon', array( $this, 'wccd_check_for_coupon' ) );
         add_action( 'wp_ajax_nopriv_check-for-coupon', array( $this, 'wccd_check_for_coupon' ) );
         add_action( 'woocommerce_checkout_process', array( $this, 'process_coupon' ) );
-        add_action( 'woocommerce_order_status_completed', array( $this, 'complete_process_code' ), 10, 1 );
 
-        /* Filters */
-        add_filter( 'woocommerce_payment_gateways', array( $this, 'wccd_add_teacher_gateway_class' ) );
+        if ( $this->orders_on_hold ) {
+
+            add_action( 'woocommerce_order_status_completed', array( $this, 'complete_process_code' ), 10, 1 );
+
+        }
 
     }
 
@@ -187,11 +203,16 @@ class WCCD {
      */
     public function refused_code_customer_notification( $order_id, $order ) {
       
+        /* Get options */
+        $subject = get_option( 'wccd-email-subject' );
+        $subject = $subject ? $subject : __( 'Ordine fallito' );
+        $heading = get_option( 'wccd-email-heading' );
+        $heading = $heading ? $heading : __( 'Ordine fallito' );
+
         /* Get WooCommerce email objects */
         $mailer = WC()->mailer()->get_emails();
-      
+
         /* Set custom details */
-        $heading = $subject = 'Order Refused';
         $mailer['WC_Email_Customer_On_Hold_Order']->settings['heading'] = $heading;
         $mailer['WC_Email_Customer_On_Hold_Order']->settings['subject'] = $subject;
       
@@ -210,7 +231,6 @@ class WCCD {
      */
     public function complete_process_code( $order_id ) {
 
-        error_log( 'ORDER ID: ' . $order_id );
         $order = wc_get_order( $order_id );
 
         if ( is_object( $order ) && ! is_wp_error( $order ) ) {
@@ -225,8 +245,10 @@ class WCCD {
 
                     $order->update_status( 'wc-failed' );
                     
+                    /* Send email to customer */
                     $this->refused_code_customer_notification( $order_id, $order );
 
+                    /* Don't send complete order email to customer */
                     add_filter(
                         'woocommerce_email_enabled_customer_completed_order',
                         function() {
