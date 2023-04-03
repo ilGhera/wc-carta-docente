@@ -21,7 +21,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
      *
      * @var bool
      */
-    public $orders_on_hold; 
+    public static $orders_on_hold; 
 
 
     /**
@@ -38,7 +38,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->method_description = 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.';
 		
         self::$coupon_option      = get_option( 'wccd-coupon' );
-        $this->orders_on_hold     = get_option( 'wccd-orders-on-hold' );
+        self::$orders_on_hold     = get_option( 'wccd-orders-on-hold' );
 
         if ( get_option( 'wccd-image' ) ) {
 
@@ -52,12 +52,16 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->title       = $this->get_option('title');
 		$this->description = $this->get_option('description');
         
+        /* Filters */
         add_filter( 'woocommerce_available_payment_gateways', array( $this, 'unset_teacher_gateway' ) );
 
+        /* Actions */
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_details_after_order_table', array( $this, 'display_teacher_code' ), 10, 1 );
 		add_action( 'woocommerce_email_after_order_table', array( $this, 'display_teacher_code'), 10, 1 );
 		add_action( 'woocommerce_admin_order_data_after_billing_address', array( $this, 'display_teacher_code' ), 10, 1 );
+
+        /* Shortcodes */
         add_shortcode( 'checkout-url', array( $this, 'get_checkout_payment_url' ) );
 
 	}
@@ -305,7 +309,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
      *
 	 * @param  object $order
      *
-	 * @return mixed        testo formattato con il buono utilizzato per l'acquisto
+	 * @return string 
 	 */
 	public function display_teacher_code( $order ) {
 		
@@ -334,32 +338,36 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         }
 
-        if ( $this->orders_on_hold && in_array( $order->get_status(), array( 'on-hold', 'pending' ) ) ) {
+        if ( self::$orders_on_hold ) {
 
-            /* Recupero il messaggio personalizzato salvato nelle impostazioni */
-            $message = get_option( 'wccd-email-order-received' );
+            if ( in_array( $order->get_status(), array( 'on-hold', 'pending' ) ) ) {
 
-            if ( ! $message ) {
+                /* Recupero il messaggio personalizzato salvato nelle impostazioni */
+                $message = get_option( 'wccd-email-order-received' );
 
-                $message = __( 'L\'ordine verrà completato manualmente nei prossimi giorni e, contestualmente, verrà validato il buono Carta del Docente inserito. Riceverai una notifica email di conferma, grazie!', 'wccd' );
+                if ( ! $message ) {
+
+                    $message = __( 'L\'ordine verrà completato manualmente nei prossimi giorni e, contestualmente, verrà validato il buono Carta del Docente inserito. Riceverai una notifica email di conferma, grazie!', 'wccd' );
+
+                }
+
+                echo wp_kses_post( "<p>$message</p>", 'wccd' );
+
+            } else {
+
+                /* Recupero il messaggio personalizzato salvato nelle impostazioni */
+                $message = get_option( 'wccd-email-order-failed' );
+                $message = str_replace( '[checkout-url]', '%s', $message );
+
+                if ( ! $message ) {
+
+                    $message = __( 'La validazone del buono Carta del Docente ha restituito un errore e non è stato possibile completare l\'ordine, completa il pagamento a <a href="%s">questo indirizzo</a>.', 'wccd' );
+
+                }
+
+                echo wp_kses_post( sprintf( "<p>$message</p>", do_shortcode( '[checkout-url order-id=' . $order->get_id() . ']' ) ) );
 
             }
-
-            echo wp_kses_post( "<p>$message</p>", 'wccd' );
-
-        } else {
-
-            /* Recupero il messaggio personalizzato salvato nelle impostazioni */
-            $message = get_option( 'wccd-email-order-failed' );
-            $message = str_replace( '[checkout-url]', '%s', $message );
-
-            if ( ! $message ) {
-
-                $message = __( 'La validazone del buono Carta del Docente ha restituito un errore e non è stato possibile completare l\'ordine, completa il pagamento a <a href="%s">questo indirizzo</a>.', 'wccd' );
-
-            }
-
-            echo wp_kses_post( sprintf( "<p>$message</p>", do_shortcode( '[checkout-url order-id=' . $order->get_id() . ']' ) ) );
 
         }
 
@@ -507,9 +515,18 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                         if ( ! $converted && ! $complete ) {
 
-                            /*Ordine completato*/
-                            /* $order->payment_complete(); */
-                            $order->update_status( 'wc-on-hold' );
+
+                            if ( self::$orders_on_hold ) {
+
+                                /* Ordine in sospeso */
+                                $order->update_status( 'wc-on-hold' );
+
+                            } else {
+
+                                /* Ordine completato */
+                                $order->payment_complete();
+
+                            }
 
                             /*Svuota carrello*/ 
                             $woocommerce->cart->empty_cart();	
