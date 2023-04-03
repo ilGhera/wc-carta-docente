@@ -97,6 +97,12 @@ ul.categories-container {
     display: block;
 }
 
+.wccd-divider {
+    padding-bottom: 2rem;
+    margin: 2rem 0;
+    border-bottom: 1px solid #ccc;
+}
+
 span.wccd-alert {
 	display: block;
 	margin: 1rem 0 0;

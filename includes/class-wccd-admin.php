@@ -314,17 +314,18 @@ class wccd_admin {
 	public function wccd_settings() {
 
 		/*Recupero le opzioni salvate nel db*/
-		$premium_key         = get_option('wccd-premium-key');
-		$passphrase          = base64_decode(get_option('wccd-password'));
-		$categories          = get_option('wccd-categories');
-		$tot_cats            = $categories ? count($categories) : 0;
-		$wccd_coupon         = get_option('wccd-coupon');
-		$wccd_image          = get_option('wccd-image');
-		$wccd_items_check    = get_option('wccd-items-check');
-        $wccd_orders_on_hold = get_option('wccd-orders-on-hold');
-        $wccd_email_subject  = get_option('wccd-email-subject');
-        $wccd_email_heading  = get_option('wccd-email-heading');
-        $wccd_email_message  = get_option('wccd-email-message');
+		$premium_key               = get_option('wccd-premium-key');
+		$passphrase                = base64_decode(get_option('wccd-password'));
+		$categories                = get_option('wccd-categories');
+		$tot_cats                  = $categories ? count($categories) : 0;
+		$wccd_coupon               = get_option('wccd-coupon');
+		$wccd_image                = get_option('wccd-image');
+		$wccd_items_check          = get_option('wccd-items-check');
+        $wccd_orders_on_hold       = get_option('wccd-orders-on-hold');
+        $wccd_email_subject        = get_option('wccd-email-subject');
+        $wccd_email_heading        = get_option('wccd-email-heading');
+        $wccd_email_order_received = get_option('wccd-email-order-received');
+        $wccd_email_order_failed   = get_option('wccd-email-order-failed');
 
 		echo '<div class="wrap">';
 	    	echo '<div class="wrap-left">';
@@ -596,6 +597,18 @@ class wccd_admin {
 			    				echo '</td>';
 				    		echo '</tr>';
 
+				    		echo '<tr class="wccd-email-order-received wccd-email-details">';
+				    			echo '<th scope="row">' . esc_html(__('Ordine ricevuto', 'wccd')) . '</th>';
+			    				echo '<td>';
+                                    $default_order_received_message = __( 'L\'ordine verrà completato manualmente nei prossimi giorni e, contestualmente, verrà validato il buono Carta del Docente inserito. Riceverai una notifica email di conferma, grazie!', 'wccd' );
+                                    echo '<textarea cols="6" rows="6" class="regular-text" name="wccd-email-order-received" placeholder="' . esc_html( $default_order_received_message ) . '" value="' . esc_html( $wccd_email_order_received ) . '">' . esc_html( $wccd_email_order_received ) . '</textarea>';
+                                    echo '<p class="description">';
+                                        echo wp_kses_post( __( 'Messaggio della mail inviata all\'utente al ricevimento dell\'ordine.', 'wccd' ) );
+                                    echo '</p>';
+                                    echo '<div class="wccd-divider"></div>';
+			    				echo '</td>';
+				    		echo '</tr>';
+
 				    		echo '<tr class="wccd-email-subject wccd-email-details">';
 				    			echo '<th scope="row">' . esc_html(__('Oggetto email', 'wccd')) . '</th>';
 			    				echo '<td>';
@@ -612,11 +625,11 @@ class wccd_admin {
 			    				echo '</td>';
 				    		echo '</tr>';
 
-				    		echo '<tr class="wccd-email-message wccd-email-details">';
-				    			echo '<th scope="row">' . esc_html(__('Messaggio email', 'wccd')) . '</th>';
+				    		echo '<tr class="wccd-email-order-failed wccd-email-details">';
+				    			echo '<th scope="row">' . esc_html(__('Ordine fallito', 'wccd')) . '</th>';
 			    				echo '<td>';
-                                        $default_message = __( 'La validazone del buono Carta del Docente ha restituito un errore e non è stato possibile completare l\'ordine, effettua il pagamento a <a href="[checkout-url]">questo indirizzo</a>.' );
-                                        echo '<textarea cols="6" rows="6" class="regular-text" name="wccd-email-message" placeholder="' . esc_html( $default_message ) . '" value="' . esc_html( $wccd_email_message ) . '">' . esc_html( $wccd_email_message ) . '</textarea>';
+                                        $default_order_failed_message = __( 'La validazone del buono Carta del Docente ha restituito un errore e non è stato possibile completare l\'ordine, effettua il pagamento a <a href="[checkout-url]">questo indirizzo</a>.' );
+                                        echo '<textarea cols="6" rows="6" class="regular-text" name="wccd-email-order-failed" placeholder="' . esc_html( $default_order_failed_message ) . '" value="' . esc_html( $wccd_email_order_failed ) . '">' . esc_html( $wccd_email_order_failed ) . '</textarea>';
                                         echo '<p class="description">';
                                             echo '<span class="shortcodes">';
                                                 echo '<code>[checkout-url]</code>';
@@ -776,6 +789,10 @@ class wccd_admin {
 			$wccd_orders_on_hold = isset($_POST['wccd-orders-on-hold']) ? sanitize_text_field($_POST['wccd-orders-on-hold']) : '';															
 			update_option('wccd-orders-on-hold', $wccd_orders_on_hold);
 
+			/*Messaggio email ordine ricevuto*/
+			$wccd_email_order_received = isset($_POST['wccd-email-order-received']) ? wp_kses_post(wp_unslash($_POST['wccd-email-order-received'])) : '';															
+			update_option('wccd-email-order-received', $wccd_email_order_received);
+
 			/*Oggetto email*/
 			$wccd_email_subject = isset($_POST['wccd-email-subject']) ? sanitize_text_field($_POST['wccd-email-subject']) : '';															
 			update_option('wccd-email-subject', $wccd_email_subject);
@@ -784,9 +801,9 @@ class wccd_admin {
 			$wccd_email_heading = isset($_POST['wccd-email-heading']) ? sanitize_text_field($_POST['wccd-email-heading']) : '';															
 			update_option('wccd-email-heading', $wccd_email_heading);
 
-			/*Messaggio email*/
-			$wccd_email_message = isset($_POST['wccd-email-message']) ? wp_kses_post($_POST['wccd-email-message']) : '';															
-			update_option('wccd-email-message', $wccd_email_message);
+			/*Messaggio email ordine ricevuto*/
+			$wccd_email_order_failed = isset($_POST['wccd-email-order-failed']) ? wp_kses_post(wp_unslash($_POST['wccd-email-order-failed'])) : '';															
+			update_option('wccd-email-order-failed', $wccd_email_order_failed);
 
 		}
 	}
