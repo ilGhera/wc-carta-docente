@@ -89,8 +89,12 @@ ul.categories-container {
 	display: none;
 }
 
-.wccd-email-subject, .wccd-email-heading {
+.wccd-email-details {
     display: none;
+}
+
+.shortcodes {
+    display: block;
 }
 
 span.wccd-alert {

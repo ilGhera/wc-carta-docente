@@ -324,6 +324,7 @@ class wccd_admin {
         $wccd_orders_on_hold = get_option('wccd-orders-on-hold');
         $wccd_email_subject  = get_option('wccd-email-subject');
         $wccd_email_heading  = get_option('wccd-email-heading');
+        $wccd_email_message  = get_option('wccd-email-message');
 
 		echo '<div class="wrap">';
 	    	echo '<div class="wrap-left">';
@@ -611,6 +612,20 @@ class wccd_admin {
 			    				echo '</td>';
 				    		echo '</tr>';
 
+				    		echo '<tr class="wccd-email-message wccd-email-details">';
+				    			echo '<th scope="row">' . esc_html(__('Messaggio email', 'wccd')) . '</th>';
+			    				echo '<td>';
+                                        $default_message = __( 'La validazone del buono Carta del Docente ha restituito un errore e non è stato possibile completare l\'ordine, effettua il pagamento a <a href="[checkout-url]">questo indirizzo</a>.' );
+                                        echo '<textarea cols="6" rows="6" class="regular-text" name="wccd-email-message" placeholder="' . esc_html( $default_message ) . '" value="' . esc_html( $wccd_email_message ) . '">' . esc_html( $wccd_email_message ) . '</textarea>';
+                                        echo '<p class="description">';
+                                            echo '<span class="shortcodes">';
+                                                echo '<code>[checkout-url]</code>';
+                                            echo '</span>';
+                                            echo wp_kses_post( __( 'Messaggio della mail inviata all\'utente nel caso in cui la validazione del buono non sia andata a buon fine.', 'wccd' ) );
+                                        echo '</p>';
+			    				echo '</td>';
+				    		echo '</tr>';
+
 				    	echo '</table>';
 
 				    	wp_nonce_field('wccd-save-settings', 'wccd-settings-nonce');
@@ -768,6 +783,11 @@ class wccd_admin {
 			/*Intestazione email*/
 			$wccd_email_heading = isset($_POST['wccd-email-heading']) ? sanitize_text_field($_POST['wccd-email-heading']) : '';															
 			update_option('wccd-email-heading', $wccd_email_heading);
+
+			/*Messaggio email*/
+			$wccd_email_message = isset($_POST['wccd-email-message']) ? wp_kses_post($_POST['wccd-email-message']) : '';															
+			update_option('wccd-email-message', $wccd_email_message);
+
 		}
 	}
 

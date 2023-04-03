@@ -58,6 +58,8 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		add_action( 'woocommerce_order_details_after_order_table', array( $this, 'display_teacher_code' ), 10, 1 );
 		add_action( 'woocommerce_email_after_order_table', array( $this, 'display_teacher_code'), 10, 1 );
 		add_action( 'woocommerce_admin_order_data_after_billing_address', array( $this, 'display_teacher_code' ), 10, 1 );
+        add_shortcode( 'checkout-url', array( $this, 'get_checkout_payment_url' ) );
+
 	}
 
 
@@ -276,6 +278,29 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	}
 
 
+    /**
+     * Add the shortcode to get the ispecific checkout URL.
+     *
+     * @param int $order_id the WC order ID.
+     *
+     * @return void
+     */
+    public function get_checkout_payment_url( $args ) {
+
+        error_log( 'ORDER: ' . print_r( $args, true ) );
+        $order_id = isset( $args['order-id'] ) ? $args['order-id'] : null;
+
+        if ( $order_id ) {
+
+            $order = wc_get_order( $order_id );
+
+            return $order->get_checkout_payment_url();
+
+        }
+
+    }
+
+
 	/**
 	 * Mostra il buono docente nella thankyou page, nelle mail e nella pagina dell'ordine.
      *
@@ -312,11 +337,24 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         if ( $this->orders_on_hold && in_array( $order->get_status(), array( 'on-hold', 'pending' ) ) ) {
 
-            echo '<p>L\'ordine verrà completato manualmente nei prossimi giorni e, contestualmente, verrà validato il buono Carta del Docente inserito. Riceverai una notifica email di conferma, grazie!</p>';
+            echo wp_kses_post( '<p>L\'ordine verrà completato manualmente nei prossimi giorni e, contestualmente, verrà validato il buono Carta del Docente inserito. Riceverai una notifica email di conferma, grazie!</p>', 'wccd' );
 
         } else {
 
-            echo '<p>La validazone del buono Carta del Docente ha restituito un errore e non è stato possibile completare l\'ordine, completa il pagamento a <a href="' . $order->get_checkout_payment_url() . '">questo indirizzo</a>. </p>';
+            /* Recupero il messaggio personalizzato salvato nelle impostazioni */
+            $message = get_option( 'wccd-email-message' );
+            $message = str_replace( '[checkout-url]', '%s', $message );
+
+            if ( $message ) {
+
+                error_log( 'MESSAGE: ' . $message );
+                echo wp_kses_post( sprintf( __( $message, 'wccd' ), do_shortcode( '[checkout-url order-id=' . $order->get_id() . ']' ) ) );
+
+            } else {
+
+                echo wp_kses_post( sprintf( __( '<p>La validazone del buono Carta del Docente ha restituito un errore e non è stato possibile completare l\'ordine, completa il pagamento a <a href="%s">questo indirizzo</a>.</p>', 'wccd' ), do_shortcode( '[checkout-url order-id=' . $order->get_id() . ']' ) ) );
+
+            }
 
         }
 
