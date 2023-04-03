@@ -459,14 +459,14 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         $output     = 1; 
         $order      = wc_get_order( $order_id );
-        /* $soapClient = new wccd_soap_client( $teacher_code, $import ); */
+        $soapClient = new wccd_soap_client( $teacher_code, $import );
         
         try {
 
             /*Prima verifica del buono*/
-            /* $response      = $soapClient->check(); */
-            $bene          = 'libri'; // $response->checkResp->ambito; //il bene acquistabile con il buono inserito
-            $importo_buono = 40; // floatval($response->checkResp->importo); //l'importo del buono inserito
+            $response      = $soapClient->check();
+            $bene          = $response->checkResp->ambito; //il bene acquistabile con il buono inserito
+            $importo_buono = floatval($response->checkResp->importo); //l'importo del buono inserito
             
             /*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
             $purchasable = self::is_purchasable( $order, $bene );
@@ -508,7 +508,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
                     try {
 
                         /*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
-                        /* $operation = $type === 'check' ? $soapClient->check( 2 ) : $soapClient->confirm(); */
+                        $operation = $type === 'check' ? $soapClient->check( 2 ) : $soapClient->confirm();
 
                         /*Aggiungo il buono docente all'ordine*/
                         update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
