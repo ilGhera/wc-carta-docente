@@ -93,6 +93,10 @@ class wccd_soap_client {
             )
         ));
         
+        error_log( 'VALUE: ' . $value );
+        error_log( 'CODICE: ' . $this->codiceVoucher );
+        error_log( 'CHECK RESULT: ' . print_r( $check, true ) );
+
         return $check;
     }
 

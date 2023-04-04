@@ -493,7 +493,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                     }
 
-                } elseif ( $importo_buono === $import ) {
+                } elseif ( $importo_buono === $import || ( self::$orders_on_hold && ! $complete ) ) {
 
                     $type = 'check';
 
@@ -503,20 +503,40 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                 }
 
+                error_log( 'TYPE: ' . $type );
+
                 if ( $type ) {
 
                     try {
 
                         /*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
-                        $operation = $type === 'check' ? $soapClient->check( 2 ) : $soapClient->confirm();
+                        /* $operation = $type === 'check' ? $soapClient->check( 2 ) : $soapClient->confirm(); */
+                        if ( 'check' === $type ) {
+
+                            if ( self::$orders_on_hold && ! $complete ) {
+
+                                $operation = $soapClient->check( 3 );
+                                error_log( 'OPERATIONS 100: ' . print_r( $operation, true ) );
+
+                            } else {
+
+                                $operation = $soapClient->check( 2 );
+
+                            }
+
+                        } else {
+
+                            $operation = $soapClient->confirm();
+
+                        }
+                        error_log( 'OPERATION:' . print_r( $operation, true ) );
 
                         /*Aggiungo il buono docente all'ordine*/
                         update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
 
-                        if ( ! $converted && ! $complete ) {
+                        if ( ! $converted ) {
 
-
-                            if ( self::$orders_on_hold ) {
+                            if ( self::$orders_on_hold && ! $complete ) {
 
                                 /* Ordine in sospeso */
                                 $order->update_status( 'wc-on-hold' );
