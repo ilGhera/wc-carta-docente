@@ -353,7 +353,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                 echo wp_kses_post( "<p>$message</p>", 'wccd' );
 
-            } else {
+            } elseif ( 'failed' === $order->get_status() ) {
 
                 /* Recupero il messaggio personalizzato salvato nelle impostazioni */
                 $message = get_option( 'wccd-email-order-failed' );
@@ -503,8 +503,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                 }
 
-                error_log( 'TYPE: ' . $type );
-
                 if ( $type ) {
 
                     try {
@@ -515,8 +513,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                             if ( self::$orders_on_hold && ! $complete ) {
 
-                                $operation = $soapClient->check( 3 );
-                                error_log( 'OPERATIONS 100: ' . print_r( $operation, true ) );
+                                $operation = null; 
 
                             } else {
 
@@ -529,7 +526,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
                             $operation = $soapClient->confirm();
 
                         }
-                        error_log( 'OPERATION:' . print_r( $operation, true ) );
 
                         /*Aggiungo il buono docente all'ordine*/
                         update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
@@ -548,8 +544,13 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
                             }
 
-                            /*Svuota carrello*/ 
-                            $woocommerce->cart->empty_cart();	
+                            /* A completamento di un ordine il carrello è già vuoto */
+                            if ( ! $complete ) {
+
+                                /*Svuota carrello*/ 
+                                $woocommerce->cart->empty_cart();	
+
+                            }
 
                         }
 
@@ -576,6 +577,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Gestisce il processo di pagamento, verificando la validità del buono inserito dall'utente
+     *
 	 * @param  int $order_id l'id dell'ordine
 	 */
 	public function process_payment( $order_id ) {

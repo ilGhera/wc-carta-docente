@@ -240,7 +240,6 @@ class WCCD {
                 $teacher_code = get_post_meta( $order_id, 'wc-codice-docente', true );
                 $total        = $order->get_total();
                 $validate     = WCCD_Teacher_Gateway::process_code( $order_id, $teacher_code, $total, false, true );
-                error_log( 'VALIDATE: ' . print_r( $validate, true ) );
 
                 if ( 1 !== intval( $validate ) ) {
 
