@@ -113,9 +113,13 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
             $item_ids = array();
             $terms    = get_the_terms( $values['product_id'], 'product_cat' );    
 
-            foreach ( $terms as $term ) {        
+            if ( is_array( $terms ) ) {
 
-                $item_ids[] = $term->term_id;
+                foreach ( $terms as $term ) {        
+
+                    $item_ids[] = $term->term_id;
+
+                }
 
             }
 

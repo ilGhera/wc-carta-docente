@@ -17,6 +17,7 @@ var wccd_delete_certificate = function() {
 				var data = {
 					'action': 'wccd-delete-certificate',
 					'wccd-delete': true,
+                    'delete-nonce': wccdData.delCertNonce,
 					'cert': cert
 				}			
 				$.post(ajaxurl, data, function(response){
@@ -47,6 +48,7 @@ var wccd_add_cat = function() {
 				'action': 'wccd-add-cat',
 				'number': number,
 				'exclude-beni': beni_values.toString(),
+                'add-cat-nonce': wccdData.addCatNonce,
 			}
 			$.post(ajaxurl, data, function(response){
 				$(response).appendTo('.categories-container');

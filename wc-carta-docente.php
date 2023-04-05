@@ -74,6 +74,19 @@ function wccd_premium_activation() {
             wp_enqueue_style('wccd-admin-style', WCCD_URI . 'css/wc-carta-docente-admin.css');
             wp_enqueue_script('wccd-admin-scripts', WCCD_URI . 'js/wc-carta-docente-admin.js');
 
+            /* Nonce per l'eliminazione del certificato */
+            $delete_nonce  = wp_create_nonce( 'wccd-del-cert-nonce' );
+            $add_cat_nonce = wp_create_nonce( 'wccd-add-cat-nonce' );
+
+            wp_localize_script(
+                'wccd-admin-scripts',
+                'wccdData',
+                array(
+                    'delCertNonce' => $delete_nonce,
+                    'addCatNonce'  => $add_cat_nonce,
+                )
+            );
+
             /*tzCheckBox*/
             wp_enqueue_style( 'tzcheckbox-style', WCCD_URI . 'js/tzCheckbox/jquery.tzCheckbox/jquery.tzCheckbox.css' );
             wp_enqueue_script( 'tzcheckbox', WCCD_URI . 'js/tzCheckbox/jquery.tzCheckbox/jquery.tzCheckbox.js', array( 'jquery' ) );
