@@ -53,6 +53,7 @@ function wccd_premium_activation() {
 	require WCCD_INCLUDES . 'class-wccd-soap-client.php';
 	require WCCD_INCLUDES . 'class-wccd-admin.php';
 	require WCCD_INCLUDES . 'class-wccd.php';
+	require WCCD_INCLUDES . 'ilghera-notice/class-ilghera-notice.php';
 
 	/**
 	 * Script e folgi di stile front-end
