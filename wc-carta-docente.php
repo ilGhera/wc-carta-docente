@@ -8,7 +8,7 @@
  * Version: 1.2.6
  * Author URI: https://ilghera.com 
  * Requires at least: 4.0
- * Tested up to: 6.1
+ * Tested up to: 6.2
  * WC tested up to: 7
  * Text Domain: wccd
  * Domain Path: /languages
@@ -36,7 +36,7 @@ function wccd_premium_activation() {
 	define( 'WCCD_URI', plugin_dir_url( __FILE__ ) );
 	define( 'WCCD_INCLUDES', WCCD_DIR . 'includes/' );
 	define( 'WCCD_INCLUDES_URI', WCCD_URI . 'includes/' );
-	define( 'WCCD_VERSION', '0.9.3' );
+	define( 'WCCD_VERSION', '1.2.6' );
 
 	/*Main directory di upload*/
 	$wp_upload_dir = wp_upload_dir();
@@ -193,3 +193,4 @@ function wccd_update_message( $plugin_data, $response ) {
 
 }
 add_action( 'in_plugin_update_message-wc-carta-docente-premium/wc-carta-docente.php', 'wccd_update_message', 10, 2 );
+
