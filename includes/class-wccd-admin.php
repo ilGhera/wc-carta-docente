@@ -277,10 +277,7 @@ class WCCD_Admin {
 			$csr_der = $this->pem2der( file_get_contents( WCCD_PRIVATE . 'files/certificate-request.pem' ) );
 
 			/*Preparo il backup*/
-			$bu_folder = WCCD_PRIVATE . 'files/backups/';
-
-			error_log( count( glob( $bu_folder . '*', GLOB_ONLYDIR ) ) + 1 );
-
+			$bu_folder            = WCCD_PRIVATE . 'files/backups/';
 			$bu_new_folder_name   = count( glob( $bu_folder . '*', GLOB_ONLYDIR ) ) + 1;
 			$bu_new_folder_create = wp_mkdir_p( trailingslashit( $bu_folder . $bu_new_folder_name ) );
 
