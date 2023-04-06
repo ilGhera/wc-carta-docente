@@ -329,7 +329,7 @@ class WCCD_Admin {
 	 */
 	public function wccd_cert_activation() {
 
-		$soap_client = new wccd_soap_client( '11aa22bb', '' );
+		$soap_client = new WCCD_Soap_Client( '11aa22bb', '' );
 
 		try {
 

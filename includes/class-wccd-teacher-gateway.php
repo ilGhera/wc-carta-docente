@@ -463,7 +463,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
         $output     = 1; 
         $order      = wc_get_order( $order_id );
-        $soapClient = new wccd_soap_client( $teacher_code, $import );
+        $soapClient = new WCCD_Soap_Client( $teacher_code, $import );
         
         try {
 
