@@ -69,9 +69,13 @@ This plugin sends data to an external service, like the categories and the price
 = 1.3.0 =
 Data di rilascio: 6 Aprile, 2023
 
-* Implementazione: Notifica admin chiave di licenza 
-* Update: Plugin Update Checker
+* Implementazione: Opzione ordini in sospeso 
+* Implementazione: Opzione personalizzazione email per ordini completati manualmente
+* Implementazione: Opzione personalizzazione email per ordini rifiutati per buono non valido
+* Implementazione: WordPress Coding standards
 * Update: POT file
+* Bug: Buono docente non presente in dettagli ordine in caso di trasformazione in voucher
+* Bug: Metodo di pagamento disponibile dopo voucher applicato in modalità sandbox
 
 
 = 1.2.5 =
