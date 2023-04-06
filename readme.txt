@@ -1,7 +1,7 @@
 === WooCommerce Carta Docente - Premium ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Version: 1.2.6
+Version: 1.3.0
 Requires at least: 4.0
 Tested up to: 6.2
 
@@ -65,6 +65,14 @@ This plugin sends data to an external service, like the categories and the price
 
 
 == Changelog ==
+
+= 1.3.0 =
+Data di rilascio: 6 Aprile, 2023
+
+* Implementazione: Notifica admin chiave di licenza 
+* Update: Plugin Update Checker
+* Update: POT file
+
 
 = 1.2.5 =
 Data di rilascio: 15 Febbraio, 2023
