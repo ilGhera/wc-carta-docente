@@ -3,4 +3,4 @@
 	url = https://github.com/YahnisElsts/plugin-update-checker.git
 [submodule "includes/ilghera-notice"]
 	path = includes/ilghera-notice
-	url = https://ilGhera@bitbucket.org/ilGhera/ilghera-notice.git
+	url = git@bitbucket.org:ilGhera/ilghera-notice.git

@@ -17,6 +17,7 @@ var wccd_delete_certificate = function() {
 				var data = {
 					'action': 'wccd-delete-certificate',
 					'wccd-delete': true,
+                    'delete-nonce': wccdData.delCertNonce,
 					'cert': cert
 				}			
 				$.post(ajaxurl, data, function(response){
@@ -47,6 +48,7 @@ var wccd_add_cat = function() {
 				'action': 'wccd-add-cat',
 				'number': number,
 				'exclude-beni': beni_values.toString(),
+                'add-cat-nonce': wccdData.addCatNonce,
 			}
 			$.post(ajaxurl, data, function(response){
 				$(response).appendTo('.categories-container');
@@ -181,3 +183,34 @@ var wccd_menu_navigation = function() {
 }
 wccd_menu_navigation();
 
+/**
+ * Mostra i dettagli della mail all'utente
+ * nel caso la funzione ordini in sospeso sia stata attivata
+ *
+ * @return void
+ */
+var wccd_email_details = function() {
+    jQuery(function($){
+        $(document).ready(function() {
+
+            var on_hold       = $('.wccd-orders-on-hold');
+            var email_details = $('.wccd-email-details');
+
+            if ( $('.tzCheckBox', on_hold).hasClass( 'checked' ) ) {
+                $(email_details).show();
+            }
+
+            $('.tzCheckBox', on_hold).on( 'click', function() {
+
+                if ( $(this).hasClass( 'checked' ) ) {
+                    $(email_details).show('slow');
+                } else {
+                    $(email_details).hide();
+                }
+
+            })
+            
+        })
+    })
+}
+wccd_email_details();
