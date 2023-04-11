@@ -2,7 +2,7 @@
  * WC Carta Docente - Admin CSS
  * @author ilGhera
  * @package wc-carta-docente/css
- * @version 1.1.0
+ * @version 1.3.0
  */
 
 #wccd-admin-menu {
@@ -124,6 +124,27 @@ ul.categories-container {
     margin: 1rem 0;
 }
 
+.wccd-email-details {
+    display: none;
+}
+
+.shortcodes {
+    display: block;
+}
+
+.wccd-divider {
+    padding-bottom: 2rem;
+    margin: 2rem 0;
+    border-bottom: 1px solid #ccc;
+}
+
+span.wccd-alert {
+	display: block;
+	margin: 1rem 0 0;
+	padding: 0.6rem;
+	background: #F2DEDE;
+	border-radius: 0.2rem;
+	color: #a94442;	
 .wrap-left {
     float: left;
     width: 70%;

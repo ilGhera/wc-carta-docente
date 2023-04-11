@@ -6,9 +6,18 @@
  * @package wc-carta-docente/includes
  * @since 1.2.1
  */
+
+/**
+ * WCCD_Teacher_Gateway class
+ */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 
+	/**
+	 * The constructor
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 
 		$this->plugin_id          = 'woocommerce_carta_docente';
@@ -16,23 +25,28 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->has_fields         = true;
 		$this->method_title       = 'Buono docente';
 		$this->method_description = 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.';
-		
-        if ( get_option( 'wccd-image' ) ) {
 
-            $this->icon = WCCD_URI . 'images/carta-docente.png';			
+		if ( get_option( 'wccd-image' ) ) {
+
+			$this->icon = WCCD_URI . 'images/carta-docente.png';
 
 		}
 
 		$this->init_form_fields();
 		$this->init_settings();
 
-		$this->title       = $this->get_option('title');
-		$this->description = $this->get_option('description');
-        
+		$this->title       = $this->get_option( 'title' );
+		$this->description = $this->get_option( 'description' );
+
+		/* Filters */
+		add_filter( 'woocommerce_available_payment_gateways', array( $this, 'unset_teacher_gateway' ) );
+
+		/* Actions */
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_details_after_order_table', array( $this, 'display_teacher_code' ), 10, 1 );
-		add_action( 'woocommerce_email_after_order_table', array( $this, 'display_teacher_code'), 10, 1 );
+		add_action( 'woocommerce_email_after_order_table', array( $this, 'display_teacher_code' ), 10, 1 );
 		add_action( 'woocommerce_admin_order_data_after_billing_address', array( $this, 'display_teacher_code' ), 10, 1 );
+
 	}
 
 
@@ -40,40 +54,43 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	 * Campi relativi al sistema di pagamento, modificabili nel back-end
 	 */
 	public function init_form_fields() {
-		
-		$this->form_fields = apply_filters( 'wc_offline_form_fields',array(
-			'enabled' => array(
-		        'title'   => __( 'Enable/Disable', 'woocommerce' ),
-		        'type'    => 'checkbox',
-		        'label'   => __( 'Abilita pagamento con buono docente', 'wccd' ),
-		        'default' => 'yes',
-		    ),
-		    'title' => array(
-		        'title'       => __( 'Title', 'woocommerce' ),
-		        'type'        => 'text',
-		        'description' => __( 'This controls the title which the user sees during checkout.', 'wccd' ),
-		        'default'     => __( 'Buono docente', 'wccd' ),
-		        'desc_tip'    => true,
-		    ),
-		    'description' => array(
-		        'title'   => __( 'Messaggio utente', 'woocommerce' ),
-		        'type'    => 'textarea',
-		        'default' => 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.',
-		    )
-		));
+
+		$this->form_fields = apply_filters(
+			'wc_offline_form_fields',
+			array(
+				'enabled'     => array(
+					'title'   => __( 'Enable/Disable', 'woocommerce' ),
+					'type'    => 'checkbox',
+					'label'   => __( 'Abilita pagamento con buono docente', 'wccd' ),
+					'default' => 'yes',
+				),
+				'title'       => array(
+					'title'       => __( 'Title', 'woocommerce' ),
+					'type'        => 'text',
+					'description' => __( 'This controls the title which the user sees during checkout.', 'wccd' ),
+					'default'     => __( 'Buono docente', 'wccd' ),
+					'desc_tip'    => true,
+				),
+				'description' => array(
+					'title'   => __( 'Messaggio utente', 'woocommerce' ),
+					'type'    => 'textarea',
+					'default' => 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.',
+				),
+			)
+		);
 
 	}
 
 
 	/**
-	 * Campo per l'inserimento del buono nella pagina di checkout 
+	 * Campo per l'inserimento del buono nella pagina di checkout
 	 */
 	public function payment_fields() {
 		?>
 		<p>
-			<?php echo $this->description; ?>
+			<?php echo esc_html( $this->description ); ?>
 			<label for="wc-codice-docente">
-				<?php echo __('Inserisci qui il tuo codice', 'wccd');?>
+				<?php esc_html_e( 'Inserisci qui il tuo codice', 'wccd' ); ?>
 				<span class="required">*</span>
 			</label>
 			<input type="text" class="wc-codice-docente" id="wc-codice-docente" name="wc-codice-docente" />
@@ -84,10 +101,10 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Restituisce la cateogia prodotto corrispondente al bene acquistabile con il buono
-     *
+	 *
 	 * @param string $purchasable bene acquistabile.
-     * @param array  $categories  gli abbinamenti di categoria salvati nel db.
-     *
+	 * @param array  $categories  gli abbinamenti di categoria salvati nel db.
+	 *
 	 * @return int l'id di categoria acquistabile
 	 */
 	public static function get_purchasable_cats( $purchasable, $categories = null ) {
@@ -95,43 +112,44 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$wccd_categories = is_array( $categories ) ? $categories : get_option( 'wccd-categories' );
 
 		if ( $wccd_categories ) {
-	
-			$purchasable = str_replace( '(', '', $purchasable );
-			$purchasable = str_replace( ')', '', $purchasable );
-			$bene        = strtolower( str_replace( ' ', '-', $purchasable ) );
-			
-			$output = array();
 
-			for ( $i=0; $i < count( $wccd_categories ); $i++ ) { 
+			$purchasable      = str_replace( '(', '', $purchasable );
+			$purchasable      = str_replace( ')', '', $purchasable );
+			$bene             = strtolower( str_replace( ' ', '-', $purchasable ) );
+			$output           = array();
+			$count_categories = count( $wccd_categories );
+
+			for ( $i = 0; $i < $count_categories; $i++ ) {
 
 				if ( array_key_exists( $bene, $wccd_categories[ $i ] ) ) {
 
 					$output[] = $wccd_categories[ $i ][ $bene ];
 
 				}
-
 			}
 
 			return $output;
-				
+
 		}
 
 	}
 
 
 	/**
-	 * Tutti i prodotti dell'ordine devono essere della tipologia (cat) consentita dal buono docente. 
-	 * @param  object $order  
-	 * @param  string $bene il bene acquistabile con il buono
+	 * Tutti i prodotti dell'ordine devono essere della tipologia (cat) consentita dal buono docente.
+	 *
+	 * @param  object $order the WC order.
+	 * @param  string $bene  il bene acquistabile con il buono.
+	 *
 	 * @return bool
 	 */
 	public static function is_purchasable( $order, $bene ) {
 
-        $wccd_categories = get_option( 'wccd-categories' );
+		$wccd_categories = get_option( 'wccd-categories' );
 		$cats            = self::get_purchasable_cats( $bene, $wccd_categories );
 		$items           = $order->get_items();
 		$output          = true;
-		
+
 		if ( is_array( $cats ) && ! empty( $wccd_categories ) ) {
 
 			foreach ( $items as $item ) {
@@ -152,30 +170,70 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 					continue;
 
 				}
-
-			}		
-
+			}
 		}
 
 		return $output;
-		
+
+	}
+
+
+	/**
+	 * Add the shortcode to get the specific checkout URL.
+	 *
+	 * @param array $args the shortcode vars.
+	 *
+	 * @return mixed the URL
+	 */
+	public function get_checkout_payment_url( $args ) {
+
+		$order_id = isset( $args['order-id'] ) ? $args['order-id'] : null;
+
+		if ( $order_id ) {
+
+			$order = wc_get_order( $order_id );
+
+			return $order->get_checkout_payment_url();
+
+		}
+
 	}
 
 
 	/**
 	 * Mostra il buono docente nella thankyou page, nelle mail e nella pagina dell'ordine.
-	 * @param  object $order
-	 * @return mixed        testo formattato con il buono utilizzato per l'acquisto
+	 *
+	 * @param  object $order the WC order.
+	 *
+	 * @return void
 	 */
 	public function display_teacher_code( $order ) {
-		
-		$data = $order->get_data();
 
-		if ( $data['payment_method'] === 'docente' ) {
+		$data         = $order->get_data();
+		$teacher_code = null;
 
-		    echo '<p><strong>' . __( 'Buono docente', 'wccd' ) . ': </strong>' . get_post_meta( $order->get_id(), 'wc-codice-docente', true ) . '</p>';
+		foreach ( $order->get_coupon_codes() as $coupon_code ) {
+
+			if ( false !== strpos( $coupon_code, 'wccd' ) ) {
+
+				$parts        = explode( '-', $coupon_code );
+				$teacher_code = isset( $parts[2] ) ? $parts[2] : null;
+
+			}
+
+			break;
+		}
+
+		if ( 'docente' === $data['payment_method'] ) {
+
+			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( get_post_meta( $order->get_id(), 'wc-codice-docente', true ) ) . '</p>';
+
+		} elseif ( $teacher_code ) {
+
+			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( $teacher_code ) . '</p>';
 
 		}
+
 	}
 
 
@@ -190,85 +248,130 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
      */
     public static function process_code( $order_id, $teacher_code, $import ) {
 
-        global $woocommerce;
+		global $woocommerce;
 
-        $output     = 1; 
-        $order      = wc_get_order( $order_id );
-        $soapClient = new wccd_soap_client( $teacher_code, $import );
-        
-        try {
+		$output      = 1;
+		$order       = wc_get_order( $order_id );
+		$soap_client = new WCCD_Soap_Client( $teacher_code, $import );
 
-            /*Prima verifica del buono*/
-            $response      = $soapClient->check();
-            $bene          = $response->checkResp->ambito; //il bene acquistabile con il buono inserito
-            $importo_buono = floatval($response->checkResp->importo); //l'importo del buono inserito
-            
-            /*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
-            $purchasable = self::is_purchasable( $order, $bene );
+		try {
 
-            if ( ! $purchasable ) {
+			/*Prima verifica del buono*/
+			$response      = $soap_client->check();
+			$bene          = $response->checkResp->ambito; // Il bene acquistabile con il buono inserito.
+			$importo_buono = floatval( $response->checkResp->importo ); // L'importo del buono inserito.
 
-                $output = __( 'Uno o più prodotti nel carrello non sono acquistabili con il buono inserito.', 'wccd' );
+			/*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
+			$purchasable = self::is_purchasable( $order, $bene );
 
-            } else {
+			if ( ! $purchasable ) {
 
-                $type = null;
+				$output = __( 'Uno o più prodotti nel carrello non sono acquistabili con il buono inserito.', 'wccd' );
 
-                if ( $importo_buono === $import ) {
+			} else {
 
-                    $type = 'check';
+				$type = null;
 
-                } else {
+				if ( self::$coupon_option && $importo_buono < $import && ! $converted ) {
 
-                    $type = 'confirm';
+					/* Creazione coupon */
+					$coupon_code = self::create_coupon( $order_id, $importo_buono, $teacher_code );
 
-                }
+					if ( $coupon_code && ! WC()->cart->has_discount( $coupon_code ) ) {
 
-                if ( $type ) {
+						/* Coupon aggiunto all'ordine */
+						WC()->cart->apply_coupon( $coupon_code );
 
-                    try {
+						$output = __( 'Il valore del buono inserito non è sufficiente ed è stato convertito in buono sconto.', 'wccd' );
 
-                        /*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
-                        $operation = $type === 'check' ? $soapClient->check( 2 ) : $soapClient->confirm();
+					}
+				} elseif ( $importo_buono === $import || ( self::$orders_on_hold && ! $complete ) ) {
 
-                        /*Aggiungo il buono docente all'ordine*/
-                        update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
+					$type = 'check';
 
-                        /*Ordine completato*/
-                        $order->payment_complete();
+				} else {
 
-                        /*Svuota carrello*/
-                        $woocommerce->cart->empty_cart();
+					$type = 'confirm';
 
-                    } catch ( Exception $e ) {
-        
-                        $output = $e->detail->FaultVoucher->exceptionMessage;
-                   
-                    } 
+				}
 
-                }
+				if ( $type ) {
 
-            }
+					try {
 
-        } catch ( Exception $e ) {
+						/*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
+						if ( 'check' === $type ) {
 
-            $output = $e->detail->FaultVoucher->exceptionMessage;
-        
-        }
+							if ( self::$orders_on_hold && ! $complete ) {
 
-        return $output;
+								$operation = null;
 
-    }
+							} else {
+
+								$operation = $soap_client->check( 2 );
+
+							}
+
+						} else {
+
+							$operation = $soap_client->confirm();
+
+						}
+
+						/*Aggiungo il buono docente all'ordine*/
+						update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
+
+						if ( ! $converted ) {
+
+							if ( self::$orders_on_hold && ! $complete ) {
+
+								/* Ordine in sospeso */
+								$order->update_status( 'wc-on-hold' );
+
+							} else {
+
+								/* Ordine completato */
+								$order->payment_complete();
+
+							}
+
+							/* A completamento di un ordine il carrello è già vuoto */
+							if ( ! $complete ) {
+
+								/*Svuota carrello*/
+								$woocommerce->cart->empty_cart();
+
+							}
+						}
+					} catch ( Exception $e ) {
+
+						$output = $e->detail->FaultVoucher->exceptionMessage;
+
+					}
+				}
+			}
+		} catch ( Exception $e ) {
+
+			$output = $e->detail->FaultVoucher->exceptionMessage;
+
+		}
+
+		return $output;
+
+	}
 
 
 	/**
 	 * Gestisce il processo di pagamento, verificando la validità del buono inserito dall'utente
-	 * @param  int $order_id l'id dell'ordine
+	 *
+	 * @param  int $order_id l'id dell'ordine.
+	 *
+	 * @return array
 	 */
 	public function process_payment( $order_id ) {
 
-	    $order  = wc_get_order( $order_id );
-		$import = floatval( $order->get_total() ); //il totale dell'ordine
+		$order  = wc_get_order( $order_id );
+		$import = floatval( $order->get_total() ); // Il totale dell'ordine.
 
 		$notice = null;
 		$output = array(
@@ -277,27 +380,27 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		);
 
 		$data         = $this->get_post_data();
-	    $teacher_code = $data['wc-codice-docente']; //il buono inserito dall'utente
+		$teacher_code = $data['wc-codice-docente']; // Il buono inserito dall'utente.
 
-        if ( $teacher_code ) {
+		if ( $teacher_code ) {
 
-            $notice = self::process_code( $order_id, $teacher_code, $import );
+			$notice = self::process_code( $order_id, $teacher_code, $import );
 
-            if ( 1 === intval( $notice ) ) {
+			if ( 1 === intval( $notice ) ) {
 
-                $output = array(
-                    'result'   => 'success',
-                    'redirect' => $this->get_return_url( $order ),
-                );
+				$output = array(
+					'result'   => 'success',
+					'redirect' => $this->get_return_url( $order ),
+				);
 
-            } else {
+			} else {
 
-                wc_add_notice( __( 'Buono docente - ' . $notice, 'wccd' ), 'error' );
+				/* Translators: Notifica all'utente nella pagina di checkout */
+				wc_add_notice( sprintf( __( 'Buono docente - %s', 'wccd' ), $notice ), 'error' );
 
-            }
+			}
+		}
 
-	    }	
-		
 		return $output;
 
 	}
