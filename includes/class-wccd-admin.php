@@ -274,9 +274,10 @@ class WCCD_Admin {
 	public function wccd_settings() {
 
 		/*Recupero le opzioni salvate nel db*/
-		$categories                = get_option( 'wccd-categories' );
-		$tot_cats                  = $categories ? count( $categories ) : 0;
-		$wccd_image                = get_option( 'wccd-image' );
+        $passphrase = base64_decode( get_option( 'wccd-password' ) );
+		$categories = get_option( 'wccd-categories' );
+		$tot_cats   = $categories ? count( $categories ) : 0;
+		$wccd_image = get_option( 'wccd-image' );
 
 		echo '<div class="wrap">';
 			echo '<div class="wrap-left">';
