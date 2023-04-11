@@ -634,6 +634,43 @@ class WCCD_Admin {
 	 */
 	public function wccd_save_settings() {
 
+		if ( isset( $_POST['wccd-certificate-hidden'], $_POST['wccd-certificate-nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wccd-certificate-nonce'] ) ), 'wccd-upload-certificate' ) ) {
+
+			/*Carica certificato*/
+			if ( isset( $_FILES['wccd-certificate'] ) ) {
+
+				$info = isset( $_FILES['wccd-certificate']['name'] ) ? pathinfo( sanitize_text_field( wp_unslash( $_FILES['wccd-certificate']['name'] ) ) ) : null;
+				$name = isset( $info['basename'] ) ? sanitize_file_name( $info['basename'] ) : null;
+
+				if ( $info ) {
+
+					if ( 'pem' === $info['extension'] ) {
+
+						if ( isset( $_FILES['wccd-certificate']['tmp_name'] ) ) {
+
+							$tmp_name = sanitize_text_field( wp_unslash( $_FILES['wccd-certificate']['tmp_name'] ) );
+							move_uploaded_file( $tmp_name, WCCD_PRIVATE . $name );
+
+						}
+					} else {
+
+						add_action( 'admin_notices', array( $this, 'not_valid_certificate' ) );
+
+					}
+				}
+			}
+
+			/*Password*/
+			$wccd_password = isset( $_POST['wccd-password'] ) ? sanitize_text_field( wp_unslash( $_POST['wccd-password'] ) ) : '';
+
+			/*Salvo passw nel db*/
+			if ( $wccd_password ) {
+
+				update_option( 'wccd-password', base64_encode( $wccd_password ) );
+
+			}
+		}
+
 		if ( isset( $_POST['wccd-settings-hidden'], $_POST['wccd-settings-nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wccd-settings-nonce'] ) ), 'wccd-save-settings' ) ) {
 
 			/*Impostazioni categorie per il controllo in fase di checkout*/
