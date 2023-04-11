@@ -15,22 +15,12 @@
  * Domain Path: /languages
  */
 
-/**
- * Attivazione
- */
-function wccd_premium_activation() {
 
-	/*Se presente, disattiva la versione free del plugin*/
-	if ( function_exists( 'wccd_activation' ) ) {
-		deactivate_plugins( 'wc-carta-docente/wc-carta-docente.php' );
-		remove_action( 'plugins_loaded', 'wccd_activation' );
-		wp_safe_redirect( admin_url( 'plugins.php?plugin_status=all&paged=1&s' ) );
-	}
+/*Attivazione*/
+function wccd_activation() {
 
-	/*WooCommerce è presente e attivo?*/
-	if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
-		return;
-	}
+	/*Is WooCommerce activated?*/
+	if(!class_exists('WC_Payment_Gateway')) return;
 
 	/*Definizione costanti*/
 	define( 'WCCD_DIR', plugin_dir_path( __FILE__ ) );
