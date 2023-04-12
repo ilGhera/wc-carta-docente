@@ -69,7 +69,7 @@ class WCCD_Soap_Client {
 	 * Istanzia il SoapClient
 	 */
 	public function soap_client() {
-		$soapClient = new SoapClient(
+		$soap_client = new SoapClient(
 			$this->wsdl,
 			array(
 				'local_cert'     => $this->local_cert,
@@ -89,7 +89,7 @@ class WCCD_Soap_Client {
 			)
 		);
 
-		return $soapClient;
+		return $soap_client;
 	}
 
 

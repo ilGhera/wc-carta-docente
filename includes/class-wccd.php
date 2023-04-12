@@ -54,11 +54,11 @@ class WCCD {
 
 		$sandbox = get_option( 'wccd-sandbox' );
 
-        if ( $sandbox || ( wccd_admin::get_the_file( '.pem' ) && get_option( 'wccd-cert-activation' ) ) ) {
+		if ( $sandbox || ( wccd_admin::get_the_file( '.pem' ) && get_option( 'wccd-cert-activation' ) ) ) {
 
-            $methods[] = 'WCCD_Teacher_Gateway';
+			$methods[] = 'WCCD_Teacher_Gateway';
 
-        }
+		}
 
 		return $methods;
 

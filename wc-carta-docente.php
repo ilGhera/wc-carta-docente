@@ -7,7 +7,7 @@
  *
  * @package wc-carta-docente
  * Version: 1.2.2
- * Author URI: https://ilghera.com 
+ * Author URI: https://ilghera.com
  * Requires at least: 4.0
  * Tested up to: 6.0
  * WC tested up to: 7
@@ -15,12 +15,15 @@
  * Domain Path: /languages
  */
 
-
-/*Attivazione*/
+/**
+ * Attivazione
+ */
 function wccd_activation() {
 
 	/*Is WooCommerce activated?*/
-	if(!class_exists('WC_Payment_Gateway')) return;
+	if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
+		return;
+	}
 
 	/*Definizione costanti*/
 	define( 'WCCD_DIR', plugin_dir_path( __FILE__ ) );
@@ -99,8 +102,8 @@ function wccd_activation() {
 	}
 
 	/*Script e folgi di stile*/
-	add_action('wp_enqueue_scripts', 'wccd_load_scripts');
-	add_action('admin_enqueue_scripts', 'wccd_load_admin_scripts');
-} 
-add_action('plugins_loaded', 'wccd_activation', 100);
+	add_action( 'wp_enqueue_scripts', 'wccd_load_scripts' );
+	add_action( 'admin_enqueue_scripts', 'wccd_load_admin_scripts' );
+}
+add_action( 'plugins_loaded', 'wccd_activation', 100 );
 

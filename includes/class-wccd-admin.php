@@ -205,15 +205,19 @@ class WCCD_Admin {
 		exit;
 	}
 
-    
+
 	/**
 	 * Pulsante call to action Premium
+	 *
+	 * @param bool $no_margin aggiunge la classe CSS con true.
+	 *
+	 * @return string
 	 */
 	public function get_go_premium( $no_margin = false ) {
 
-		$output = '<span class="label label-warning premium' . ( $no_margin ? ' no-margin' : null ) . '">';
+		$output      = '<span class="label label-warning premium' . ( $no_margin ? ' no-margin' : null ) . '">';
 			$output .= '<a href="https://www.ilghera.com/product/woocommerce-carta-docente-premium" target="_blank">Premium</a>';
-		$output .= '</span>';
+		$output     .= '</span>';
 
 		return $output;
 
@@ -274,7 +278,7 @@ class WCCD_Admin {
 	public function wccd_settings() {
 
 		/*Recupero le opzioni salvate nel db*/
-        $passphrase = base64_decode( get_option( 'wccd-password' ) );
+		$passphrase = base64_decode( get_option( 'wccd-password' ) );
 		$categories = get_option( 'wccd-categories' );
 		$tot_cats   = $categories ? count( $categories ) : 0;
 		$wccd_image = get_option( 'wccd-image' );
@@ -358,7 +362,7 @@ class WCCD_Admin {
 		if ( ! self::get_the_file( '.pem' ) ) {
 
 			/*Genera richiesta certificato .der*/
-            echo '<h3>' . esc_html( __( 'Richiedi un certificato', 'wccd' ) ) . $this->get_go_premium() . '</h3>';
+			echo '<h3>' . esc_html( __( 'Richiedi un certificato', 'wccd' ) ) . wp_kses_post( $this->get_go_premium() ) . '</h3>';
 			echo '<p class="description">' . esc_html__( 'Con questo strumento puoi generare un file .der necessario per richiedere il tuo certificato su Carta del docente.', 'wccd' ) . '</p>';
 
 			echo '<form id="generate-certificate-request" method="post" class="one-of" enctype="multipart/form-data" action="">';
@@ -423,7 +427,7 @@ class WCCD_Admin {
 			echo '</form>';
 
 			/*Genera certificato .pem*/
-            echo '<h3>' . esc_html( __( 'Crea il tuo certificato', 'wccd' ) ) . $this->get_go_premium() . '</h3>';
+			echo '<h3>' . esc_html( __( 'Crea il tuo certificato', 'wccd' ) ) . wp_kses_post( $this->get_go_premium() ) . '</h3>';
 			echo '<p class="description">' . esc_html__( 'Con questo ultimo passaggio, potrai iniziare a ricevere pagamenti attraverso buoni del docente.', 'wccd' ) . '</p>';
 
 			echo '<form name="wccd-generate-certificate" class="wccd-generate-certificate one-of" method="post" enctype="multipart/form-data" action="">';
@@ -516,7 +520,7 @@ class WCCD_Admin {
 									echo '<input type="checkbox" name="wccd-coupon" value="1" disabled>';
 									echo '<p class="description">' . wp_kses_post( __( 'Nel caso in cui il buono <i>Carta del Docente</i> inserito sia inferiore al totale a carrello, viene convertito in <i>Codice promozionale</i> ed applicato all\'ordine.', 'wccd' ) ) . '</p>';
 
-                                    echo $this->get_go_premium( true );
+									echo wp_kses_post( $this->get_go_premium( true ) );
 								echo '</td>';
 							echo '</tr>';
 
@@ -534,7 +538,7 @@ class WCCD_Admin {
 										echo '<input type="checkbox" name="wccd-items-check" value="1" disabled>';
 									echo '<p class="description">' . wp_kses_post( __( 'Mostra il metodo di pagamento solo se il/ i prodotti a carrello sono acquistabili con buoni <i>Carta del Docente</i>.<br>Più prodotti dovranno prevedere l\'uso di buoni dello stesso ambito di utilizzo.', 'wccd' ) ) . '</p>';
 
-                                    echo $this->get_go_premium( true );
+									echo wp_kses_post( $this->get_go_premium( true ) );
 								echo '</td>';
 							echo '</tr>';
 
@@ -544,7 +548,7 @@ class WCCD_Admin {
 										echo '<input type="checkbox" name="wccd-orders-on-hold" value="1" disabled>';
 									echo '<p class="description">' . wp_kses_post( __( 'I buoni Carta del Docente verranno validati con il completamento manuale degli ordini.', 'wccd' ) ) . '</p>';
 
-                                    echo $this->get_go_premium( true );
+									echo wp_kses_post( $this->get_go_premium( true ) );
 								echo '</td>';
 							echo '</tr>';
 

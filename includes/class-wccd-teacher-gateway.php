@@ -153,15 +153,14 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 				$terms = get_the_terms( $item['product_id'], 'product_cat' );
 				$ids   = array();
 
-                if ( is_array( $terms ) ) {
+				if ( is_array( $terms ) ) {
 
-                    foreach ( $terms as $term ) {
+					foreach ( $terms as $term ) {
 
-                        $ids[] = $term->term_id;
+						$ids[] = $term->term_id;
 
-                    }
-
-                }
+					}
+				}
 
 				$results = array_intersect( $ids, $cats );
 
@@ -222,16 +221,16 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	}
 
 
-    /**
-     * Processa il buono docente inserito
-     *
-     * @param int    $order_id     l'id dell'ordine.
-     * @param string $teacher_code il buono docente.
-     * @param float  $import       il totale dell'ordine.
-     *
-     * @return mixed string in caso di errore, 1 in alternativa
-     */
-    public static function process_code( $order_id, $teacher_code, $import ) {
+	/**
+	 * Processa il buono docente inserito
+	 *
+	 * @param int    $order_id     l'id dell'ordine.
+	 * @param string $teacher_code il buono docente.
+	 * @param float  $import       il totale dell'ordine.
+	 *
+	 * @return mixed string in caso di errore, 1 in alternativa
+	 */
+	public static function process_code( $order_id, $teacher_code, $import ) {
 
 		global $woocommerce;
 
@@ -274,7 +273,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 						/*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
 						if ( 'check' === $type ) {
 
-                            $operation = $soap_client->check( 2 );
+							$operation = $soap_client->check( 2 );
 
 						} else {
 
@@ -285,11 +284,11 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 						/*Aggiungo il buono docente all'ordine*/
 						update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
 
-                        /* Ordine completato */
-                        $order->payment_complete();
+						/* Ordine completato */
+						$order->payment_complete();
 
-                        /*Svuota carrello*/
-                        $woocommerce->cart->empty_cart();
+						/*Svuota carrello*/
+						$woocommerce->cart->empty_cart();
 
 					} catch ( Exception $e ) {
 
