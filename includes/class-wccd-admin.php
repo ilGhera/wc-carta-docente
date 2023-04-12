@@ -366,49 +366,49 @@ class WCCD_Admin {
 					echo '<tr>';
 						echo '<th scope="row">' . esc_html__( 'Stato', 'wccd' ) . '</th>';
 						echo '<td>';
-							echo '<input type="text" name="countryName" placeholder="IT" required>';
+							echo '<input type="text" name="countryName" placeholder="IT" disabled>';
 						echo '</td>';
 					echo '</tr>';
 
 					echo '<th scope="row">' . esc_html__( 'Provincia', 'wccd' ) . '</th>';
 						echo '<td>';
-							echo '<input type="text" name="stateOrProvinceName" placeholder="Es. Milano" required>';
+							echo '<input type="text" name="stateOrProvinceName" placeholder="Es. Milano" disabled>';
 						echo '</td>';
 					echo '</tr>';
 
 					echo '<th scope="row">' . esc_html__( 'Località', 'wccd' ) . '</th>';
 						echo '<td>';
-							echo '<input type="text" name="localityName" placeholder="Es. Legnano" required>';
+							echo '<input type="text" name="localityName" placeholder="Es. Legnano" disabled>';
 						echo '</td>';
 					echo '</tr>';
 
 					echo '<th scope="row">' . esc_html__( 'Nome azienda', 'wccd' ) . '</th>';
 						echo '<td>';
-							echo '<input type="text" name="organizationName" placeholder="Es. Taldeitali srl" required>';
+							echo '<input type="text" name="organizationName" placeholder="Es. Taldeitali srl" disabled>';
 						echo '</td>';
 					echo '</tr>';
 
 					echo '<th scope="row">' . esc_html__( 'Reparto azienda', 'wccd' ) . '</th>';
 						echo '<td>';
-							echo '<input type="text" name="organizationalUnitName" placeholder="Es. Vendite" required>';
+							echo '<input type="text" name="organizationalUnitName" placeholder="Es. Vendite" disabled>';
 						echo '</td>';
 					echo '</tr>';
 
 					echo '<th scope="row">' . esc_html__( 'Nome', 'wccd' ) . '</th>';
 						echo '<td>';
-							echo '<input type="text" name="commonName" placeholder="Es. Franco Bianchi" required>';
+							echo '<input type="text" name="commonName" placeholder="Es. Franco Bianchi" disabled>';
 						echo '</td>';
 					echo '</tr>';
 
 					echo '<th scope="row">' . esc_html__( 'Email', 'wccd' ) . '</th>';
 						echo '<td>';
-							echo '<input type="email" name="emailAddress" placeholder="Es. franco.bianchi@taldeitali.it" required>';
+							echo '<input type="email" name="emailAddress" placeholder="Es. franco.bianchi@taldeitali.it" disabled>';
 						echo '</td>';
 					echo '</tr>';
 
 					echo '<th scope="row">' . esc_html__( 'Password', 'wccd' ) . '</th>';
 						echo '<td>';
-							echo '<input type="password" name="wccd-password" placeholder="**********" required>';
+							echo '<input type="password" name="wccd-password" placeholder="**********" disabled>';
 						echo '</td>';
 					echo '</tr>';
 
@@ -434,7 +434,7 @@ class WCCD_Admin {
 						echo '<th scope="row">' . esc_html__( 'Genera certificato', 'wccd' ) . '</th>';
 						echo '<td>';
 
-							echo '<input type="file" accept=".cer" name="wccd-cert" class="wccd-cert">';
+							echo '<input type="file" accept=".cer" name="wccd-cert" class="wccd-cert" disabled>';
 							echo '<p class="description">' . esc_html__( 'Carica il file .cer ottenuto da Carta del docente per procedere', 'wccd' ) . '</p>';
 
 							echo '<input type="hidden" name="wccd-gen-certificate-hidden" value="1">';
@@ -602,7 +602,7 @@ class WCCD_Admin {
 			echo '</div>';
 
 			echo '<div class="wrap-right">';
-				echo '<iframe width="300" height="1300" scrolling="no" src="http://www.ilghera.com/images/wccd-premium-iframe.html"></iframe>';
+				echo '<iframe width="300" height="1300" scrolling="no" src="http://www.ilghera.com/images/wccd-iframe.html"></iframe>';
 			echo '</div>';
 			echo '<div class="clear"></div>';
 
