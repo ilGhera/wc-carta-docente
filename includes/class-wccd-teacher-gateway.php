@@ -38,9 +38,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->title       = $this->get_option( 'title' );
 		$this->description = $this->get_option( 'description' );
 
-		/* Filters */
-		add_filter( 'woocommerce_available_payment_gateways', array( $this, 'unset_teacher_gateway' ) );
-
 		/* Actions */
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_order_details_after_order_table', array( $this, 'display_teacher_code' ), 10, 1 );
