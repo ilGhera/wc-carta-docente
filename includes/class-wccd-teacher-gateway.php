@@ -209,25 +209,9 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$data         = $order->get_data();
 		$teacher_code = null;
 
-		foreach ( $order->get_coupon_codes() as $coupon_code ) {
-
-			if ( false !== strpos( $coupon_code, 'wccd' ) ) {
-
-				$parts        = explode( '-', $coupon_code );
-				$teacher_code = isset( $parts[2] ) ? $parts[2] : null;
-
-			}
-
-			break;
-		}
-
 		if ( 'docente' === $data['payment_method'] ) {
 
 			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( get_post_meta( $order->get_id(), 'wc-codice-docente', true ) ) . '</p>';
-
-		} elseif ( $teacher_code ) {
-
-			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( $teacher_code ) . '</p>';
 
 		}
 
@@ -269,20 +253,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 				$type = null;
 
-				if ( self::$coupon_option && $importo_buono < $import && ! $converted ) {
-
-					/* Creazione coupon */
-					$coupon_code = self::create_coupon( $order_id, $importo_buono, $teacher_code );
-
-					if ( $coupon_code && ! WC()->cart->has_discount( $coupon_code ) ) {
-
-						/* Coupon aggiunto all'ordine */
-						WC()->cart->apply_coupon( $coupon_code );
-
-						$output = __( 'Il valore del buono inserito non è sufficiente ed è stato convertito in buono sconto.', 'wccd' );
-
-					}
-				} elseif ( $importo_buono === $import || ( self::$orders_on_hold && ! $complete ) ) {
+				if ( $importo_buono === $import ) {
 
 					$type = 'check';
 
@@ -299,15 +270,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 						/*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
 						if ( 'check' === $type ) {
 
-							if ( self::$orders_on_hold && ! $complete ) {
-
-								$operation = null;
-
-							} else {
-
-								$operation = $soap_client->check( 2 );
-
-							}
+                            $operation = $soap_client->check( 2 );
 
 						} else {
 
@@ -320,26 +283,14 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 						if ( ! $converted ) {
 
-							if ( self::$orders_on_hold && ! $complete ) {
+                            /* Ordine completato */
+                            $order->payment_complete();
 
-								/* Ordine in sospeso */
-								$order->update_status( 'wc-on-hold' );
+                            /*Svuota carrello*/
+                            $woocommerce->cart->empty_cart();
 
-							} else {
-
-								/* Ordine completato */
-								$order->payment_complete();
-
-							}
-
-							/* A completamento di un ordine il carrello è già vuoto */
-							if ( ! $complete ) {
-
-								/*Svuota carrello*/
-								$woocommerce->cart->empty_cart();
-
-							}
 						}
+
 					} catch ( Exception $e ) {
 
 						$output = $e->detail->FaultVoucher->exceptionMessage;
