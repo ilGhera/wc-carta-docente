@@ -281,13 +281,11 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 						/*Aggiungo il buono docente all'ordine*/
 						update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
 
-
                         /* Ordine completato */
                         $order->payment_complete();
 
                         /*Svuota carrello*/
                         $woocommerce->cart->empty_cart();
-
 
 					} catch ( Exception $e ) {
 
