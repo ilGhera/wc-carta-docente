@@ -101,7 +101,7 @@ class WCCD_Admin {
 	 *
 	 * @return string
 	 */
-	public function get_bene_lable( $beni, $bene_slug ) {
+	public function get_bene_label( $beni, $bene_slug ) {
 
 		foreach ( $beni as $bene ) {
 
@@ -150,7 +150,7 @@ class WCCD_Admin {
 
 			foreach ( $beni as $bene ) {
 
-				echo '<option value="' . esc_attr( $bene ) . '"' . ( $bene === $bene_value ? ' selected="selected"' : '' ) . '>' . esc_html( $this->get_bene_lable( $beni_index, $bene ) ) . '</option>';
+				echo '<option value="' . esc_attr( $bene ) . '"' . ( $bene === $bene_value ? ' selected="selected"' : '' ) . '>' . esc_html( $this->get_bene_label( $beni_index, $bene ) ) . '</option>';
 
 			}
 			echo '</select>';
