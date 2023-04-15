@@ -17,6 +17,7 @@ description:
       - (Premium) Generazione certificato .pem
       - (Premium) Conversione valore buono Carta del Docente in voucher WooCommerce
       - (Premium) Mostra il metodo di pagamento solo se i prodotti a carrello sono acquistabili con C.d.D.
+      - (Premium) Opzione ordini in sospeso con validazione buoni C.d.D. solo a completamento manuale dell'ordine 
     genericName: WordPress plugin
     longDescription: |
       Ogni insegnante di ruolo, in Italia, ha a disposizione un bonus di € 500
@@ -130,5 +131,5 @@ platforms:
   - web
 releaseDate: '2022-10-24'
 softwareType: addon
-softwareVersion: 1.2.2
+softwareVersion: 1.3.0
 url: 'https://github.com/ilGhera/wc-carta-docente'
