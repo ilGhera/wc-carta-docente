@@ -75,7 +75,7 @@ https://youtu.be/CU00ZZBZplI
 == Changelog ==
 
 = 1.3.0 =
-Data di rilascio: 12 Aprile, 2023
+Data di rilascio: 15 Aprile, 2023
 
 * Implementazione: (Premium) Opzione ordini in sospeso 
 * Implementazione: (Premium) Opzione personalizzazione email per ordini completati manualmente
