@@ -6,7 +6,7 @@
  * Author: ilGhera
  *
  * @package wc-carta-docente
- * Version: 1.3.0
+ * Version: 1.3.1
  * Author URI: https://ilghera.com
  * Requires at least: 4.0
  * Tested up to: 6.2

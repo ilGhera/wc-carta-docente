@@ -1,7 +1,7 @@
 === WooCommerce Carta Docente ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Version: 1.3.0
+Version: 1.3.1
 Requires at least: 4.0
 Tested up to: 6.2
 
@@ -73,6 +73,13 @@ https://youtu.be/CU00ZZBZplI
 5. Metodo di pagamento in pagina di checkout
 
 == Changelog ==
+
+= 1.3.1 =
+Data di rilascio: 2 Maggio, 2023
+
+Bug: Mancato sistema di traduzione in nome e descrizione metodo di pagamento
+Bug: Richiamo file JS non necessario in versione free
+Bug: Rimossa libreria non necessaria in versione free
 
 = 1.3.0 =
 Data di rilascio: 15 Aprile, 2023
