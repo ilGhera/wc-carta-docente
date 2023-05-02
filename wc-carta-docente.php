@@ -54,15 +54,6 @@ function wccd_activation() {
 	 */
 	function wccd_load_scripts() {
 		wp_enqueue_style( 'wccd-style', WCCD_URI . 'css/wc-carta-docente.css', array(), WCCD_VERSION );
-		wp_enqueue_script( 'wccd-scripts', WCCD_URI . 'js/wc-carta-docente.js', array(), WCCD_VERSION, false );
-		wp_localize_script(
-			'wccd-scripts',
-			'wccdOptions',
-			array(
-				'ajaxURL'          => admin_url( 'admin-ajax.php' ),
-				'couponConversion' => get_option( 'wccd-coupon' ),
-			)
-		);
 	}
 
 	/**
