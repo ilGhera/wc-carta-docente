@@ -23,8 +23,8 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->plugin_id          = 'woocommerce_carta_docente';
 		$this->id                 = 'docente';
 		$this->has_fields         = true;
-		$this->method_title       = 'Buono docente';
-		$this->method_description = 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.';
+		$this->method_title       = __( 'Buono docente', 'wccd' );
+		$this->method_description = __( 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.', 'wccd' );
 
 		if ( get_option( 'wccd-image' ) ) {
 
