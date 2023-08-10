@@ -196,7 +196,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	public function payment_fields() {
 		?>
 		<p>
-			<?php echo esc_html( $this->description ); ?>
+			<?php echo wp_kses_post( $this->description ); ?>
 			<label for="wc-codice-docente">
 				<?php esc_html_e( 'Inserisci qui il tuo codice', 'wccd' ); ?>
 				<span class="required">*</span>
