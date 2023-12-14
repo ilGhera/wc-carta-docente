@@ -334,7 +334,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 		if ( 'docente' === $data['payment_method'] ) {
 
-			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( get_post_meta( $order->get_id(), 'wc-codice-docente', true ) ) . '</p>';
+			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( $order->get_meta( 'wc-codice-docente' ) ) . '</p>';
 
 		} elseif ( $teacher_code ) {
 
@@ -530,7 +530,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 						}
 
 						/*Aggiungo il buono docente all'ordine*/
-						update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
+                        $order->update_meta_data( 'wc-codice-docente', $teacher_code );
 
 						if ( ! $converted ) {
 
