@@ -376,10 +376,11 @@ class WCCD_Admin {
 		$passphrase                = base64_decode( get_option( 'wccd-password' ) );
 		$categories                = get_option( 'wccd-categories' );
 		$tot_cats                  = $categories ? count( $categories ) : 0;
-		$wccd_coupon               = get_option( 'wccd-coupon' );
 		$wccd_image                = get_option( 'wccd-image' );
 		$wccd_items_check          = get_option( 'wccd-items-check' );
 		$wccd_orders_on_hold       = get_option( 'wccd-orders-on-hold' );
+		$wccd_exclude_shipping     = get_option( 'wccd-exclude-shipping' );
+		$wccd_coupon               = get_option( 'wccd-coupon' );
 		$wccd_email_subject        = get_option( 'wccd-email-subject' );
 		$wccd_email_heading        = get_option( 'wccd-email-heading' );
 		$wccd_email_order_received = get_option( 'wccd-email-order-received' );
@@ -636,14 +637,6 @@ class WCCD_Admin {
 							echo '</tr>';
 
 							echo '<tr>';
-								echo '<th scope="row">' . esc_html__( 'Conversione in coupon', 'wccd' ) . '</th>';
-								echo '<td>';
-									echo '<input type="checkbox" name="wccd-coupon" value="1"' . ( 1 === intval( $wccd_coupon ) ? ' checked="checked"' : '' ) . '>';
-									echo '<p class="description">' . wp_kses_post( __( 'Nel caso in cui il buono <i>Carta del Docente</i> inserito sia inferiore al totale a carrello, viene convertito in <i>Codice promozionale</i> ed applicato all\'ordine.', 'wccd' ) ) . '</p>';
-								echo '</td>';
-							echo '</tr>';
-
-							echo '<tr>';
 								echo '<th scope="row">' . esc_html__( 'Utilizzo immagine', 'wccd' ) . '</th>';
 								echo '<td>';
 									echo '<input type="checkbox" name="wccd-image" value="1"' . ( 1 === intval( $wccd_image ) ? ' checked="checked"' : '' ) . '>';
@@ -664,6 +657,20 @@ class WCCD_Admin {
 								echo '<td>';
 										echo '<input type="checkbox" name="wccd-orders-on-hold" value="1"' . ( 1 === intval( $wccd_orders_on_hold ) ? ' checked="checked"' : '' ) . '>';
 									echo '<p class="description">' . wp_kses_post( __( 'I buoni Carta del Docente verranno validati con il completamento manuale degli ordini.', 'wccd' ) ) . '</p>';
+								echo '</td>';
+							echo '<tr class="wccd-exclude-shipping">';
+								echo '<th scope="row">' . esc_html__( 'Spese di spedizione', 'wccd' ) . '</th>';
+								echo '<td>';
+										echo '<input type="checkbox" name="wccd-exclude-shipping" value="1"' . ( 1 === intval( $wccd_exclude_shipping ) ? ' checked="checked"' : '' ) . '>';
+									echo '<p class="description">' . wp_kses_post( __( 'Escludi le spese di spedizione dal pagamento con Carta del Docente.', 'wccd' ) ) . '</p>';
+								echo '</td>';
+							echo '</tr>';
+
+							echo '<tr class="wccd-coupon">';
+								echo '<th scope="row">' . esc_html__( 'Conversione in coupon', 'wccd' ) . '</th>';
+								echo '<td>';
+									echo '<input type="checkbox" name="wccd-coupon" value="1"' . ( 1 === intval( $wccd_coupon ) ? ' checked="checked"' : '' ) . '>';
+									echo '<p class="description">' . wp_kses_post( __( 'Nel caso in cui il buono <i>Carta del Docente</i> inserito sia inferiore al totale a carrello, viene convertito in <i>Codice promozionale</i> ed applicato all\'ordine.', 'wccd' ) ) . '</p>';
 								echo '</td>';
 							echo '</tr>';
 
@@ -892,6 +899,10 @@ class WCCD_Admin {
 			/*Ordini in sospeso*/
 			$wccd_orders_on_hold = isset( $_POST['wccd-orders-on-hold'] ) ? sanitize_text_field( wp_unslash( $_POST['wccd-orders-on-hold'] ) ) : '';
 			update_option( 'wccd-orders-on-hold', $wccd_orders_on_hold );
+
+			/*Spese di spedizione*/
+			$wccd_exclude_shipping = isset( $_POST['wccd-exclude-shipping'] ) ? sanitize_text_field( wp_unslash( $_POST['wccd-exclude-shipping'] ) ) : '';
+			update_option( 'wccd-exclude-shipping', $wccd_exclude_shipping );
 
 			/*Messaggio email ordine ricevuto*/
 			$wccd_email_order_received = isset( $_POST['wccd-email-order-received'] ) ? wp_kses_post( wp_unslash( $_POST['wccd-email-order-received'] ) ) : '';

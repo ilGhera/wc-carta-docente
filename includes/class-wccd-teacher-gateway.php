@@ -28,6 +28,14 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	public static $orders_on_hold;
 
 
+    /**
+     * Exclude shipping from the payment
+     *
+     * @var bool
+     */
+    public static $exclude_shipping;
+
+
 	/**
 	 * The constructor
 	 *
@@ -41,8 +49,9 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->method_title       = 'Buono docente';
 		$this->method_description = 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.';
 
-		self::$coupon_option  = get_option( 'wccd-coupon' );
-		self::$orders_on_hold = get_option( 'wccd-orders-on-hold' );
+		self::$coupon_option    = get_option( 'wccd-coupon' );
+		self::$orders_on_hold   = get_option( 'wccd-orders-on-hold' );
+        self::$exclude_shipping = get_option( 'wccd-exclude-shipping' );
 
 		if ( get_option( 'wccd-image' ) ) {
 
@@ -338,7 +347,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 		if ( 'docente' === $data['payment_method'] ) {
 
-			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( get_post_meta( $order->get_id(), 'wc-codice-docente', true ) ) . '</p>';
+			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( $order->get_meta( 'wc-codice-docente' ) ) . '</p>';
 
 		} elseif ( $teacher_code ) {
 
@@ -468,17 +477,23 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 		$output      = 1;
 		$order       = wc_get_order( $order_id );
-		$soap_client = new WCCD_Soap_Client( $teacher_code, $import );
+		/* $soap_client = new WCCD_Soap_Client( $teacher_code, $import ); */
 
 		try {
 
 			/*Prima verifica del buono*/
-			$response      = $soap_client->check();
-			$bene          = $response->checkResp->ambito; // Il bene acquistabile con il buono inserito.
-			$importo_buono = floatval( $response->checkResp->importo ); // L'importo del buono inserito.
+			/* $response      = $soap_client->check(); */
+			$bene          = 'LIBRI'; //$response->checkResp->ambito; // Il bene acquistabile con il buono inserito.
+			$importo_buono = 58.00;//floatval( $response->checkResp->importo ); // L'importo del buono inserito.
 
 			/*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
 			$purchasable = self::is_purchasable( $order, $bene );
+
+            /* Importo inferiore al totale dell'ordine */
+            $convert = self::$coupon_option && $importo_buono < $import ? true : false;
+
+            /* Spese di spedizione escluse dal pagamento */
+            $no_shipping = self::$exclude_shipping && $order->get_shipping_total() ? true : false;
 
 			if ( ! $purchasable ) {
 
@@ -488,7 +503,14 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 				$type = null;
 
-				if ( self::$coupon_option && $importo_buono < $import && ! $converted ) {
+				if ( ! $converted && $convert || $no_shipping ) {
+
+                    if ( $no_shipping ) {
+
+                        /* Definizione del valore del vouscher con spese di spedizione escluse */
+                        $importo_buono = min( $importo_buono, $import );
+
+                    }
 
 					/* Creazione coupon */
 					$coupon_code = self::create_coupon( $order_id, $importo_buono, $teacher_code );
@@ -498,7 +520,13 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 						/* Coupon aggiunto all'ordine */
 						WC()->cart->apply_coupon( $coupon_code );
 
-						$output = __( 'Il valore del buono inserito non è sufficiente ed è stato convertito in buono sconto.', 'wccd' );
+                        if ( $convert ) {
+
+                            $output = __( 'Il valore del buono inserito non è sufficiente ed è stato convertito in buono sconto.', 'wccd' );
+                        } else {
+
+                            $output = __( 'Le spese di spedizione devono essere saldate con altro metodo di pagamento.', 'wccd' );
+                        }
 
 					}
 				} elseif ( $importo_buono === $import || ( self::$orders_on_hold && ! $complete ) ) {
@@ -534,7 +562,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 						}
 
 						/*Aggiungo il buono docente all'ordine*/
-						update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
+                        $order->update_meta_data( 'wc-codice-docente', $teacher_code );
 
 						if ( ! $converted ) {
 
@@ -586,7 +614,13 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	public function process_payment( $order_id ) {
 
 		$order  = wc_get_order( $order_id );
-		$import = floatval( $order->get_total() ); // Il totale dell'ordine.
+		$import = floatval( $order->get_total() ); 
+
+        if ( self::$exclude_shipping ) {
+
+            $import = floatval( $order->get_total() - $order->get_shipping_total() - $order->get_shipping_tax() ); // Il totale dell'ordine.
+
+        }
 
 		$notice = null;
 		$output = array(

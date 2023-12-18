@@ -117,6 +117,19 @@ add_action( 'plugins_loaded', 'wccd_premium_activation', 1 );
 
 
 /**
+ * HPOS compatibility
+ */
+add_action(
+	'before_woocommerce_init',
+	function() {
+		if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		}
+	}
+);
+
+
+/**
  * Update checker
  */
 require plugin_dir_path( __FILE__ ) . 'plugin-update-checker/plugin-update-checker.php';

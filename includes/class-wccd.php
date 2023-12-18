@@ -238,7 +238,7 @@ class WCCD {
 
 			if ( 'docente' === $order->get_payment_method() ) {
 
-				$teacher_code = get_post_meta( $order_id, 'wc-codice-docente', true );
+				$teacher_code = $order->get_meta( 'wc-codice-docente' );
 				$total        = $order->get_total();
 				$validate     = WCCD_Teacher_Gateway::process_code( $order_id, $teacher_code, $total, false, true );
 
