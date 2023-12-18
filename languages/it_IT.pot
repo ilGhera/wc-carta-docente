@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WC Carta Docente 0.9.0\n"
-"POT-Creation-Date: 2023-04-06 16:06+0200\n"
+"POT-Creation-Date: 2023-12-18 17:16+0100\n"
 "PO-Revision-Date: 2018-07-02 12:47+0200\n"
 "Last-Translator: \n"
 "Language-Team: ilGhera\n"
@@ -11,32 +11,32 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.4\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: _;__\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: includes/class-wccd-admin.php:47
+#: includes/class-wccd-admin.php:50
 msgid "WooCommerce Carta docente - Impostazioni"
 msgstr ""
 
-#: includes/class-wccd-admin.php:47
+#: includes/class-wccd-admin.php:50
 msgid "WC Carta Docente"
 msgstr ""
 
-#: includes/class-wccd-admin.php:393
+#: includes/class-wccd-admin.php:394
 msgid "Impostazioni"
 msgstr ""
 
-#: includes/class-wccd-admin.php:414
+#: includes/class-wccd-admin.php:415
 msgid "Certificato"
 msgstr ""
 
-#: includes/class-wccd-admin.php:552
+#: includes/class-wccd-admin.php:553
 msgid "Crea il tuo certificato"
 msgstr ""
 
-#: includes/class-wccd-admin.php:586
+#: includes/class-wccd-admin.php:587
 #, php-format
 msgid ""
 "Attiva questa funzionalità per testare buoni Carta del Docente in un "
@@ -44,92 +44,96 @@ msgid ""
 "href=\"%s\">docenti@sogei.it</a>"
 msgstr ""
 
-#: includes/class-wccd-admin.php:645
-msgid ""
-"Nel caso in cui il buono <i>Carta del Docente</i> inserito sia inferiore al "
-"totale a carrello, viene convertito in <i>Codice promozionale</i> ed "
-"applicato all'ordine."
-msgstr ""
-
-#: includes/class-wccd-admin.php:653
+#: includes/class-wccd-admin.php:646
 msgid "Mostra il logo <i>Carta del Docente</i> nella pagine di checkout."
 msgstr ""
 
-#: includes/class-wccd-admin.php:661
+#: includes/class-wccd-admin.php:654
 msgid ""
 "Mostra il metodo di pagamento solo se il/ i prodotti a carrello sono "
 "acquistabili con buoni <i>Carta del Docente</i>.<br>Più prodotti dovranno "
 "prevedere l'uso di buoni dello stesso ambito di utilizzo."
 msgstr ""
 
-#: includes/class-wccd-admin.php:669
+#: includes/class-wccd-admin.php:662
 msgid ""
 "I buoni Carta del Docente verranno validati con il completamento manuale "
 "degli ordini."
 msgstr ""
 
+#: includes/class-wccd-admin.php:668
+msgid "Escludi le spese di spedizione dal pagamento con Carta del Docente."
+msgstr ""
+
 #: includes/class-wccd-admin.php:676
-#: includes/class-wccd-teacher-gateway.php:354
+msgid ""
+"Nel caso in cui il buono <i>Carta del Docente</i> inserito sia inferiore al "
+"totale a carrello, viene convertito in <i>Codice promozionale</i> ed "
+"applicato all'ordine."
+msgstr ""
+
+#: includes/class-wccd-admin.php:683
+#: includes/class-wccd-teacher-gateway.php:370
 msgid ""
 "L'ordine verrà completato manualmente nei prossimi giorni e, "
 "contestualmente, verrà validato il buono Carta del Docente inserito. "
 "Riceverai una notifica email di conferma, grazie!"
 msgstr ""
 
-#: includes/class-wccd-admin.php:679
+#: includes/class-wccd-admin.php:686
 msgid "Messaggio della mail inviata all'utente al ricevimento dell'ordine."
 msgstr ""
 
-#: includes/class-wccd-admin.php:689
+#: includes/class-wccd-admin.php:696
 msgid ""
 "Oggetto della mail inviata all'utente nel caso in cui la validazione del "
 "buono non sia andata a buon fine."
 msgstr ""
 
-#: includes/class-wccd-admin.php:697
+#: includes/class-wccd-admin.php:704
 msgid ""
 "Intestazione della mail inviata all'utente nel caso in cui la validazione "
 "del buono non sia andata a buon fine."
 msgstr ""
 
-#: includes/class-wccd-admin.php:704
+#: includes/class-wccd-admin.php:711
 msgid ""
 "La validazone del buono Carta del Docente ha restituito un errore e non è "
 "stato possibile completare l'ordine, effettua il pagamento a <a "
 "href=\"[checkout-url]\">questo indirizzo</a>."
 msgstr ""
 
-#: includes/class-wccd-admin.php:710
+#: includes/class-wccd-admin.php:717
 msgid ""
 "Messaggio della mail inviata all'utente nel caso in cui la validazione del "
 "buono non sia andata a buon fine."
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:170
+#: includes/class-wccd-teacher-gateway.php:182
 msgid "Enable/Disable"
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:172
+#: includes/class-wccd-teacher-gateway.php:184
 msgid "Abilita pagamento con buono docente"
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:176
+#: includes/class-wccd-teacher-gateway.php:188
 msgid "Title"
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:178
+#: includes/class-wccd-teacher-gateway.php:190
 msgid "This controls the title which the user sees during checkout."
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:179
+#: includes/class-wccd-teacher-gateway.php:191
 msgid "Buono docente"
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:183
+#: includes/class-wccd-teacher-gateway.php:195
 msgid "Messaggio utente"
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:369
+#: includes/class-wccd-teacher-gateway.php:385
 #, php-format
 msgid ""
 "La validazone del buono Carta del Docente ha restituito un errore e non è "
@@ -137,23 +141,28 @@ msgid ""
 "href=\"%s\">questo indirizzo</a>."
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:481
+#: includes/class-wccd-teacher-gateway.php:503
 msgid ""
 "Uno o più prodotti nel carrello non sono acquistabili con il buono inserito."
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:497
+#: includes/class-wccd-teacher-gateway.php:528
 msgid ""
 "Il valore del buono inserito non è sufficiente ed è stato convertito in "
 "buono sconto."
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:610 includes/class-wccd.php:183
+#: includes/class-wccd-teacher-gateway.php:531
+msgid ""
+"Le spese di spedizione devono essere saldate con altro metodo di pagamento."
+msgstr ""
+
+#: includes/class-wccd-teacher-gateway.php:651 includes/class-wccd.php:186
 #, php-format
 msgid "Buono docente - %s"
 msgstr ""
 
-#: includes/class-wccd.php:209 includes/class-wccd.php:211
+#: includes/class-wccd.php:212 includes/class-wccd.php:214
 msgid "Ordine fallito"
 msgstr ""
 
@@ -181,29 +190,29 @@ msgid ""
 "Non hai impostato una licenza e non sei in grado di ricevere aggiornamenti."
 msgstr ""
 
-#: plugin-update-checker/Puc/v5p0/Plugin/Ui.php:56
+#: plugin-update-checker/Puc/v5p3/Plugin/Ui.php:56
 msgid "View details"
 msgstr ""
 
-#: plugin-update-checker/Puc/v5p0/Plugin/Ui.php:79
+#: plugin-update-checker/Puc/v5p3/Plugin/Ui.php:79
 #, php-format
 msgid "More information about %s"
 msgstr ""
 
-#: plugin-update-checker/Puc/v5p0/Plugin/Ui.php:130
+#: plugin-update-checker/Puc/v5p3/Plugin/Ui.php:130
 msgid "Check for updates"
 msgstr ""
 
-#: plugin-update-checker/Puc/v5p0/Plugin/Ui.php:227
+#: plugin-update-checker/Puc/v5p3/Plugin/Ui.php:227
 #, php-format
 msgid "Unknown update checker status \"%s\""
 msgstr ""
 
-#: plugin-update-checker/Puc/v5p0/Vcs/PluginUpdateChecker.php:98
+#: plugin-update-checker/Puc/v5p3/Vcs/PluginUpdateChecker.php:113
 msgid "There is no changelog available."
 msgstr ""
 
-#: wc-carta-docente.php:168
+#: wc-carta-docente.php:180
 #, php-format
 msgid ""
 "Per ricevere aggiornamenti devi inserire la tua <b>Premium Key</b> nelle <a "
@@ -212,14 +221,14 @@ msgid ""
 "\" target=\"_blank\">qui</a> per maggiori informazioni."
 msgstr ""
 
-#: wc-carta-docente.php:178
+#: wc-carta-docente.php:190
 msgid ""
 "Sembra che la tua <strong>Premium Key</strong> sia scaduta. Clicca <a "
 "href=\"https://www.ilghera.com/product/woocommerce-carta-docente-premium/\" "
 "target=\"_blank\">qui</a> per maggiori informazioni."
 msgstr ""
 
-#: wc-carta-docente.php:180
+#: wc-carta-docente.php:192
 msgid ""
 "Sembra che la tua <strong>Premium Key</strong> non sia valida. Clicca <a "
 "href=\"https://www.ilghera.com/product/woocommerce-carta-docente-premium/\" "
