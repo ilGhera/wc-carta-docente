@@ -67,148 +67,148 @@ This plugin sends data to an external service, like the categories and the price
 == Changelog ==
 
 = 1.4.0 =
-Data di rilascio: 18 Dicembre, 2023
+Data di rilascio: 19 Dicembre, 2023
 
-* Implementazione: Opzione esclusione spese di spedizione dal pagamento 
-* Implementazione: Supporto WooCommerce HPOS 
-* Bug: Creation of dynamic property deprecated in PHP 8.2
+    * Implementazione: Opzione esclusione spese di spedizione dal pagamento 
+    * Implementazione: Supporto WooCommerce HPOS 
+    * Correzione bug: Creation of dynamic property deprecated in PHP 8.2
 
 
 = 1.3.1 =
 Data di rilascio: 10 Agosto, 2023
 
-* Implementazione: Utilizzo tag HTML in descrizione metodo di pagamento
-* Implementazione: Supporto WordPress 6.3 
+    * Implementazione: Utilizzo tag HTML in descrizione metodo di pagamento
+    * Implementazione: Supporto WordPress 6.3 
 
 
 = 1.3.0 =
 Data di rilascio: 6 Aprile, 2023
 
-* Implementazione: Opzione ordini in sospeso 
-* Implementazione: Opzione personalizzazione email per ordini completati manualmente
-* Implementazione: Opzione personalizzazione email per ordini rifiutati per buono non valido
-* Implementazione: WordPress Coding standards
-* Update: POT file
-* Bug: Buono docente non presente in dettagli ordine in caso di trasformazione in voucher
-* Bug: Metodo di pagamento disponibile dopo voucher applicato in modalità sandbox
+    * Implementazione: Opzione ordini in sospeso 
+    * Implementazione: Opzione personalizzazione email per ordini completati manualmente
+    * Implementazione: Opzione personalizzazione email per ordini rifiutati per buono non valido
+    * Implementazione: WordPress Coding standards
+    * Update: POT file
+    * Correzione bug: Buono docente non presente in dettagli ordine in caso di trasformazione in voucher
+    * Correzione bug: Metodo di pagamento disponibile dopo voucher applicato in modalità sandbox
 
 
 = 1.2.5 =
 Data di rilascio: 15 Febbraio, 2023
 
-* Implementazione: Notifica admin chiave di licenza 
-* Update: Plugin Update Checker
-* Update: POT file
+    * Implementazione: Notifica admin chiave di licenza 
+    * Update: Plugin Update Checker
+    * Update: POT file
 
 
 = 1.2.4 =
 Data di rilascio: 7 Novembre, 2022
 
-* Implementazione: Supporto WordPress 6.1
-* Update: Plugin Update Checker
+    * Implementazione: Supporto WordPress 6.1
+    * Update: Plugin Update Checker
 
 = 1.2.3 =
 Data di rilascio: 24 Ottobre, 2022
 
-* Update: Nuovo certificato per funzionalità Sandbox 
+    * Update: Nuovo certificato per funzionalità Sandbox 
 
 = 1.2.2 =
 Data di rilascio: 22 Giugno, 2022
 
-* Correzione bug: Errore controllo abbinamenti Categorie/ Beni Carta del Docente
+    * Correzione bug: Errore controllo abbinamenti Categorie/ Beni Carta del Docente
 
 = 1.2.1 =
 Data di rilascio: 16 Giugno, 2022
 
-* Correzione bug: Errore in array_intersect con opzione controllo prodotti a carrello attiva
+    * Correzione bug: Errore in array_intersect con opzione controllo prodotti a carrello attiva
 
 = 1.2.0 =
 Data di rilascio: 1 Giugno, 2022
 
-* Implementazione: Nuova funzionalità sandbox
-* Implementazione: Mostra metodo di pagamento solo se consentito dai prodotti presenti a carrello
-* Correzione bug: Codice Carta del Docente mancante in email di conferma d'ordine
+    * Implementazione: Nuova funzionalità sandbox
+    * Implementazione: Mostra metodo di pagamento solo se consentito dai prodotti presenti a carrello
+    * Correzione bug: Codice Carta del Docente mancante in email di conferma d'ordine
 
 = 1.1.2 =
 Data di rilascio: 4 Aprile, 2022
 
-* Correzione bug: Possibile mancato salvataggio singolo abbinamento Categoria/ Bene Carta del Docente 
+    * Correzione bug: Possibile mancato salvataggio singolo abbinamento Categoria/ Bene Carta del Docente 
 
 = 1.1.1 =
 Data di rilascio: 22 Maggio, 2021
 
-* Correzione bug: Mancata eliminazione ordine temporaneo in caso di conversione buono Carta del Docente in codice sconto
+    * Correzione bug: Mancata eliminazione ordine temporaneo in caso di conversione buono Carta del Docente in codice sconto
 
 = 1.1.0 =
 Data di rilascio: 20 Maggio, 2021
 
-* Implementazione: Opzione di conversione buono Carta del Docente in codice sconto applicato a carrello nel caso in cui il valore del buono sia inferiore al totale a carrello
-* Implementazione: Interfaccia migliorata. 
+    * Implementazione: Opzione di conversione buono Carta del Docente in codice sconto applicato a carrello nel caso in cui il valore del buono sia inferiore al totale a carrello
+    * Implementazione: Interfaccia migliorata. 
 
 = 1.0.5 =
 Data di rilascio: 28 Aprile, 2020
 
-* Correzione bug: Impossibile eliminare certificato non funzionante
-* Correzione bug: Errore salvataggio file .der in presenza del plugin WooCommerce 18app - Premium 
+    * Correzione bug: Impossibile eliminare certificato non funzionante
+    * Correzione bug: Errore salvataggio file .der in presenza del plugin WooCommerce 18app - Premium 
 
 = 1.0.4 =
 Data di rilascio: 10 Febbraio, 2020
 
-* Correzione bug: Categorie impostabili limitate
+    * Correzione bug: Categorie impostabili limitate
 
 = 1.0.3 =
 Data di rilascio: 09 Novembre, 2019
 
-* Correzione bug: Denominazione ambito "Libri e testi (anche in formato digitale)" errata.
+    * Correzione bug: Denominazione ambito "Libri e testi (anche in formato digitale)" errata.
 
 = 1.0.2 =
 Data di rilascio: 02 Ottobre, 2019
 
-* Implementazione: Possibilità di abbinare differenti categorie WooCommeerce allo stesso "bene" Carta del Docente .
-* Correzione bug: Categorie beni Carta del Docente mancanti.
+    * Implementazione: Possibilità di abbinare differenti categorie WooCommeerce allo stesso "bene" Carta del Docente .
+    * Correzione bug: Categorie beni Carta del Docente mancanti.
 
 = 1.0.1 =
 Data di rilascio: 27 Giugno, 2019
 
-* Correzione bug: SOAP-ERROR: Parsing WSDL: Couldn't load from .../wp-content/plugins/wc-carta-docente-premium/includes/VerificaVoucher.wsdl' : failed to load external entity .../wp-content/plugins/wc-carta-docente-premium/includes/VerificaVoucher.wsdl
+    * Correzione bug: SOAP-ERROR: Parsing WSDL: Couldn't load from .../wp-content/plugins/wc-carta-docente-premium/includes/VerificaVoucher.wsdl' : failed to load external entity .../wp-content/plugins/wc-carta-docente-premium/includes/VerificaVoucher.wsdl
 
 = 1.0.0 =
 Data di rilascio: 5 Febbraio, 2019
 
-* Implementazione: Backup di ogni richiesta certificato generato con relativa chiave
-* Implementazione: Nuova cartella wccd-private in wp uploads directory
-* Correzione bug: Eliminazione contenuto cartella private con aggiornamento 
-* Correzione bug: Mancato salvataggio di un singolo abbinamento di categorie prodotti 
+    * Implementazione: Backup di ogni richiesta certificato generato con relativa chiave
+    * Implementazione: Nuova cartella wccd-private in wp uploads directory
+    * Correzione bug: Eliminazione contenuto cartella private con aggiornamento 
+    * Correzione bug: Mancato salvataggio di un singolo abbinamento di categorie prodotti 
 
 = 0.9.5 =
 Data di rilascio: 8 Novembre, 2018
 
-* Implementazione: Possibilità di abbinare differenti "beni" Carta del Docente alla stessa categoria WooCommeerce.
-* Implementazione: Aggiornata gamma "beni" disponibili.
+    * Implementazione: Possibilità di abbinare differenti "beni" Carta del Docente alla stessa categoria WooCommeerce.
+    * Implementazione: Aggiornata gamma "beni" disponibili.
 
 = 0.9.4 =
 Data di rilascio: 18 Ottobre, 2018
 
-* Correzione bug: Richiesta password utilizzata per creare il certificato caricato dall'utente.
+    * Correzione bug: Richiesta password utilizzata per creare il certificato caricato dall'utente.
 
 = 0.9.3 =
 Data di rilascio: 14 Settembre, 2018
 
-* Correzione bug: Correzione richiamo password utente in class-wccd-soap-client.php
+    * Correzione bug: Correzione richiamo password utente in class-wccd-soap-client.php
 
 = 0.9.2 =
 Data di rilascio: 14 Settembre, 2018
 
-* Correzione bug: Errore nella generazione del file wccd-cert.p12
+    * Correzione bug: Errore nella generazione del file wccd-cert.p12
 
 = 0.9.1 =
 Data di rilascio: 27 Agosto, 2018
 
-* Implementazione: Attivazione certificato come richiesto dalla piattaforma Carta del Docente.
-* Implementazione: Attivazione del sistema di pagamento solo ad attivazione certificato completata.
-* Correzione bug: Errato path certificato in istanza classe wccd_soap_client.
+    * Implementazione: Attivazione certificato come richiesto dalla piattaforma Carta del Docente.
+    * Implementazione: Attivazione del sistema di pagamento solo ad attivazione certificato completata.
+    * Correzione bug: Errato path certificato in istanza classe wccd_soap_client.
 
 = 0.9.0 =
 Data di rilascio: 2 Luglio, 2018
 
-* Prima release.
+    * Prima release.
