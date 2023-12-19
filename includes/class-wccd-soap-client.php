@@ -15,54 +15,54 @@
  */
 class WCCD_Soap_Client {
 
-    /**
-     * Opzione sandbox
-     *
-     * @var bool
-     */
-    public $sandbox;
+	/**
+	 * Opzione sandbox
+	 *
+	 * @var bool
+	 */
+	public $sandbox;
 
-    /**
-     * Il certificato .pem 
-     *
-     * @var string
-     */
-    public $local_cert;
+	/**
+	 * Il certificato .pem
+	 *
+	 * @var string
+	 */
+	public $local_cert;
 
-    /**
-     * L'endpoint
-     *
-     * @var string
-     */
-    public $location;
+	/**
+	 * L'endpoint
+	 *
+	 * @var string
+	 */
+	public $location;
 
-    /**
-     * La password legata al certificato
-     *
-     * @var string
-     */
-    public $passphrase;
+	/**
+	 * La password legata al certificato
+	 *
+	 * @var string
+	 */
+	public $passphrase;
 
-    /**
-     * Il file WSDL previsto da Carta del Docente
-     *
-     * @var string
-     */
-    public $wsdl;
+	/**
+	 * Il file WSDL previsto da Carta del Docente
+	 *
+	 * @var string
+	 */
+	public $wsdl;
 
-    /**
-     * Il buono Carta del Docente
-     *
-     * @var string
-     */
-    public $codice_voucher;
+	/**
+	 * Il buono Carta del Docente
+	 *
+	 * @var string
+	 */
+	public $codice_voucher;
 
-    /**
-     * Il valore del buono
-     *
-     * @var float
-     */
-    public $import;
+	/**
+	 * Il valore del buono
+	 *
+	 * @var float
+	 */
+	public $import;
 
 
 	/**
@@ -122,7 +122,7 @@ class WCCD_Soap_Client {
 	 * Istanzia il SoapClient
 	 */
 	public function soap_client() {
-		$soapClient = new SoapClient(
+		$soap_client = new SoapClient(
 			$this->wsdl,
 			array(
 				'local_cert'     => $this->local_cert,
@@ -142,7 +142,7 @@ class WCCD_Soap_Client {
 			)
 		);
 
-		return $soapClient;
+		return $soap_client;
 	}
 
 
