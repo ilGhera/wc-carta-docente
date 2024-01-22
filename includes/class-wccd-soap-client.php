@@ -12,6 +12,56 @@
  */
 class WCCD_Soap_Client {
 
+    /**
+     * Opzione sandbox
+     *
+     * @var bool
+     */
+    public $sandbox;
+
+    /**
+     * Il certificato .pem 
+     *
+     * @var string
+     */
+    public $local_cert;
+
+    /**
+     * L'endpoint
+     *
+     * @var string
+     */
+    public $location;
+
+    /**
+     * La password legata al certificato
+     *
+     * @var string
+     */
+    public $passphrase;
+
+    /**
+     * Il file WSDL previsto da Carta del Docente
+     *
+     * @var string
+     */
+    public $wsdl;
+
+    /**
+     * Il buono Carta del Docente
+     *
+     * @var string
+     */
+    public $codice_voucher;
+
+    /**
+     * Il valore del buono
+     *
+     * @var float
+     */
+    public $import;
+
+
 	/**
 	 * The constructor
 	 *

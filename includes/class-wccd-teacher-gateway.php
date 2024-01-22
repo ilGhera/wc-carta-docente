@@ -12,7 +12,6 @@
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
-
 	/**
 	 * The constructor
 	 *
@@ -85,7 +84,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	public function payment_fields() {
 		?>
 		<p>
-			<?php echo esc_html( $this->description ); ?>
+			<?php echo wp_kses_post( $this->description ); ?>
 			<label for="wc-codice-docente">
 				<?php esc_html_e( 'Inserisci qui il tuo codice', 'wccd' ); ?>
 				<span class="required">*</span>
@@ -214,7 +213,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 		if ( 'docente' === $data['payment_method'] ) {
 
-			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( get_post_meta( $order->get_id(), 'wc-codice-docente', true ) ) . '</p>';
+			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( $order->get_meta( 'wc-codice-docente' ) ) . '</p>';
 
 		}
 
@@ -282,7 +281,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 						}
 
 						/*Aggiungo il buono docente all'ordine*/
-						update_post_meta( $order_id, 'wc-codice-docente', $teacher_code );
+                        $order->update_meta_data( 'wc-codice-docente', $teacher_code );
 
 						/* Ordine completato */
 						$order->payment_complete();
@@ -318,8 +317,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	public function process_payment( $order_id ) {
 
 		$order  = wc_get_order( $order_id );
-		$import = floatval( $order->get_total() ); // Il totale dell'ordine.
-
+		$import = floatval( $order->get_total() ); 
 		$notice = null;
 		$output = array(
 			'result'   => 'failure',
