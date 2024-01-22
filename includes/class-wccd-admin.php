@@ -516,16 +516,6 @@ class WCCD_Admin {
 							echo '</tr>';
 
 							echo '<tr>';
-								echo '<th scope="row">' . esc_html__( 'Conversione in coupon', 'wccd' ) . '</th>';
-								echo '<td>';
-									echo '<input type="checkbox" name="wccd-coupon" value="1" disabled>';
-									echo '<p class="description">' . wp_kses_post( __( 'Nel caso in cui il buono <i>Carta del Docente</i> inserito sia inferiore al totale a carrello, viene convertito in <i>Codice promozionale</i> ed applicato all\'ordine.', 'wccd' ) ) . '</p>';
-
-									echo wp_kses_post( $this->get_go_premium( true ) );
-								echo '</td>';
-							echo '</tr>';
-
-							echo '<tr>';
 								echo '<th scope="row">' . esc_html__( 'Utilizzo immagine', 'wccd' ) . '</th>';
 								echo '<td>';
 									echo '<input type="checkbox" name="wccd-image" value="1"' . ( 1 === intval( $wccd_image ) ? ' checked="checked"' : '' ) . '>';
@@ -564,8 +554,10 @@ class WCCD_Admin {
 							echo '<tr class="wccd-coupon">';
 								echo '<th scope="row">' . esc_html__( 'Conversione in coupon', 'wccd' ) . '</th>';
 								echo '<td>';
-									echo '<input type="checkbox" name="wccd-coupon" value="1"' . ( 1 === intval( $wccd_coupon ) ? ' checked="checked"' : '' ) . '>';
+									echo '<input type="checkbox" name="wccd-coupon" value="1" disabled>';
 									echo '<p class="description">' . wp_kses_post( __( 'Nel caso in cui il buono <i>Carta del Docente</i> inserito sia inferiore al totale a carrello, viene convertito in <i>Codice promozionale</i> ed applicato all\'ordine.', 'wccd' ) ) . '</p>';
+
+									echo wp_kses_post( $this->get_go_premium( true ) );
 								echo '</td>';
 							echo '</tr>';
 
