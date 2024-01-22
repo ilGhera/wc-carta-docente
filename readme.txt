@@ -74,6 +74,13 @@ https://youtu.be/CU00ZZBZplI
 
 == Changelog ==
 
+= 1.4.0 =
+Data di rilascio: 22 Gennaio, 2024
+
+    * Implementazione: Supporto WooCommerce HPOS 
+    * Implementazione: (Premium) Opzione esclusione spese di spedizione dal pagamento 
+    * Correzione bug: Creation of dynamic property deprecated in PHP 8.2
+
 = 1.3.1 =
 Data di rilascio: 2 Maggio, 2023
 
