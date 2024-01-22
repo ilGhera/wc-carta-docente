@@ -4,7 +4,8 @@
  *
  * @author ilGhera
  * @package wc-carta-docente/includes
- * @since 1.3.0
+ *
+ * @since 1.4.0
  */
 
 /**
