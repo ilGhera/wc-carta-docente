@@ -8,8 +8,12 @@
  * @since 1.4.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * WCCD_Admin class
+ *
+ * @since 1.4.0
  */
 class WCCD_Admin {
 

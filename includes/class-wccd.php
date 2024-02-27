@@ -7,8 +7,12 @@
  * @since 1.3.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * WCCD class
+ *
+ * @since 1.4.0
  */
 class WCCD {
 

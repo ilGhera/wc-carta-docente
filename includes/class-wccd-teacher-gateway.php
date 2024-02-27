@@ -8,8 +8,12 @@
  * @since 1.4.0
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * WCCD_Teacher_Gateway class
+ *
+ * @since 1.4.0
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 

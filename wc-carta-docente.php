@@ -15,6 +15,8 @@
  * Domain Path: /languages
  */
 
+defined( 'ABSPATH' ) || exit;
+
 /**
  * Attivazione
  */
