@@ -359,7 +359,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 		}
 
-		if ( self::$orders_on_hold ) {
+		if ( self::$orders_on_hold && 'docente' === $order->get_payment_method() ) {
 
 			if ( in_array( $order->get_status(), array( 'on-hold', 'pending' ), true ) ) {
 
