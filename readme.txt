@@ -1,6 +1,6 @@
 === WooCommerce Carta Docente ===
 Contributors: ghera74
-Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
+Tags: WooCommerce, payment gateway, Carta Docente, Carte Cultura, 18app
 Stable tag: 1.4.0
 Requires at least: 4.0
 Tested up to: 6.4
