@@ -2,12 +2,12 @@
 # metadata file that makes public software easily discoverable.
 # More info at https://github.com/italia/publiccode.yml
 
-publiccodeYmlVersion: '0.2'
+publiccodeYmlVersion: '0.4.0'
 categories:
   - e-commerce
 description:
   it:
-    documentation: 'https://www.ilghera.com/category/documentation/wc-carta-docente-18app/'
+    documentation: 'https://ilghera.com/documentation/wc-carta-docente-18app/'
     features:
       - Carica il tuo certificato .pem
       - Abbina le categorie WooCommerce agli ambiti d'acquisto di Carta del Docente
@@ -18,7 +18,6 @@ description:
       - (Premium) Conversione valore buono Carta del Docente in voucher WooCommerce
       - (Premium) Mostra il metodo di pagamento solo se i prodotti a carrello sono acquistabili con C.d.D.
       - (Premium) Opzione ordini in sospeso con validazione buoni C.d.D. solo a completamento manuale dell'ordine 
-    genericName: WordPress plugin
     longDescription: |
       Ogni insegnante di ruolo, in Italia, ha a disposizione un bonus di € 500
       per ogni anno scolastico, da utilizzarsi per aggiornamenti professionali.
