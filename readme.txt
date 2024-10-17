@@ -1,9 +1,9 @@
 === WooCommerce Carta Docente - Premium ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 Requires at least: 4.0
-Tested up to: 6.4
+Tested up to: 6.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -67,6 +67,15 @@ This plugin sends data to an external service, like the categories and the price
 
 
 == Changelog ==
+
+= 1.4.2 =
+Data di rilascio: 17 Ottobre, 2024
+
+    * Implementazione: Nuovo file WSDL 
+    * Update: Plugin Update Checker
+    * Update: Supporto WP 6.6
+    * Update: Supporto WC 9 
+
 
 = 1.4.1 =
 Data di rilascio: 1 Marzo, 2024
