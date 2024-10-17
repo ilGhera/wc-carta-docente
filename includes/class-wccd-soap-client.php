@@ -138,6 +138,7 @@ class WCCD_Soap_Client {
 						'ssl'  => array(
 							'verify_peer'      => false,
 							'verify_peer_name' => false,
+                            /* 'crypto_method' =>  STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT, */
 						),
 					)
 				),
