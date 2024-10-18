@@ -5,7 +5,7 @@
  * @author ilGhera
  * @package wc-carta-docente/includes
  *
- * @since 1.4.1
+ * @since 1.4.4
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * WCCD_Teacher_Gateway class
  *
- * @since 1.4.0
+ * @since 1.4.4
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
@@ -555,7 +555,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 							} else {
 
-								$operation = $soap_client->check( 2 );
+								$operation = $soap_client->check();
 
 							}
 						} else {
