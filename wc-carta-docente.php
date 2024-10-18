@@ -6,8 +6,8 @@
  * Author: ilGhera
  *
  * @package wc-carta-docente
- * Version: 1.4.2
- * Stable tag: 1.4.2
+ * Version: 1.4.3
+ * Stable tag: 1.4.3
  * Author URI: https://ilghera.com
  * Requires at least: 4.0
  * Tested up to: 6.6
