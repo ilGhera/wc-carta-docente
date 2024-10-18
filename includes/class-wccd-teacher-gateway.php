@@ -5,7 +5,7 @@
  * @author ilGhera
  * @package wc-carta-docente/includes
  *
- * @since 1.4.4
+ * @since 1.4.5
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * WCCD_Teacher_Gateway class
  *
- * @since 1.4.4
+ * @since 1.4.5
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
@@ -553,16 +553,12 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 								$operation = null;
 
-							} else {
-
-								$operation = $soap_client->check();
-
-							}
-						} else {
-
-							$operation = $soap_client->confirm();
+                            }
 
 						}
+
+                        /*Validazione buono*/
+                        $operation = $soap_client->confirm();
 
 						/*Aggiungo il buono docente all'ordine*/
 						$order->update_meta_data( 'wc-codice-docente', $teacher_code );

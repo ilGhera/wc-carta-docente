@@ -5,7 +5,7 @@
  * @author ilGhera
  * @package wc-carta-docente/includes
  *
- * @since 1.4.3
+ * @since 1.4.5
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * WCCD_Soap_Client class
  *
- * @since 1.4.3
+ * @since 1.4.5
  */
 class WCCD_Soap_Client {
 
@@ -163,6 +163,7 @@ class WCCD_Soap_Client {
 				'checkReq' => array(
 					'tipoOperazione' => $value,
 					'codiceVoucher'  => $this->codice_voucher,
+					'importo'        => $this->import,
 				),
 			)
 		);
