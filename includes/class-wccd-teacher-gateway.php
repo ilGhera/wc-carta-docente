@@ -258,47 +258,24 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 			} else {
 
-				$type = null;
+				try {
 
-				if ( $importo_buono === $import ) {
+					/* Validazione buono */
+					$operation = $soap_client->confirm();
 
-					$type = 'check';
+					/*Aggiungo il buono docente all'ordine*/
+					$order->update_meta_data( 'wc-codice-docente', $teacher_code );
 
-				} else {
+					/* Ordine completato */
+					$order->payment_complete();
 
-					$type = 'confirm';
+					/*Svuota carrello*/
+					$woocommerce->cart->empty_cart();
 
-				}
+				} catch ( Exception $e ) {
 
-				if ( $type ) {
+					$output = $e->detail->FaultVoucher->exceptionMessage;
 
-					try {
-
-						/*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
-						if ( 'check' === $type ) {
-
-							$operation = $soap_client->check( 2 );
-
-						} else {
-
-							$operation = $soap_client->confirm();
-
-						}
-
-						/*Aggiungo il buono docente all'ordine*/
-						$order->update_meta_data( 'wc-codice-docente', $teacher_code );
-
-						/* Ordine completato */
-						$order->payment_complete();
-
-						/*Svuota carrello*/
-						$woocommerce->cart->empty_cart();
-
-					} catch ( Exception $e ) {
-
-						$output = $e->detail->FaultVoucher->exceptionMessage;
-
-					}
 				}
 			}
 		} catch ( Exception $e ) {
