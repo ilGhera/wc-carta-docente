@@ -5,7 +5,7 @@
  * @author ilGhera
  * @package wc-carta-docente/includes
  *
- * @since 1.4.0
+ * @since 1.4.2
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * WCCD_Soap_Client class
  *
- * @since 1.4.0
+ * @since 1.4.2
  */
 class WCCD_Soap_Client {
 
@@ -130,6 +130,7 @@ class WCCD_Soap_Client {
 				'local_cert'     => $this->local_cert,
 				'location'       => $this->location,
 				'passphrase'     => $this->passphrase,
+                'cache_wsdl'     => WSDL_CACHE_NONE,
 				'stream_context' => stream_context_create(
 					array(
 						'http' => array(
