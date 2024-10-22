@@ -5,7 +5,7 @@
  * @author ilGhera
  * @package wc-carta-docente/includes
  *
- * @since 1.4.5
+ * @since 1.4.6
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -489,6 +489,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 			$response      = $soap_client->check();
 			$bene          = $response->checkResp->ambito; // Il bene acquistabile con il buono inserito.
 			$importo_buono = floatval( $response->checkResp->importo ); // L'importo del buono inserito.
+            $on_hold       = self::$orders_on_hold && ! $complete;
 
 			/*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
 			$purchasable = self::is_purchasable( $order, $bene );
@@ -532,66 +533,57 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 							$output = __( 'Le spese di spedizione devono essere saldate con altro metodo di pagamento.', 'wccd' );
 						}
 					}
-				} elseif ( $importo_buono === $import || ( self::$orders_on_hold && ! $complete ) ) {
 
-					$type = 'check';
-
-				} else {
-
-					$type = 'confirm';
-
-				}
-
-				if ( $type ) {
+                } else {
 
 					try {
 
-						/*Operazione differente in base al rapporto tra valore del buono e totale dell'ordine*/
-						if ( 'check' === $type ) {
+                        if ( ! $on_hold ) {
 
-							if ( self::$orders_on_hold && ! $complete ) {
-
-								$operation = null;
-
-                            }
+                            /*Validazione buono*/
+                            $operation = $soap_client->confirm();
 
 						}
 
-                        /*Validazione buono*/
-                        $operation = $soap_client->confirm();
+						if ( 'OK' === $operation->checkResp->esito || $on_hold ) {
 
-						/*Aggiungo il buono docente all'ordine*/
-						$order->update_meta_data( 'wc-codice-docente', $teacher_code );
+							/*Aggiungo il buono docente all'ordine*/
+							$order->update_meta_data( 'wc-codice-docente', $teacher_code );
 
-						if ( ! $converted ) {
+							if ( ! $converted ) {
 
-							if ( self::$orders_on_hold && ! $complete ) {
+								if ( $on_hold ) {
 
-								/* Ordine in sospeso */
-								$order->update_status( 'wc-on-hold' );
+									/* Ordine in sospeso */
+									$order->update_status( 'wc-on-hold' );
 
-							} else {
+								} else {
 
-								/* Ordine completato */
-								$order->payment_complete();
+									/* Ordine completato */
+									$order->payment_complete();
 
+								}
+
+								/* A completamento di un ordine il carrello è già vuoto */
+								if ( ! $complete ) {
+
+									/*Svuota carrello*/
+									$woocommerce->cart->empty_cart();
+
+								}
 							}
+						} else {
 
-							/* A completamento di un ordine il carrello è già vuoto */
-							if ( ! $complete ) {
-
-								/*Svuota carrello*/
-								$woocommerce->cart->empty_cart();
-
-							}
+							$output = $operation->checkResp->esito;
 						}
 					} catch ( Exception $e ) {
 
 						$output = $e->detail->FaultVoucher->exceptionMessage;
 
 					}
-				}
+                }
 			}
+
 		} catch ( Exception $e ) {
 
 			$output = $e->detail->FaultVoucher->exceptionMessage;
