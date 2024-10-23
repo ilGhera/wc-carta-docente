@@ -2,7 +2,7 @@
 # metadata file that makes public software easily discoverable.
 # More info at https://github.com/italia/publiccode.yml
 
-publiccodeYmlVersion: '0.4.0'
+publiccodeYmlVersion: '0.2'
 categories:
   - e-commerce
 description:
@@ -10,76 +10,116 @@ description:
     documentation: 'https://ilghera.com/documentation/wc-carta-docente-18app/'
     features:
       - Carica il tuo certificato .pem
-      - Abbina le categorie WooCommerce agli ambiti d'acquisto di Carta del Docente
+      - |-
+        Abbina le categorie WooCommerce agli ambiti d'acquisto di Carta del
+        Docente
       - Nuovo metodo di pagamento in pagina di checkout
       - Opzione Sandbox per effettuare test d'acquisto
       - (Premium) Generazione richiesta certificato .der
       - (Premium) Generazione certificato .pem
-      - (Premium) Conversione valore buono Carta del Docente in voucher WooCommerce
-      - (Premium) Mostra il metodo di pagamento solo se i prodotti a carrello sono acquistabili con C.d.D.
-      - (Premium) Opzione ordini in sospeso con validazione buoni C.d.D. solo a completamento manuale dell'ordine 
+      - |-
+        (Premium) Conversione valore buono Carta del Docente in voucher
+        WooCommerce
+      - |-
+        (Premium) Mostra il metodo di pagamento solo se i prodotti a carrello
+        sono acquistabili con C.d.D.
+      - |-
+        (Premium) Opzione ordini in sospeso con validazione buoni C.d.D. solo a
+        completamento manuale.
+    genericName: Payment method
     longDescription: |
       Ogni insegnante di ruolo, in Italia, ha a disposizione un bonus di € 500
+
       per ogni anno scolastico, da utilizzarsi per aggiornamenti professionali.
 
 
+
       Possono essere acquistati libri, riviste, ingressi nei musei, biglietti
+
       per eventi culturali, teatro e cinema, così come iscrizioni a corsi di
+
       laurea, master universitari e corsi di aggiornamento, svolti da enti
+
       qualificati o accreditati presso il Ministero dell'Istruzione,
+
       dell'Università e della Ricerca.
 
 
+
       Con **Woocommerce Carta Docente**, consentirai agli insegnanti di
+
       acquistare i tuoi prodotti utilizzando i buoni generati su _Carta del
+
       Docente._
 
 
+
       ​
+
 
 
       ### Presentati come esercente
 
 
+
       Carica il tuo certificato .pem ed identificati come esercente, una luce
+
       verde confermerà l'avvenuto collegamento tra le due piattaforme.
+
 
 
       ![](https://i1.wp.com/www.ilghera.com/wp-content/uploads/2018/07/Schermata-da-2018-07-04-21-30-08.png?w=615&ssl=1)
 
 
+
       ​
+
 
 
       ### Imposta i prodotti acquistabili
 
 
+
       I buoni generati sulla piattaforma _Carta del Docente_, possono essere
+
       utilizzati solo per acquistare beni della stessa tipologia per i quali
+
       sono stati creati.
 
 
+
       Impostando queste categorie con lo strumento dedicato, **Woocommerce Carta
+
       Docente** effettuerà un controllo nella fase di checkout, avvisando se
+
       necessario l'utente della mancata corrispondenza.
+
 
 
       ![](https://i2.wp.com/www.ilghera.com/wp-content/uploads/2018/07/Schermata-da-2018-07-04-23-59-42.png?w=688&ssl=1)
 
 
+
       ​
+
 
 
       ### Facile per l'utente
 
 
+
       Dopo aver attivato il certificato, **Woocommerce Carta Docente** 
+
       aggiungerà il nuovo metodo di pagamento tra quelli disponibili nella
+
       pagina di checkout.
 
 
+
       l docente non dovrà fare altro che inserire il codice del suo buono,
+
       nient'altro.
+
 
 
       ![](https://i0.wp.com/www.ilghera.com/wp-content/uploads/2018/07/Schermata-da-2018-07-05-12-33-06.png?w=343&ssl=1)
@@ -94,7 +134,8 @@ description:
         https://raw.githubusercontent.com/ilGhera/wc-carta-docente/master/images/metodo-di-pagamento.jpg
     shortDescription: |-
       Con Woocommerce Carta Docente, consentirai agli insegnanti di acquistare i
-      tuoi prodotti utilizzando i buoni generati su Carta delDocente.
+
+      tuoi prodotti utilizzando i buoni generati su Carta del Docente.
 developmentStatus: stable
 intendedAudience:
   countries:
