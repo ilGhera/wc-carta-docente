@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * WCCD_Teacher_Gateway class
  *
- * @since 1.4.5
+ * @since 1.4.6
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 

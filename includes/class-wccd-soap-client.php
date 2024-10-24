@@ -5,7 +5,7 @@
  * @author ilGhera
  * @package wc-carta-docente/includes
  *
- * @since 1.4.5
+ * @since 1.4.6
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * WCCD_Soap_Client class
  *
- * @since 1.4.5
+ * @since 1.4.6
  */
 class WCCD_Soap_Client {
 
@@ -139,8 +139,8 @@ class WCCD_Soap_Client {
 						'ssl'  => array(
 							'verify_peer'      => false,
 							'verify_peer_name' => false,
-                            /* ‘allow_self_signed’ => true */
-                            /* 'crypto_method' =>  STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT, */
+                            'allow_self_signed' => true,
+                            'crypto_method' =>  STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT,
 						),
 					)
 				),

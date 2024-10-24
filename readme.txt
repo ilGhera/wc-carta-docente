@@ -1,7 +1,7 @@
 === WooCommerce Carta Docente - Premium ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
-Stable tag: 1.4.5
+Stable tag: 1.4.6
 Requires at least: 4.0
 Tested up to: 6.6
 License: GPLv3
@@ -67,6 +67,12 @@ This plugin sends data to an external service, like the categories and the price
 
 
 == Changelog ==
+
+= 1.4.6 =
+Data di rilascio: 24 Ottobre, 2024
+
+    * Correzione bug : Ordine con buono inferiore al valore a carrello non interrotto. 
+
 
 = 1.4.5 =
 Data di rilascio: 18 Ottobre, 2024
