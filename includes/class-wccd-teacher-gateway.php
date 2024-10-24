@@ -490,6 +490,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 			$bene          = $response->checkResp->ambito; // Il bene acquistabile con il buono inserito.
 			$importo_buono = floatval( $response->checkResp->importo ); // L'importo del buono inserito.
             $on_hold       = self::$orders_on_hold && ! $complete;
+            $operation     = null;
 
 			/*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
 			$purchasable = self::is_purchasable( $order, $bene );
@@ -545,7 +546,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 						}
 
-						if ( 'OK' === $operation->checkResp->esito || $on_hold ) {
+						if ( ( is_object( $operation ) && 'OK' === $operation->checkResp->esito ) || $on_hold ) {
 
 							/*Aggiungo il buono docente all'ordine*/
 							$order->update_meta_data( 'wc-codice-docente', $teacher_code );
