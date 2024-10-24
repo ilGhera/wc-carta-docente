@@ -169,7 +169,7 @@ maintenance:
 name: WooCommerce Carta Docente
 platforms:
   - web
-releaseDate: '2024-10-22'
+releaseDate: '2024-10-24'
 softwareType: addon
-softwareVersion: 1.4.2
+softwareVersion: 1.4.3
 url: 'https://github.com/ilGhera/wc-carta-docente'

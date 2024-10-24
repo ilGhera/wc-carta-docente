@@ -1,7 +1,7 @@
 === WooCommerce Carta Docente ===
 Contributors: ghera74
 Tags: WooCommerce, payment gateway, Carta Docente, Carte Cultura, 18app
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 Requires at least: 4.0
 Tested up to: 6.6
 License: GPLv3
@@ -75,6 +75,11 @@ https://youtu.be/CU00ZZBZplI
 5. Metodo di pagamento in pagina di checkout
 
 == Changelog ==
+
+= 1.4.3 =
+Data di rilascio: 24 Ottobre, 2024
+
+    * Correzione bug : Ordine con buono inferiore al valore a carrello non interrotto. 
 
 = 1.4.2 =
 Data di rilascio: 22 Ottobre, 2024
