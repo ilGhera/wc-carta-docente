@@ -130,17 +130,17 @@ class WCCD_Soap_Client {
 				'local_cert'     => $this->local_cert,
 				'location'       => $this->location,
 				'passphrase'     => $this->passphrase,
-                'cache_wsdl'     => WSDL_CACHE_NONE,
+				'cache_wsdl'     => WSDL_CACHE_NONE,
 				'stream_context' => stream_context_create(
 					array(
 						'http' => array(
 							'user_agent' => 'PHP/SOAP',
 						),
 						'ssl'  => array(
-							'verify_peer'      => false,
-							'verify_peer_name' => false,
-                            'allow_self_signed' => true,
-                            'crypto_method' =>  STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT,
+							'verify_peer'       => false,
+							'verify_peer_name'  => false,
+							'allow_self_signed' => true,
+							'crypto_method'     => STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT,
 						),
 					)
 				),

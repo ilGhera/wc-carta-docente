@@ -489,8 +489,8 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 			$response      = $soap_client->check();
 			$bene          = $response->checkResp->ambito; // Il bene acquistabile con il buono inserito.
 			$importo_buono = floatval( $response->checkResp->importo ); // L'importo del buono inserito.
-            $on_hold       = self::$orders_on_hold && ! $complete;
-            $operation     = null;
+			$on_hold       = self::$orders_on_hold && ! $complete;
+			$operation     = null;
 
 			/*Verifica se i prodotti dell'ordine sono compatibili con i beni acquistabili con il buono*/
 			$purchasable = self::is_purchasable( $order, $bene );
@@ -534,15 +534,14 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 							$output = __( 'Le spese di spedizione devono essere saldate con altro metodo di pagamento.', 'wccd' );
 						}
 					}
-
-                } else {
+				} else {
 
 					try {
 
-                        if ( ! $on_hold ) {
+						if ( ! $on_hold ) {
 
-                            /*Validazione buono*/
-                            $operation = $soap_client->confirm();
+							/*Validazione buono*/
+							$operation = $soap_client->confirm();
 
 						}
 
@@ -582,9 +581,8 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 						$output = $e->detail->FaultVoucher->exceptionMessage;
 
 					}
-                }
+				}
 			}
-
 		} catch ( Exception $e ) {
 
 			$output = $e->detail->FaultVoucher->exceptionMessage;
