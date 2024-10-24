@@ -5,7 +5,7 @@
  * @author ilGhera
  * @package wc-carta-docente/includes
  *
- * @since 1.4.1
+ * @since 1.4.3
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * WCCD_Teacher_Gateway class
  *
- * @since 1.4.1
+ * @since 1.4.3
  */
 class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
@@ -263,15 +263,21 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 					/* Validazione buono */
 					$operation = $soap_client->confirm();
 
-					/*Aggiungo il buono docente all'ordine*/
-					$order->update_meta_data( 'wc-codice-docente', $teacher_code );
+					if ( is_object( $operation ) && 'OK' === $operation->checkResp->esito ) {
 
-					/* Ordine completato */
-					$order->payment_complete();
+						/*Aggiungo il buono docente all'ordine*/
+						$order->update_meta_data( 'wc-codice-docente', $teacher_code );
 
-					/*Svuota carrello*/
-					$woocommerce->cart->empty_cart();
+						/* Ordine completato */
+						$order->payment_complete();
 
+						/*Svuota carrello*/
+						$woocommerce->cart->empty_cart();
+
+					} else {
+
+						$output = $operation->checkResp->esito;
+					}
 				} catch ( Exception $e ) {
 
 					$output = $e->detail->FaultVoucher->exceptionMessage;
