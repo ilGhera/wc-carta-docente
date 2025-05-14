@@ -5,7 +5,7 @@
  * @author ilGhera
  * @package wc-carta-docente/includes
  *
- * @since 1.4.0
+ * @since 1.4.7
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * WCCD_Admin class
  *
- * @since 1.4.0
+ * @since 1.4.7
  */
 class WCCD_Admin {
 
