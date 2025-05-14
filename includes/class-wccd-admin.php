@@ -41,7 +41,6 @@ class WCCD_Admin {
 		add_action( 'wp_ajax_wccd-sandbox', array( $this, 'sandbox_callback' ) );
 	}
 
-
 	/**
 	 * Registra la pagina opzioni del plugin
 	 *
@@ -52,7 +51,6 @@ class WCCD_Admin {
 		add_submenu_page( 'woocommerce', __( 'WooCommerce Carta docente - Impostazioni', 'wccd' ), __( 'WC Carta Docente', 'wccd' ), 'manage_options', 'wccd-settings', array( $this, 'wccd_settings' ) );
 
 	}
-
 
 	/**
 	 * Verifica la presenza di un file per estenzione
@@ -74,7 +72,6 @@ class WCCD_Admin {
 		return $output;
 
 	}
-
 
 	/**
 	 * Cancella il certificato
@@ -98,7 +95,6 @@ class WCCD_Admin {
 
 	}
 
-
 	/**
 	 * Restituisce il nome esatto del bene Carta del Docente partendo dallo slug
 	 *
@@ -119,7 +115,6 @@ class WCCD_Admin {
 		}
 
 	}
-
 
 	/**
 	 * Categoria per la verifica in fase di checkout
@@ -188,7 +183,6 @@ class WCCD_Admin {
 			echo '</li>';
 	}
 
-
 	/**
 	 * Aggiunge una nuova categoria per la verifica in fase di checkout
 	 *
@@ -211,7 +205,6 @@ class WCCD_Admin {
 		exit;
 	}
 
-
 	/**
 	 * Trasforma il contenuto di un certificato .pem in .der
 	 *
@@ -229,7 +222,6 @@ class WCCD_Admin {
 
 		return $der;
 	}
-
 
 	/**
 	 * Download della richiesta di certificato da utilizzare sul portale Carta del Docente
@@ -322,7 +314,6 @@ class WCCD_Admin {
 		}
 	}
 
-
 	/**
 	 * Attivazione certificato
 	 *
@@ -347,7 +338,6 @@ class WCCD_Admin {
 		}
 	}
 
-
 	/**
 	 * Funzionalita Sandbox
 	 *
@@ -367,7 +357,6 @@ class WCCD_Admin {
 		exit();
 
 	}
-
 
 	/**
 	 * Pagina opzioni plugin
@@ -401,7 +390,7 @@ class WCCD_Admin {
 						echo '<th scope="row">' . esc_html__( 'Premium Key', 'wccd' ) . '</th>';
 						echo '<td>';
 							echo '<input type="text" class="regular-text code" name="wccd-premium-key" id="wccd-premium-key" placeholder="' . esc_attr__( 'Inserisci la tua Premium Key', 'wccd' ) . '" value="' . esc_attr( $premium_key ) . '" />';
-							echo '<p class="description">' . esc_html__( 'Aggiungi la tua Premium Key e mantieni aggiornato <strong>Woocommerce Carta Docente - Premium</strong>.', 'wccd' ) . '</p>';
+							echo '<p class="description">' . wp_kses_post( __( 'Aggiungi la tua Premium Key e mantieni aggiornato <strong>Woocommerce Carta Docente - Premium</strong>.', 'wccd' ) ) . '</p>';
 
 							wp_nonce_field( 'wccd-premium-key', 'wccd-premium-key-nonce' );
 
@@ -741,7 +730,6 @@ class WCCD_Admin {
 
 	}
 
-
 	/**
 	 * Mostra un mesaggio d'errore nel caso in cui il certificato non isa valido
 	 *
@@ -756,7 +744,6 @@ class WCCD_Admin {
 		<?php
 
 	}
-
 
 	/**
 	 * Salvataggio delle impostazioni dell'utente
