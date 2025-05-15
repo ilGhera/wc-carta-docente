@@ -916,5 +916,6 @@ class WCCD_Admin {
 	}
 
 }
+
 new WCCD_Admin();
 
