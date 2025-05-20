@@ -50,7 +50,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 	}
 
-
 	/**
 	 * Campi relativi al sistema di pagamento, modificabili nel back-end
 	 */
@@ -82,7 +81,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 	}
 
-
 	/**
 	 * Campo per l'inserimento del buono nella pagina di checkout
 	 */
@@ -98,7 +96,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		</p>
 		<?php
 	}
-
 
 	/**
 	 * Restituisce la cateogia prodotto corrispondente al bene acquistabile con il buono
@@ -134,7 +131,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		}
 
 	}
-
 
 	/**
 	 * Tutti i prodotti dell'ordine devono essere della tipologia (cat) consentita dal buono docente.
@@ -181,7 +177,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 	}
 
-
 	/**
 	 * Add the shortcode to get the specific checkout URL.
 	 *
@@ -203,7 +198,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 	}
 
-
 	/**
 	 * Mostra il buono docente nella thankyou page, nelle mail e nella pagina dell'ordine.
 	 *
@@ -219,11 +213,8 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		if ( 'docente' === $data['payment_method'] ) {
 
 			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( $order->get_meta( 'wc-codice-docente' ) ) . '</p>';
-
 		}
-
 	}
-
 
 	/**
 	 * Processa il buono docente inserito
@@ -293,7 +284,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		return $output;
 
 	}
-
 
 	/**
 	 * Gestisce il processo di pagamento, verificando la validità del buono inserito dall'utente
