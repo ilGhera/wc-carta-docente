@@ -40,7 +40,6 @@ class WCCD_Admin {
 		add_action( 'wp_ajax_wccd-sandbox', array( $this, 'sandbox_callback' ) );
 	}
 
-
 	/**
 	 * Registra la pagina opzioni del plugin
 	 *
@@ -51,7 +50,6 @@ class WCCD_Admin {
 		add_submenu_page( 'woocommerce', __( 'WooCommerce Carta docente - Impostazioni', 'wccd' ), __( 'WC Carta Docente', 'wccd' ), 'manage_options', 'wccd-settings', array( $this, 'wccd_settings' ) );
 
 	}
-
 
 	/**
 	 * Verifica la presenza di un file per estenzione
@@ -73,7 +71,6 @@ class WCCD_Admin {
 		return $output;
 
 	}
-
 
 	/**
 	 * Cancella il certificato
@@ -97,7 +94,6 @@ class WCCD_Admin {
 
 	}
 
-
 	/**
 	 * Restituisce il nome esatto del bene Carta del Docente partendo dallo slug
 	 *
@@ -118,7 +114,6 @@ class WCCD_Admin {
 		}
 
 	}
-
 
 	/**
 	 * Categoria per la verifica in fase di checkout
@@ -187,7 +182,6 @@ class WCCD_Admin {
 			echo '</li>';
 	}
 
-
 	/**
 	 * Aggiunge una nuova categoria per la verifica in fase di checkout
 	 *
@@ -210,7 +204,6 @@ class WCCD_Admin {
 		exit;
 	}
 
-
 	/**
 	 * Pulsante call to action Premium
 	 *
@@ -225,9 +218,7 @@ class WCCD_Admin {
 		$output     .= '</span>';
 
 		return $output;
-
 	}
-
 
 	/**
 	 * Attivazione certificato
@@ -253,7 +244,6 @@ class WCCD_Admin {
 		}
 	}
 
-
 	/**
 	 * Funzionalita Sandbox
 	 *
@@ -273,7 +263,6 @@ class WCCD_Admin {
 		exit();
 
 	}
-
 
 	/**
 	 * Pagina opzioni plugin
@@ -627,7 +616,6 @@ class WCCD_Admin {
 
 	}
 
-
 	/**
 	 * Mostra un mesaggio d'errore nel caso in cui il certificato non isa valido
 	 *
@@ -642,7 +630,6 @@ class WCCD_Admin {
 		<?php
 
 	}
-
 
 	/**
 	 * Salvataggio delle impostazioni dell'utente
@@ -721,5 +708,6 @@ class WCCD_Admin {
 	}
 
 }
+
 new WCCD_Admin();
 
