@@ -1,9 +1,9 @@
 === WooCommerce Carta Docente ===
 Contributors: ghera74
 Tags: WooCommerce, payment gateway, Carta Docente, Carte Cultura, 18app
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 Requires at least: 4.0
-Tested up to: 6.6
+Tested up to: 6.8
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 

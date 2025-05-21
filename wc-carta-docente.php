@@ -6,11 +6,11 @@
  * Author: ilGhera
  *
  * @package wc-carta-docente
- * Version: 1.4.3
- * Stable tag: 1.4.3
+ * Version: 1.4.4
+ * Stable tag: 1.4.4
  * Author URI: https://ilghera.com
  * Requires at least: 4.0
- * Tested up to: 6.6
+ * Tested up to: 6.8
  * WC tested up to: 9
  * Text Domain: wccd
  * Domain Path: /languages
