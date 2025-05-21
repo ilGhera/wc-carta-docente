@@ -33,7 +33,7 @@ function wccd_activation() {
 	define( 'WCCD_URI', plugin_dir_url( __FILE__ ) );
 	define( 'WCCD_INCLUDES', WCCD_DIR . 'includes/' );
 	define( 'WCCD_INCLUDES_URI', WCCD_URI . 'includes/' );
-	define( 'WCCD_VERSION', '1.4.3' );
+	define( 'WCCD_VERSION', '1.4.4' );
 
 	/*Main directory di upload*/
 	$wp_upload_dir = wp_upload_dir();

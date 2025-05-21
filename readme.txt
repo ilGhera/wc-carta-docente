@@ -76,6 +76,13 @@ https://youtu.be/CU00ZZBZplI
 
 == Changelog ==
 
+= 1.4.4 =
+Data di rilascio: 21 Maggio, 2025
+
+    * Update: Supporto WP 6.8
+    * Update: Supporto WC 9.5
+    * Implementazione: WordPress Coding standards
+
 = 1.4.3 =
 Data di rilascio: 24 Ottobre, 2024
 
