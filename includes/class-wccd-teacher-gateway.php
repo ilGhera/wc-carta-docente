@@ -103,6 +103,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$unset      = false;
 		$cat_ids    = array();
 		$categories = get_option( 'wccd-categories' );
+		$cats       = array();
 
 		if ( empty( $categories ) ) {
 
@@ -112,65 +113,99 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 		if ( is_array( $categories ) ) {
 
-			foreach ( $categories as $key => $value ) {
+			foreach ( $categories as $cat ) {
 
-				if ( is_array( $value ) ) {
+				if ( is_array( $cat ) ) {
 
-					$cat_ids = array_unique( array_merge( $cat_ids, array_values( $value ) ) );
+					$cat_id = current( $cat );
+					$bene   = key( $cat );
 
+					if ( ! isset( $cats[ $bene ] ) ) {
+
+						$cats[ $bene ] = array();
+					}
+
+					$cats[ $bene ][] = $cat_id;
 				}
 			}
 		}
 
-		$items_term_ids = array();
+		/**
+		 * Questo array conterrà tutti gli ambiti Carta Docente richiesti
+		 * da ciascun prodotto nel carrello. Ogni elemento sarà un array di stringhe (gli ambiti).
+		 * Esempio: [ ['libri-e-testi'], ['hardware', 'software'] ]
+		 */
+		$cart_item_required_ambits = array();
 
-		foreach ( WC()->cart->get_cart_contents() as $key => $values ) {
+		/* Itera su ogni prodotto nel carrello. */
+		foreach ( WC()->cart->get_cart_contents() as $cart_item_key => $values ) {
 
-			$item_ids = array();
-			$terms    = get_the_terms( $values['product_id'], 'product_cat' );
+			$product_id = $values['product_id'];
+			$terms      = get_the_terms( $product_id, 'product_cat' ); /* Ottiene le categorie WooCommerce del prodotto. */
 
 			if ( is_array( $terms ) ) {
 
+				$product_found_ambits = array();
+
 				foreach ( $terms as $term ) {
 
-					$item_ids[] = $term->term_id;
+					/**
+					 * Itera sulla tua nuova mappatura $cats.
+					 * Per ogni ambito ($cdd_ambito), controlla se l'ID della categoria del prodotto
+					 * è presente tra gli ID di categoria associati a quell'ambito.
+					 */
+					foreach ( $cats as $cdd_ambito => $mapped_cat_ids ) {
 
+						if ( in_array( $term->term_id, $mapped_cat_ids, true ) ) {
+
+							$product_found_ambits[] = $cdd_ambito; /* Aggiungi l'ambito trovato per questo prodotto. */
+						}
+					}
+				}
+
+				/* Rimuovi duplicati tra gli ambiti trovati per questo singolo prodotto. */
+				$product_found_ambits = array_unique( $product_found_ambits );
+
+				/* Aggiunge gli ambiti validi per questo prodotto all'array generale del carrello. */
+				$cart_item_required_ambits[] = $product_found_ambits;
+
+			}
+		}
+
+		/**
+		 * Ora, controlliamo se c'è un ambito comune a TUTTI i prodotti nel carrello.
+		 * Questo è cruciale per impedire l'uso del metodo se ci sono prodotti con ambiti differenti.
+		 */
+		if ( ! empty( $cart_item_required_ambits ) ) {
+			/**
+			 * Se c'è un solo prodotto nel carrello, o il carrello ha un solo set di ambiti,
+			 * non c'è bisogno di calcolare l'intersezione in questo punto specifico.
+			 */
+			if ( 1 < count( $cart_item_required_ambits ) ) {
+
+				/**
+				 * Calcola l'intersezione di tutti gli array di ambiti raccolti.
+				 * Se l'intersezione è vuota, significa che non c'è un ambito comune
+				 * a TUTTI i prodotti. Questo implica che i prodotti richiederebbero
+				 * buoni con ambiti differenti, e quindi il gateway deve essere disabilitato.
+				 */
+				$common_ambits = call_user_func_array( 'array_intersect', $cart_item_required_ambits );
+
+				if ( empty( $common_ambits ) ) {
+
+					$unset = true;
 				}
 			}
-
-			$results = array_intersect( $item_ids, $cat_ids );
-
-			if ( ! is_array( $results ) || empty( $results ) ) {
-
-				$unset = true;
-
-			} else {
-
-				$items_term_ids[] = $results;
-			}
 		}
 
-		if ( ! $unset && 1 < count( $items_term_ids ) ) {
-
-			$intersect = call_user_func_array( 'array_intersect', $items_term_ids );
-
-			if ( empty( $intersect ) ) {
-
-				$unset = true;
-
-			}
-		}
-
+		/* Se $unset è true, rimuovi il gateway "docente". */
 		if ( $unset ) {
 
 			unset( $available_gateways['docente'] );
-
 		}
 
 		return $available_gateways;
-
 	}
-
 
 	/**
 	 * Campi relativi al sistema di pagamento, modificabili nel back-end
