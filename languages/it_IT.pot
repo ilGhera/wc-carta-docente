@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WC Carta Docente 0.9.0\n"
-"POT-Creation-Date: 2025-09-29 11:16+0200\n"
+"POT-Creation-Date: 2025-09-29 12:01+0200\n"
 "PO-Revision-Date: 2018-07-02 12:47+0200\n"
 "Last-Translator: \n"
 "Language-Team: ilGhera\n"
@@ -120,7 +120,7 @@ msgid "Enable/Disable"
 msgstr ""
 
 #: includes/class-wccd-teacher-gateway.php:221
-msgid "Abilita pagamento con buono docente"
+msgid "Abilita pagamento con Carta del Docente"
 msgstr ""
 
 #: includes/class-wccd-teacher-gateway.php:225
@@ -132,7 +132,7 @@ msgid "This controls the title which the user sees during checkout."
 msgstr ""
 
 #: includes/class-wccd-teacher-gateway.php:228
-msgid "Buono docente"
+msgid "Carta del Docente"
 msgstr ""
 
 #: includes/class-wccd-teacher-gateway.php:232
@@ -163,7 +163,12 @@ msgid ""
 "Le spese di spedizione devono essere saldate con altro metodo di pagamento."
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:673 includes/class-wccd.php:188
+#: includes/class-wccd-teacher-gateway.php:673
+#, php-format
+msgid "Carta del Docente - %s"
+msgstr ""
+
+#: includes/class-wccd.php:188
 #, php-format
 msgid "Buono docente - %s"
 msgstr ""
@@ -196,25 +201,25 @@ msgid ""
 "Non hai impostato una licenza e non sei in grado di ricevere aggiornamenti."
 msgstr ""
 
-#: plugin-update-checker/Puc/v5p5/Plugin/Ui.php:56
+#: plugin-update-checker/Puc/v5p6/Plugin/Ui.php:56
 msgid "View details"
 msgstr ""
 
-#: plugin-update-checker/Puc/v5p5/Plugin/Ui.php:79
+#: plugin-update-checker/Puc/v5p6/Plugin/Ui.php:79
 #, php-format
 msgid "More information about %s"
 msgstr ""
 
-#: plugin-update-checker/Puc/v5p5/Plugin/Ui.php:130
+#: plugin-update-checker/Puc/v5p6/Plugin/Ui.php:130
 msgid "Check for updates"
 msgstr ""
 
-#: plugin-update-checker/Puc/v5p5/Plugin/Ui.php:227
+#: plugin-update-checker/Puc/v5p6/Plugin/Ui.php:227
 #, php-format
 msgid "Unknown update checker status \"%s\""
 msgstr ""
 
-#: plugin-update-checker/Puc/v5p5/Vcs/PluginUpdateChecker.php:113
+#: plugin-update-checker/Puc/v5p6/Vcs/PluginUpdateChecker.php:113
 msgid "There is no changelog available."
 msgstr ""
 

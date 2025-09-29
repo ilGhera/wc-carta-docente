@@ -1,6 +1,6 @@
 <?php
 /**
- * Estende la classe WC_Payment_Gateway di WooCommerce aggiungendo il nuovo gateway "buono docente".
+ * Estende la classe WC_Payment_Gateway di WooCommerce aggiungendo il nuovo gateway "Carta del Docente".
  *
  * @author ilGhera
  * @package wc-carta-docente/includes
@@ -51,7 +51,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 		$this->plugin_id          = 'woocommerce_carta_docente';
 		$this->id                 = 'docente';
 		$this->has_fields         = true;
-		$this->method_title       = 'Buono docente';
+		$this->method_title       = 'Carta del Docente';
 		$this->method_description = 'Consente ai docenti di utilizzare il buono a loro riservato per l\'acquisto di materiale didattico.';
 
 		self::$coupon_option    = get_option( 'wccd-coupon' );
@@ -218,14 +218,14 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 				'enabled'     => array(
 					'title'   => __( 'Enable/Disable', 'woocommerce' ),
 					'type'    => 'checkbox',
-					'label'   => __( 'Abilita pagamento con buono docente', 'wccd' ),
+					'label'   => __( 'Abilita pagamento con Carta del Docente', 'wccd' ),
 					'default' => 'yes',
 				),
 				'title'       => array(
 					'title'       => __( 'Title', 'woocommerce' ),
 					'type'        => 'text',
 					'description' => __( 'This controls the title which the user sees during checkout.', 'wccd' ),
-					'default'     => __( 'Buono docente', 'wccd' ),
+					'default'     => __( 'Carta del Docente', 'wccd' ),
 					'desc_tip'    => true,
 				),
 				'description' => array(
@@ -386,11 +386,11 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 		if ( 'docente' === $data['payment_method'] ) {
 
-			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( $order->get_meta( 'wc-codice-docente' ) ) . '</p>';
+			echo '<p><strong>' . esc_html__( 'Carta del Docente', 'wccd' ) . ': </strong>' . esc_html( $order->get_meta( 'wc-codice-docente' ) ) . '</p>';
 
 		} elseif ( $teacher_code ) {
 
-			echo '<p><strong>' . esc_html__( 'Buono docente', 'wccd' ) . ': </strong>' . esc_html( $teacher_code ) . '</p>';
+			echo '<p><strong>' . esc_html__( 'Carta del Docente', 'wccd' ) . ': </strong>' . esc_html( $teacher_code ) . '</p>';
 
 		}
 
@@ -670,7 +670,7 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 			} else {
 
 				/* Translators: Notifica all'utente nella pagina di checkout */
-				wc_add_notice( sprintf( __( 'Buono docente - %s', 'wccd' ), $notice ), 'error' );
+				wc_add_notice( sprintf( __( 'Carta del Docente - %s', 'wccd' ), $notice ), 'error' );
 
 			}
 		}
