@@ -43,7 +43,7 @@ description:
 
       dell'Università e della Ricerca.
 
-      Con **Woocommerce Carta Docente**, consentirai agli insegnanti di
+      Con **ilGhera Carta Docente for WooCommerce**, consentirai agli insegnanti di
 
       acquistare i tuoi prodotti utilizzando i buoni generati su _Carta del
 
@@ -81,7 +81,7 @@ description:
 
       ### Facile per l'utente
 
-      Dopo aver attivato il certificato, **Woocommerce Carta Docente**
+      Dopo aver attivato il certificato, **ilGhera Carta Docente for WooCommerce**
 
       aggiungerà il nuovo metodo di pagamento tra quelli disponibili nella
 
@@ -102,7 +102,7 @@ description:
       - |-
         https://raw.githubusercontent.com/ilGhera/wc-carta-docente/master/images/metodo-di-pagamento.jpg
     shortDescription: |-
-      Con Woocommerce Carta Docente, consentirai agli insegnanti di acquistare i
+      Con ilGhera Carta Docente for WooCommerce, consentirai agli insegnanti di acquistare i
 
       tuoi prodotti utilizzando i buoni generati su Carta del Docente.
 developmentStatus: stable
@@ -135,10 +135,10 @@ maintenance:
     - email: andrea@ilghera.com
       name: Andrea Gherardi
   type: internal
-name: WooCommerce Carta Docente
+name: ilGhera Carta Docente for WooCommerce
 platforms:
   - web
-releaseDate: '2025-05-21'
+releaseDate: '2025-09-29'
 softwareType: addon
-softwareVersion: 1.4.4
+softwareVersion: 1.4.5
 url: 'https://github.com/ilGhera/wc-carta-docente'
