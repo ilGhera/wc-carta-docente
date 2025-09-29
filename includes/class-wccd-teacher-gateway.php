@@ -258,8 +258,6 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 
 					if ( is_object( $operation ) && 'OK' === $operation->checkResp->esito ) {
 
-						if ( ( is_object( $operation ) && 'OK' === $operation->checkResp->esito ) || $on_hold ) {
-
 						/* Ordine completato */
 						$order->payment_complete();
 
