@@ -164,6 +164,7 @@ class WCCD_Soap_Client {
 				'checkReq' => array(
 					'tipoOperazione' => $value,
 					'codiceVoucher'  => $this->codice_voucher,
+					'importo'        => $this->import,
 				),
 			)
 		);

@@ -1,4 +1,4 @@
-=== WooCommerce Carta Docente ===
+=== ilGhera Carta Docente for WooCommerce ===
 Contributors: ghera74
 Tags: WooCommerce, payment gateway, Carta Docente, Carte Cultura, 18app
 Stable tag: 1.4.4
@@ -55,16 +55,16 @@ https://youtu.be/CU00ZZBZplI
 = Dalla Bacheca di Wordpress =
 
 * Vai in  Plugin > Aggiungi nuovo.
-* Cerca WooCommerce Carta Docente e scaricalo.
-* Attiva Woocommerce Carta Docente dalla pagina dei Plugin.
-* Una volta attivato, vai in <strong>WooCommerce/ WC Carta Docente</strong> e imposta le tue preferenze.
+* Cerca ilGhera Carta Docente for WooCommerce e scaricalo.
+* Attiva ilGhera Carta Docente for Woocommerce dalla pagina dei Plugin.
+* Una volta attivato, vai in <strong>WooCommerce/ Carta Docente for WC</strong> e imposta le tue preferenze.
 
 = Da WordPress.org =
 
-* Scarica WooCommerce Carta Docente
+* Scarica ilGhera Carta Docente for WooCommerce
 * Carica la cartella wc-carta-docente su /wp-content/plugins/ utilizzando il tuo metodo preferito (ftp, sftp, scp, ecc...)
-* Attiva WooCommerce Carta Docente dalla pagina dei Plugin.
-* Una volta attivato, vai in <strong>WooCommerce/ WC Carta Docente</strong> e imposta le tue preferenze.
+* Attiva ilGhera Carta Docente for WooCommerce dalla pagina dei Plugin.
+* Una volta attivato, vai in <strong>WooCommerce/ Carta Docente for WC</strong> e imposta le tue preferenze.
 
 
 == Screenshots ==
