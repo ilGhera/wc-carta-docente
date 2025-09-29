@@ -1,4 +1,4 @@
-=== WooCommerce Carta Docente - Premium ===
+=== ilGhera Carta Docente for WooCommerce - Premium ===
 Contributors: ghera74
 Tags: Woocommerce, e-commerce, shop, orders, payment, payment gateway, payment method, 
 Stable tag: 1.4.7
@@ -54,16 +54,16 @@ This plugin sends data to an external service, like the categories and the price
 = Dalla Bacheca di Wordpress =
 
 * Vai in  Plugin > Aggiungi nuovo.
-* Cerca WooCommerce Carta Docente e scaricalo.
-* Attiva Woocommerce Carta Docente dalla pagina dei Plugin.
-* Una volta attivato, vai in <strong>WooCommerce/ WC Carta Docente</strong> e imposta le tue preferenze.
+* Cerca ilGhera Carta Docente for WooCommerce e scaricalo.
+* Attiva ilGhera Carta Docente for Woocommerce dalla pagina dei Plugin.
+* Una volta attivato, vai in <strong>WooCommerce/ Carta Docente for WC</strong> e imposta le tue preferenze.
 
 = Da WordPress.org =
 
-* Scarica WooCommerce Carta Docente
+* Scarica ilGhera Carta Docente for WooCommerce
 * Carica la cartella wc-carta-docente su /wp-content/plugins/ utilizzando il tuo metodo preferito (ftp, sftp, scp, ecc...)
-* Attiva WooCommerce Carta Docente dalla pagina dei Plugin.
-* Una volta attivato, vai in <strong>WooCommerce/ WC Carta Docente</strong> e imposta le tue preferenze.
+* Attiva ilGhera Carta Docente for WooCommerce dalla pagina dei Plugin.
+* Una volta attivato, vai in <strong>WooCommerce/ Carta Docente for WC</strong> e imposta le tue preferenze.
 
 
 == Changelog ==

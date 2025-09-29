@@ -1,5 +1,5 @@
 /**
- * WC Carta Docente - Admin js
+ * ilGhera Carta Docente for WC - Admin js
  *
  * @author ilGhera
  * @package wc-carta-docente/js

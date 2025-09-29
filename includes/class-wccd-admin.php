@@ -48,7 +48,7 @@ class WCCD_Admin {
 	 */
 	public function register_options_page() {
 
-		add_submenu_page( 'woocommerce', __( 'WooCommerce Carta docente - Impostazioni', 'wccd' ), __( 'WC Carta Docente', 'wccd' ), 'manage_options', 'wccd-settings', array( $this, 'wccd_settings' ) );
+		add_submenu_page( 'woocommerce', __( 'ilGhera Carta Docente for WooCommerce - Impostazioni', 'wccd' ), __( 'Carta Docente for WC', 'wccd' ), 'manage_options', 'wccd-settings', array( $this, 'wccd_settings' ) );
 
 	}
 
@@ -382,7 +382,7 @@ class WCCD_Admin {
 
 		echo '<div class="wrap">';
 			echo '<div class="wrap-left">';
-				echo '<h1>WooCommerce Carta Docente - ' . esc_html( __( 'Impostazioni', 'wccd' ) ) . '</h1>';
+				echo '<h1>ilGhera Carta Docente for WooCommerce- ' . esc_html( __( 'Impostazioni', 'wccd' ) ) . '</h1>';
 
 				/*Premium key form*/
 				echo '<form method="post" action="">';
@@ -390,7 +390,7 @@ class WCCD_Admin {
 						echo '<th scope="row">' . esc_html__( 'Premium Key', 'wccd' ) . '</th>';
 						echo '<td>';
 							echo '<input type="text" class="regular-text code" name="wccd-premium-key" id="wccd-premium-key" placeholder="' . esc_attr__( 'Inserisci la tua Premium Key', 'wccd' ) . '" value="' . esc_attr( $premium_key ) . '" />';
-							echo '<p class="description">' . wp_kses_post( __( 'Aggiungi la tua Premium Key e mantieni aggiornato <strong>Woocommerce Carta Docente - Premium</strong>.', 'wccd' ) ) . '</p>';
+							echo '<p class="description">' . wp_kses_post( __( 'Aggiungi la tua Premium Key e mantieni aggiornato <strong>ilGhera Carta Docente for Woocommerce - Premium</strong>.', 'wccd' ) ) . '</p>';
 
 							wp_nonce_field( 'wccd-premium-key', 'wccd-premium-key-nonce' );
 
