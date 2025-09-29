@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WC Carta Docente 0.9.0\n"
-"POT-Creation-Date: 2025-09-29 12:35+0200\n"
+"POT-Creation-Date: 2025-09-29 13:05+0200\n"
 "PO-Revision-Date: 2018-07-02 12:47+0200\n"
 "Last-Translator: \n"
 "Language-Team: ilGhera\n"
@@ -17,15 +17,11 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 #: includes/class-wccd-admin.php:50
-msgid "ilGhera Carta Docente for WooCommerce - Impostazioni"
+msgid "ilGhera Carta Docente for WooCommerce"
 msgstr ""
 
 #: includes/class-wccd-admin.php:50
 msgid "Carta Docente for WC"
-msgstr ""
-
-#: includes/class-wccd-admin.php:282
-msgid "Impostazioni"
 msgstr ""
 
 #: includes/class-wccd-admin.php:287
@@ -143,7 +139,7 @@ msgstr ""
 msgid "Messaggio utente"
 msgstr ""
 
-#: includes/class-wccd-teacher-gateway.php:250
+#: includes/class-wccd-teacher-gateway.php:249
 msgid ""
 "Uno o più prodotti nel carrello non sono acquistabili con il buono inserito."
 msgstr ""
@@ -175,26 +171,4 @@ msgstr ""
 #: includes/ilghera-notice/class-ilghera-notice.php:139
 msgid ""
 "Non hai impostato una licenza e non sei in grado di ricevere aggiornamenti."
-msgstr ""
-
-#: plugin-update-checker/Puc/v5p6/Plugin/Ui.php:56
-msgid "View details"
-msgstr ""
-
-#: plugin-update-checker/Puc/v5p6/Plugin/Ui.php:79
-#, php-format
-msgid "More information about %s"
-msgstr ""
-
-#: plugin-update-checker/Puc/v5p6/Plugin/Ui.php:130
-msgid "Check for updates"
-msgstr ""
-
-#: plugin-update-checker/Puc/v5p6/Plugin/Ui.php:227
-#, php-format
-msgid "Unknown update checker status \"%s\""
-msgstr ""
-
-#: plugin-update-checker/Puc/v5p6/Vcs/PluginUpdateChecker.php:113
-msgid "There is no changelog available."
 msgstr ""

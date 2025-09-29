@@ -47,7 +47,7 @@ class WCCD_Admin {
 	 */
 	public function register_options_page() {
 
-		add_submenu_page( 'woocommerce', __( 'ilGhera Carta Docente for WooCommerce - Impostazioni', 'wccd' ), __( 'Carta Docente for WC', 'wccd' ), 'manage_options', 'wccd-settings', array( $this, 'wccd_settings' ) );
+		add_submenu_page( 'woocommerce', __( 'ilGhera Carta Docente for WooCommerce', 'wccd' ), __( 'Carta Docente for WC', 'wccd' ), 'manage_options', 'wccd-settings', array( $this, 'wccd_settings' ) );
 
 	}
 
@@ -279,7 +279,7 @@ class WCCD_Admin {
 
 		echo '<div class="wrap">';
 			echo '<div class="wrap-left">';
-				echo '<h1>ilGhera Carta Docente for WooCommerce- ' . esc_html( __( 'Impostazioni', 'wccd' ) ) . '</h1>';
+				echo '<h1>ilGhera Carta Docente for WooCommerce</h1>';
 
 				/*Tabs*/
 				echo '<div class="icon32 icon32-woocommerce-settings" id="icon-woocommerce"></div>';
