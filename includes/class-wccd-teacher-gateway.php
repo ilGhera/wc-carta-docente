@@ -95,112 +95,95 @@ class WCCD_Teacher_Gateway extends WC_Payment_Gateway {
 	public function unset_teacher_gateway( $available_gateways ) {
 
 		if ( is_admin() || ! is_checkout() || ! get_option( 'wccd-items-check' ) ) {
-
 			return $available_gateways;
-
 		}
 
-		$unset      = false;
-		$cat_ids    = array();
 		$categories = get_option( 'wccd-categories' );
-		$cats       = array();
-
-		if ( empty( $categories ) ) {
-
+		
+		if ( empty( $categories ) || ! is_array( $categories ) ) {
 			return $available_gateways;
-
 		}
 
-		if ( is_array( $categories ) ) {
-
-			foreach ( $categories as $cat ) {
-
-				if ( is_array( $cat ) ) {
-
-					$cat_id = current( $cat );
-					$bene   = key( $cat );
-
-					if ( ! isset( $cats[ $bene ] ) ) {
-
-						$cats[ $bene ] = array();
-					}
-
-					$cats[ $bene ][] = $cat_id;
-				}
+		// Costruisci la mappatura categoria WooCommerce -> bene CdD
+		$cat_to_bene_map = array();
+		
+		foreach ( $categories as $cat ) {
+			if ( is_array( $cat ) ) {
+				$cat_id = current( $cat );
+				$bene   = key( $cat );
+				$cat_to_bene_map[ $cat_id ] = $bene;
 			}
 		}
 
-		/**
-		 * Questo array conterrà tutti gli ambiti Carta Docente richiesti
-		 * da ciascun prodotto nel carrello. Ogni elemento sarà un array di stringhe (gli ambiti).
-		 * Esempio: [ ['libri-e-testi'], ['hardware', 'software'] ]
-		 */
-		$cart_item_required_ambits = array();
+		// Se non ci sono mappature, non modificare i gateway
+		if ( empty( $cat_to_bene_map ) ) {
+			return $available_gateways;
+		}
 
-		/* Itera su ogni prodotto nel carrello. */
-		foreach ( WC()->cart->get_cart_contents() as $cart_item_key => $values ) {
+		$cart_items = WC()->cart->get_cart_contents();
+		
+		if ( empty( $cart_items ) ) {
+			return $available_gateways;
+		}
 
+		// Array per memorizzare i beni CdD validi per ogni prodotto
+		$product_valid_beni = array();
+
+		// Itera su ogni prodotto nel carrello
+		foreach ( $cart_items as $cart_item_key => $values ) {
+			
 			$product_id = $values['product_id'];
-			$terms      = get_the_terms( $product_id, 'product_cat' ); /* Ottiene le categorie WooCommerce del prodotto. */
-
-			if ( is_array( $terms ) ) {
-
-				$product_found_ambits = array();
-
-				foreach ( $terms as $term ) {
-
-					/**
-					 * Itera sulla tua nuova mappatura $cats.
-					 * Per ogni ambito ($cdd_ambito), controlla se l'ID della categoria del prodotto
-					 * è presente tra gli ID di categoria associati a quell'ambito.
-					 */
-					foreach ( $cats as $cdd_ambito => $mapped_cat_ids ) {
-
-						if ( in_array( $term->term_id, $mapped_cat_ids, true ) ) {
-
-							$product_found_ambits[] = $cdd_ambito; /* Aggiungi l'ambito trovato per questo prodotto. */
-						}
-					}
-				}
-
-				/* Rimuovi duplicati tra gli ambiti trovati per questo singolo prodotto. */
-				$product_found_ambits = array_unique( $product_found_ambits );
-
-				/* Aggiunge gli ambiti validi per questo prodotto all'array generale del carrello. */
-				$cart_item_required_ambits[] = $product_found_ambits;
-
+			$terms      = get_the_terms( $product_id, 'product_cat' );
+			
+			if ( ! $terms || is_wp_error( $terms ) ) {
+				// Prodotto senza categoria - non compatibile
+				unset( $available_gateways['docente'] );
+				return $available_gateways;
 			}
+
+			$product_beni = array();
+			
+			// Per ogni categoria del prodotto
+			foreach ( $terms as $term ) {
+				$cat_id = $term->term_id;
+				
+				// Se questa categoria è mappata a un bene CdD
+				if ( isset( $cat_to_bene_map[ $cat_id ] ) ) {
+					$bene = $cat_to_bene_map[ $cat_id ];
+					$product_beni[ $bene ] = true;
+				}
+			}
+
+			// Se il prodotto non ha categorie mappate a beni CdD
+			if ( empty( $product_beni ) ) {
+				unset( $available_gateways['docente'] );
+				return $available_gateways;
+			}
+
+			// Aggiungi i beni validi per questo prodotto
+			$product_valid_beni[] = array_keys( $product_beni );
 		}
 
-		/**
-		 * Ora, controlliamo se c'è un ambito comune a TUTTI i prodotti nel carrello.
-		 * Questo è cruciale per impedire l'uso del metodo se ci sono prodotti con ambiti differenti.
-		 */
-		if ( ! empty( $cart_item_required_ambits ) ) {
-			/**
-			 * Se c'è un solo prodotto nel carrello, o il carrello ha un solo set di ambiti,
-			 * non c'è bisogno di calcolare l'intersezione in questo punto specifico.
-			 */
-			if ( 1 < count( $cart_item_required_ambits ) ) {
-
-				/**
-				 * Calcola l'intersezione di tutti gli array di ambiti raccolti.
-				 * Se l'intersezione è vuota, significa che non c'è un ambito comune
-				 * a TUTTI i prodotti. Questo implica che i prodotti richiederebbero
-				 * buoni con ambiti differenti, e quindi il gateway deve essere disabilitato.
-				 */
-				$common_ambits = call_user_func_array( 'array_intersect', $cart_item_required_ambits );
-
-				if ( empty( $common_ambits ) ) {
-
-					$unset = true;
+		// Trova un bene comune a TUTTI i prodotti
+		$common_beni = array();
+		
+		if ( ! empty( $product_valid_beni ) ) {
+			// Inizia con i beni del primo prodotto
+			$common_beni = $product_valid_beni[0];
+			
+			// Interseca con i beni di ogni prodotto successivo
+			for ( $i = 1; $i < count( $product_valid_beni ); $i++ ) {
+				$common_beni = array_intersect( $common_beni, $product_valid_beni[ $i ] );
+				
+				// Se non ci sono beni comuni, esci
+				if ( empty( $common_beni ) ) {
+					break;
 				}
 			}
 		}
 
-		/* Se $unset è true, rimuovi il gateway "docente". */
-		if ( $unset ) {
-
+		// Se non c'è almeno un bene comune a tutti i prodotti, disabilita il gateway
+		if ( empty( $common_beni ) ) {
 			unset( $available_gateways['docente'] );
 		}
 
