@@ -58,6 +58,16 @@ function wccd_premium_activation() {
 	require WCCD_INCLUDES . 'class-wccd.php';
 	require WCCD_INCLUDES . 'ilghera-notice/class-ilghera-notice.php';
 
+	/* Register product with ilGhera Notice */
+	Ilghera_Notice::get_instance()->add_product(
+		array(
+			'name'   => 'ilGhera Carta Docente for WooCommerce - Premium',
+			'slug'   => 'woocommerce-carta-docente-premium',
+			'sign'   => 'wccd',
+			'domain' => 'woocommerce-carta-docente',
+		)
+	);
+
 	/**
 	 * Script e folgi di stile front-end
 	 *
