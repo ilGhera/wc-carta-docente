@@ -6,8 +6,8 @@
  * Author: ilGhera
  *
  * @package wc-carta-docente
- * Version: 1.4.6
- * Stable tag: 1.4.6
+ * Version: 1.4.7
+ * Stable tag: 1.4.7
  * Author URI: https://ilghera.com
  * Requires at least: 4.0
  * Tested up to: 6.9
@@ -33,7 +33,7 @@ function wccd_activation() {
 	define( 'WCCD_URI', plugin_dir_url( __FILE__ ) );
 	define( 'WCCD_INCLUDES', WCCD_DIR . 'includes/' );
 	define( 'WCCD_INCLUDES_URI', WCCD_URI . 'includes/' );
-	define( 'WCCD_VERSION', '1.4.6' );
+	define( 'WCCD_VERSION', '1.4.7' );
 
 	/*Main directory di upload*/
 	$wp_upload_dir = wp_upload_dir();

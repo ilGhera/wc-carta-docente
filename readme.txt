@@ -1,7 +1,7 @@
 === ilGhera Carta Docente for WooCommerce ===
 Contributors: ghera74
 Tags: WooCommerce, payment gateway, Carta Docente, Carte Cultura, 18app
-Stable tag: 1.4.6
+Stable tag: 1.4.7
 Requires at least: 4.0
 Tested up to: 6.9
 License: GPLv3
@@ -75,6 +75,12 @@ https://youtu.be/CU00ZZBZplI
 5. Metodo di pagamento in pagina di checkout
 
 == Changelog ==
+
+= 1.4.7 =
+Data di rilascio: 22 Dicembre, 2025
+
+    * Correzione bug: Caricamento file WSDL tramite filesystem invece di URL
+    * Correzione bug: Gestione eccezioni SOAP con isset()
 
 = 1.4.6 =
 Data di rilascio: 6 Dicembre, 2025
