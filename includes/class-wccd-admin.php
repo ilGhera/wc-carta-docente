@@ -777,7 +777,13 @@ class WCCD_Admin {
 						if ( isset( $_FILES['wccd-cert']['tmp_name'] ) ) {
 
 							$tmp_name = sanitize_text_field( wp_unslash( $_FILES['wccd-cert']['tmp_name'] ) );
-							move_uploaded_file( $tmp_name, WCCD_PRIVATE . $name );
+
+							global $wp_filesystem;
+							if ( empty( $wp_filesystem ) ) {
+								require_once ABSPATH . 'wp-admin/includes/file.php';
+								WP_Filesystem();
+							}
+							$wp_filesystem->move( $tmp_name, WCCD_PRIVATE . $name, true );
 
 						}
 
@@ -829,7 +835,13 @@ class WCCD_Admin {
 						if ( isset( $_FILES['wccd-certificate']['tmp_name'] ) ) {
 
 							$tmp_name = sanitize_text_field( wp_unslash( $_FILES['wccd-certificate']['tmp_name'] ) );
-							move_uploaded_file( $tmp_name, WCCD_PRIVATE . $name );
+
+							global $wp_filesystem;
+							if ( empty( $wp_filesystem ) ) {
+								require_once ABSPATH . 'wp-admin/includes/file.php';
+								WP_Filesystem();
+							}
+							$wp_filesystem->move( $tmp_name, WCCD_PRIVATE . $name, true );
 
 						}
 					} else {
