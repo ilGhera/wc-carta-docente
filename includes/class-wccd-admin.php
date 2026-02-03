@@ -206,6 +206,28 @@ class WCCD_Admin {
 	}
 
 	/**
+	 * Verifica se il certificato ha una chiave privata cifrata
+	 *
+	 * @param string $cert_path il percorso del certificato.
+	 *
+	 * @return bool true se la chiave è cifrata, false altrimenti.
+	 */
+	public static function is_certificate_encrypted( $cert_path ) {
+
+		if ( ! file_exists( $cert_path ) ) {
+			return false;
+		}
+
+		$cert_content = file_get_contents( $cert_path );
+
+		if ( ! $cert_content ) {
+			return false;
+		}
+
+		return ( false !== strpos( $cert_content, 'ENCRYPTED PRIVATE KEY' ) );
+	}
+
+	/**
 	 * Restituisce la data di scadenza del certificato .pem
 	 *
 	 * @param string $cert_path il percorso del certificato.
@@ -382,6 +404,7 @@ class WCCD_Admin {
 		}
 	}
 
+
 	/**
 	 * Funzionalita Sandbox
 	 *
@@ -520,15 +543,24 @@ class WCCD_Admin {
 								echo '</td>';
 							echo '</tr>';
 
-							/*Password utilizzata per la creazione del certificato*/
+							/*Password utilizzata per la creazione del certificato - solo se chiave cifrata o nuovo upload*/
+							$cert_file    = self::get_the_file( '.pem' );
+							$is_encrypted = $cert_file ? self::is_certificate_encrypted( $cert_file ) : true;
+
+							if ( $is_encrypted || ! $cert_file ) {
+								echo '<tr class="wccd-password-row">';
+									echo '<th scope="row">' . esc_html__( 'Password', 'wccd' ) . '</th>';
+									echo '<td>';
+										echo '<input type="password" name="wccd-password" placeholder="**********" value="' . esc_attr( $passphrase ) . '"' . ( $is_encrypted ? ' required' : '' ) . '>';
+										echo '<p class="description">' . esc_html__( 'La password utilizzata per la generazione del certificato', 'wccd' ) . '</p>';
+									echo '</td>';
+								echo '</tr>';
+							}
+
 							echo '<tr>';
-								echo '<th scope="row">' . esc_html__( 'Password', 'wccd' ) . '</th>';
+								echo '<th scope="row"></th>';
 								echo '<td>';
-									echo '<input type="password" name="wccd-password" placeholder="**********" value="' . esc_attr( $passphrase ) . '" required>';
-									echo '<p class="description">' . esc_html__( 'La password utilizzata per la generazione del certificato', 'wccd' ) . '</p>';
-
 									wp_nonce_field( 'wccd-upload-certificate', 'wccd-certificate-nonce' );
-
 									echo '<input type="hidden" name="wccd-certificate-hidden" value="1">';
 									echo '<input type="submit" class="button-primary wccd-button" value="' . esc_html__( 'Salva certificato', 'wccd' ) . '">';
 								echo '</td>';
@@ -812,6 +844,21 @@ class WCCD_Admin {
 	}
 
 	/**
+	 * Messaggio di errore per password certificato errata
+	 *
+	 * @return void
+	 */
+	public function wrong_certificate_password() {
+
+		?>
+		<div class="notice notice-error">
+			<p><?php esc_html_e( 'ATTENZIONE! La password inserita non è corretta per questo certificato.', 'wccd' ); ?></p>
+		</div>
+		<?php
+
+	}
+
+	/**
 	 * Salvataggio delle impostazioni dell'utente
 	 *
 	 * @return void
@@ -888,8 +935,11 @@ class WCCD_Admin {
 
 		if ( isset( $_POST['wccd-certificate-hidden'], $_POST['wccd-certificate-nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['wccd-certificate-nonce'] ) ), 'wccd-upload-certificate' ) ) {
 
+			/*Password*/
+			$wccd_password = isset( $_POST['wccd-password'] ) ? sanitize_text_field( wp_unslash( $_POST['wccd-password'] ) ) : '';
+
 			/*Carica certificato*/
-			if ( isset( $_FILES['wccd-certificate'] ) ) {
+			if ( isset( $_FILES['wccd-certificate'] ) && ! empty( $_FILES['wccd-certificate']['name'] ) ) {
 
 				$info = isset( $_FILES['wccd-certificate']['name'] ) ? pathinfo( sanitize_text_field( wp_unslash( $_FILES['wccd-certificate']['name'] ) ) ) : null;
 				$name = isset( $info['basename'] ) ? sanitize_file_name( $info['basename'] ) : null;
@@ -900,15 +950,38 @@ class WCCD_Admin {
 
 						if ( isset( $_FILES['wccd-certificate']['tmp_name'] ) ) {
 
-							$tmp_name = sanitize_text_field( wp_unslash( $_FILES['wccd-certificate']['tmp_name'] ) );
+							$tmp_name     = sanitize_text_field( wp_unslash( $_FILES['wccd-certificate']['tmp_name'] ) );
+							$is_encrypted = self::is_certificate_encrypted( $tmp_name );
 
-							global $wp_filesystem;
-							if ( empty( $wp_filesystem ) ) {
-								require_once ABSPATH . 'wp-admin/includes/file.php';
-								WP_Filesystem();
+							/* Valida la password solo se la chiave è cifrata */
+							$password_valid = true;
+
+							if ( $is_encrypted ) {
+								$cert_content = file_get_contents( $tmp_name );
+								$private_key  = openssl_pkey_get_private( $cert_content, $wccd_password );
+								$password_valid = ( false !== $private_key );
 							}
-							$wp_filesystem->move( $tmp_name, WCCD_PRIVATE . $name, true );
 
+							if ( ! $password_valid ) {
+
+								/* Password errata per chiave cifrata */
+								add_action( 'admin_notices', array( $this, 'wrong_certificate_password' ) );
+
+							} else {
+
+								/* Password corretta o chiave non cifrata, salva il certificato */
+								global $wp_filesystem;
+								if ( empty( $wp_filesystem ) ) {
+									require_once ABSPATH . 'wp-admin/includes/file.php';
+									WP_Filesystem();
+								}
+								$wp_filesystem->move( $tmp_name, WCCD_PRIVATE . $name, true );
+
+								/* Salvo passw nel db solo se fornita */
+								if ( $wccd_password ) {
+									update_option( 'wccd-password', base64_encode( $wccd_password ) );
+								}
+							}
 						}
 					} else {
 
@@ -916,16 +989,26 @@ class WCCD_Admin {
 
 					}
 				}
-			}
 
-			/*Password*/
-			$wccd_password = isset( $_POST['wccd-password'] ) ? sanitize_text_field( wp_unslash( $_POST['wccd-password'] ) ) : '';
+			} elseif ( self::get_the_file( '.pem' ) ) {
 
-			/*Salvo passw nel db*/
-			if ( $wccd_password ) {
+				/* Certificato già presente - aggiorna password solo se chiave cifrata e password fornita */
+				$cert_path    = self::get_the_file( '.pem' );
+				$is_encrypted = self::is_certificate_encrypted( $cert_path );
 
-				update_option( 'wccd-password', base64_encode( $wccd_password ) );
+				if ( $is_encrypted && $wccd_password ) {
+					/* Valida la password per chiave cifrata */
+					$cert_content = file_get_contents( $cert_path );
+					$private_key  = openssl_pkey_get_private( $cert_content, $wccd_password );
 
+					if ( false === $private_key ) {
+						/* Password errata */
+						add_action( 'admin_notices', array( $this, 'wrong_certificate_password' ) );
+					} else {
+						/* Password corretta, aggiorna nel db */
+						update_option( 'wccd-password', base64_encode( $wccd_password ) );
+					}
+				}
 			}
 		}
 
