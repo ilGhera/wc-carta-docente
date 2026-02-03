@@ -206,6 +206,50 @@ class WCCD_Admin {
 	}
 
 	/**
+	 * Restituisce la data di scadenza del certificato .pem
+	 *
+	 * @param string $cert_path il percorso del certificato.
+	 *
+	 * @return array|false array con 'date', 'expired' e 'expiring', false in caso di errore.
+	 */
+	public function get_certificate_expiry( $cert_path ) {
+
+		if ( ! file_exists( $cert_path ) ) {
+			return false;
+		}
+
+		$cert_content = file_get_contents( $cert_path );
+
+		if ( ! $cert_content ) {
+			return false;
+		}
+
+		$cert = openssl_x509_read( $cert_content );
+
+		if ( ! $cert ) {
+			return false;
+		}
+
+		$cert_info = openssl_x509_parse( $cert );
+
+		if ( ! $cert_info || ! isset( $cert_info['validTo_time_t'] ) ) {
+			return false;
+		}
+
+		$expiry_timestamp = $cert_info['validTo_time_t'];
+		$now              = time();
+		$days_until       = floor( ( $expiry_timestamp - $now ) / DAY_IN_SECONDS );
+		$is_expired       = $expiry_timestamp < $now;
+		$is_expiring      = ! $is_expired && $days_until <= 30;
+
+		return array(
+			'date'     => date_i18n( get_option( 'date_format' ), $expiry_timestamp ),
+			'expired'  => $is_expired,
+			'expiring' => $is_expiring,
+		);
+	}
+
+	/**
 	 * Trasforma il contenuto di un certificato .pem in .der
 	 *
 	 * @param  string $pem_data il certificato .pem.
@@ -423,12 +467,29 @@ class WCCD_Admin {
 								echo '<td>';
 		if ( $file = self::get_the_file( '.pem' ) ) {
 
-			$activation = $this->wccd_cert_activation();
+			$activation  = $this->wccd_cert_activation();
+			$cert_expiry = $this->get_certificate_expiry( $file );
+
+			/* Classe CSS per la scadenza */
+			$expiry_class = '';
+			if ( $cert_expiry ) {
+				if ( $cert_expiry['expired'] ) {
+					$expiry_class = ' expired';
+				} elseif ( $cert_expiry['expiring'] ) {
+					$expiry_class = ' expiring';
+				}
+			}
 
 			if ( 'ok' === $activation ) {
 
 				echo '<span class="cert-loaded">' . esc_html( basename( $file ) ) . '</span>';
 				echo '<a class="button delete wccd-delete-certificate">' . esc_html__( 'Elimina', 'wccd' ) . '</a>';
+
+				if ( $cert_expiry ) {
+					/* Translators: the certificate expiry date */
+					echo '<p class="description wccd-cert-expiry' . esc_attr( $expiry_class ) . '">' . sprintf( esc_html__( 'Scadenza: %s', 'wccd' ), esc_html( $cert_expiry['date'] ) ) . '</p>';
+				}
+
 				echo '<p class="description">' . esc_html__( 'File caricato e attivato correttamente.', 'wccd' ) . '</p>';
 
 				update_option( 'wccd-cert-activation', 1 );
@@ -437,6 +498,11 @@ class WCCD_Admin {
 
 				echo '<span class="cert-loaded error">' . esc_html( basename( $file ) ) . '</span>';
 				echo '<a class="button delete wccd-delete-certificate">' . esc_html__( 'Elimina', 'wccd' ) . '</a>';
+
+				if ( $cert_expiry ) {
+					/* Translators: the certificate expiry date */
+					echo '<p class="description wccd-cert-expiry' . esc_attr( $expiry_class ) . '">' . sprintf( esc_html__( 'Scadenza: %s', 'wccd' ), esc_html( $cert_expiry['date'] ) ) . '</p>';
+				}
 
 				/* Translators: the error message */
 				echo '<p class="description">' . sprintf( esc_html__( 'L\'attivazione del certificato ha restituito il seguente errore: %s', 'wccd' ), esc_html( $activation ) ) . '</p>';
