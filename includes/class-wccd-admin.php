@@ -953,34 +953,29 @@ class WCCD_Admin {
 							$tmp_name     = sanitize_text_field( wp_unslash( $_FILES['wccd-certificate']['tmp_name'] ) );
 							$is_encrypted = self::is_certificate_encrypted( $tmp_name );
 
-							/* Valida la password solo se la chiave è cifrata */
-							$password_valid = true;
-
-							if ( $is_encrypted ) {
-								$cert_content = file_get_contents( $tmp_name );
-								$private_key  = openssl_pkey_get_private( $cert_content, $wccd_password );
-								$password_valid = ( false !== $private_key );
+							/* Carica sempre il certificato */
+							global $wp_filesystem;
+							if ( empty( $wp_filesystem ) ) {
+								require_once ABSPATH . 'wp-admin/includes/file.php';
+								WP_Filesystem();
 							}
+							$wp_filesystem->move( $tmp_name, WCCD_PRIVATE . $name, true );
 
-							if ( ! $password_valid ) {
+							/* Valida la password solo se la chiave è cifrata */
+							if ( $is_encrypted && $wccd_password ) {
+								$cert_content = file_get_contents( WCCD_PRIVATE . $name );
+								$private_key  = openssl_pkey_get_private( $cert_content, $wccd_password );
 
-								/* Password errata per chiave cifrata */
-								add_action( 'admin_notices', array( $this, 'wrong_certificate_password' ) );
-
-							} else {
-
-								/* Password corretta o chiave non cifrata, salva il certificato */
-								global $wp_filesystem;
-								if ( empty( $wp_filesystem ) ) {
-									require_once ABSPATH . 'wp-admin/includes/file.php';
-									WP_Filesystem();
-								}
-								$wp_filesystem->move( $tmp_name, WCCD_PRIVATE . $name, true );
-
-								/* Salvo passw nel db solo se fornita */
-								if ( $wccd_password ) {
+								if ( false === $private_key ) {
+									/* Password errata per chiave cifrata */
+									add_action( 'admin_notices', array( $this, 'wrong_certificate_password' ) );
+								} else {
+									/* Password corretta, salva nel db */
 									update_option( 'wccd-password', base64_encode( $wccd_password ) );
 								}
+							} elseif ( $wccd_password ) {
+								/* Chiave non cifrata, salva comunque la password */
+								update_option( 'wccd-password', base64_encode( $wccd_password ) );
 							}
 						}
 					} else {
