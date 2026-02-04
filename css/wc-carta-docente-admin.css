@@ -30,6 +30,20 @@
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
 
+.wccd-cert-expiry {
+	display: block;
+	margin-top: 8px;
+	font-weight: 600;
+}
+
+.wccd-cert-expiry.expiring {
+	color: #856404;
+}
+
+.wccd-cert-expiry.expired {
+	color: #a94442;
+}
+
 .button.delete-certificate {
 	margin-left: 0.5rem;
 }
