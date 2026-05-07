@@ -1,15 +1,14 @@
 # This repository adheres to the publiccode.yml standard by including this
 # metadata file that makes public software easily discoverable.
-# More info at https://github.com/italia/publiccode.yml
+# More info at https://github.com/publiccodeyml/publiccode.yml
 
 ---
 
-publiccodeYmlVersion: '0.4.0'
+publiccodeYmlVersion: '0'
 categories:
   - e-commerce
 description:
   it:
-    documentation: 'https://ilghera.com/documentation/wc-carta-docente-18app/'
     features:
       - Carica il tuo certificato .pem
       - |-
@@ -102,28 +101,14 @@ description:
       - |-
         https://raw.githubusercontent.com/ilGhera/wc-carta-docente/master/images/metodo-di-pagamento.jpg
     shortDescription: |-
-      Con ilGhera Carta Docente for WooCommerce, consentirai agli insegnanti di acquistare i
-
-      tuoi prodotti utilizzando i buoni generati su Carta del Docente.
+      Consenti agli insegnanti di acquistare i tuoi prodotti utilizzando i
+      buoni generati su Carta del Docente.
 developmentStatus: stable
 intendedAudience:
   countries:
-    - it
-it:
-  conforme:
-    gdpr: false
-    lineeGuidaDesign: false
-    misureMinimeSicurezza: false
-    modelloInteroperabilita: false
-  countryExtensionVersion: '0.2'
-  piattaforme:
-    anpr: true
-    cie: false
-    pagopa: false
-    spid: false
+    - IT
 legal:
   license: GPL-3.0-only
-  repoOwner: ilGhera | WordPress Development
 localisation:
   availableLanguages:
     - it
@@ -136,6 +121,8 @@ maintenance:
       name: Andrea Gherardi
   type: internal
 name: ilGhera Carta Docente for WooCommerce
+# TODO: set organisation.name to the legal entity that owns the software
+# (replaces the deprecated legal.repoOwner field)
 platforms:
   - web
 releaseDate: '2026-03-13'
