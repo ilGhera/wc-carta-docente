@@ -122,8 +122,8 @@ it:
     pagopa: false
     spid: false
 legal:
-  license: GPL-3.0-only
   repoOwner: ilGhera | Software solutions
+license: GPL-3.0-only
 localisation:
   availableLanguages:
     - it
