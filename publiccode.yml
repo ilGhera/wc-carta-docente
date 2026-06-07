@@ -102,14 +102,12 @@ description:
       - |-
         https://raw.githubusercontent.com/ilGhera/wc-carta-docente/master/images/metodo-di-pagamento.jpg
     shortDescription: |-
-      Con ilGhera Carta Docente for WooCommerce, consentirai agli insegnanti di acquistare i
-
-      tuoi prodotti utilizzando i buoni generati su Carta del Docente.
+      Consenti agli insegnanti di acquistare con Carta del Docente su WooCommerce.
 developmentStatus: stable
 intendedAudience:
   countries:
-    - it
-it:
+    - IT
+IT:
   conforme:
     gdpr: false
     lineeGuidaDesign: false
@@ -122,8 +120,8 @@ it:
     pagopa: false
     spid: false
 legal:
+  license: GPL-3.0-only
   repoOwner: ilGhera | Software solutions
-license: GPL-3.0-only
 localisation:
   availableLanguages:
     - it
@@ -138,6 +136,7 @@ maintenance:
 name: ilGhera Carta Docente for WooCommerce
 organisation:
   name: ilGhera | Software solutions
+  uri: https://ilghera.com
 platforms:
   - web
 releaseDate: '2026-03-13'
