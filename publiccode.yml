@@ -136,6 +136,8 @@ maintenance:
       name: Andrea Gherardi
   type: internal
 name: ilGhera Carta Docente for WooCommerce
+organisation:
+  name: ilGhera | Software solutions
 platforms:
   - web
 releaseDate: '2026-03-13'
