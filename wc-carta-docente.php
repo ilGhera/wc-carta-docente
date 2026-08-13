@@ -11,7 +11,7 @@
  * Author URI: https://ilghera.com
  * Requires at least: 4.0
  * Tested up to: 6.9
- * WC tested up to: 10.3
+ * WC tested up to: 11.0.1
  * Text Domain: wccd
  * Domain Path: /languages
  */
