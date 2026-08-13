@@ -79,8 +79,6 @@ https://youtu.be/CU00ZZBZplI
 = 1.5.2 =
 Data di rilascio: 13 Agosto, 2026
 
-    * Compatibilità: WordPress 7.0
-    * Compatibilità: WooCommerce 11.0.1
     * Correzione bug: correggi format publiccode.yml (CdD) per validazione standard
     * Correzione bug: sposta license a livello root nel publiccode.yml
     * Correzione bug: aggiungi organisation field al publiccode.yml
