@@ -77,7 +77,7 @@ https://youtu.be/CU00ZZBZplI
 == Changelog ==
 
 = 1.5.2 =
-Data di rilascio: 13 Agosto, 2026
+Data di rilascio: 14 Agosto, 2026
 
     * Correzione bug: correggi format publiccode.yml (CdD) per validazione standard
     * Correzione bug: sposta license a livello root nel publiccode.yml
