@@ -10,7 +10,7 @@
  * Stable tag: 1.5.3
  * Author URI: https://ilghera.com
  * Requires at least: 4.0
- * Tested up to: 6.9
+ * Tested up to: 7.1
  * WC tested up to: 11.0.1
  * Text Domain: wccd
  * Domain Path: /languages
